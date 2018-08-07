@@ -8,8 +8,11 @@ using std::size_t;
 
 /******************************************************************************/
 
-FDF::FDF(std::string path, size_t n, std::vector<int> types)
-  : n(n), types(types) {
+FDF::FDF(std::string path,
+         size_t n,
+         const std::vector<int>& types,
+         const std::vector<size_t>& column_offsets)
+  : n(n), types(types), column_offsets(column_offsets) {
 
   try {
     this->file = file_mapping(path.c_str(), read_write);
@@ -31,10 +34,17 @@ SEXP getXPtrFDF(std::string path, size_t n, IntegerVector types) {
 
   // http://gallery.rcpp.org/articles/intro-to-exceptions/
   try {
+    size_t m = types.size();
+    size_t offset = 0;
+    std::vector<int> types2(m);
+    std::vector<size_t> column_offsets(m);
+    for (size_t j = 0; j < m; j++) {
+      column_offsets[j] = offset;
+      types2[j] = types[j];
+      offset += n * types[j];
+    }
     // Create a pointer to an FDF object and wrap it as an external pointer
-    std::vector<int> types2(types.size());
-    std::copy(types.begin(), types.end(), types2.begin());
-    XPtr<FDF> ptr(new FDF(path, n, types2), true);
+    XPtr<FDF> ptr(new FDF(path, n, types2, column_offsets), true);
     // Return the external pointer to the R side
     return ptr;
   } catch(std::exception &ex) {

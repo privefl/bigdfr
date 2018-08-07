@@ -10,11 +10,13 @@ using std::size_t;
 
 class FDF : private boost::noncopyable {
 public:
-  FDF(std::string path, size_t n, std::vector<int> types);
+  FDF(std::string path,
+      size_t n,
+      const std::vector<int>& types,
+      const std::vector<size_t>& column_offsets);
 
   void* column(size_t j) const {
-    return static_cast<char*>(file_data) +
-      n * std::accumulate(types.begin(), types.begin() + j, 0);
+    return static_cast<char*>(file_data) + column_offsets[j];
   }
   size_t nrow() const { return n; }
   size_t ncol() const { return types.size(); }
@@ -26,6 +28,7 @@ private:
   void* file_data;
   size_t n;
   std::vector<int> types;
+  std::vector<size_t> column_offsets;
 };
 
 #endif // FDF_H

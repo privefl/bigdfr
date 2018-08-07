@@ -13,3 +13,8 @@ Suggests:
     covr
 URL: https://github.com/privefl/bigdfr
 BugReports: https://github.com/privefl/bigdfr/issues
+LinkingTo: 
+    Rcpp,
+    BH
+Imports: 
+    Rcpp

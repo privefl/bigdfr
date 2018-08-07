@@ -3,4 +3,5 @@
 export(FDF)
 exportClasses(FDF)
 importFrom(Rcpp,sourceCpp)
+importFrom(methods,new)
 useDynLib(bigdfr, .registration = TRUE)

@@ -77,6 +77,7 @@ FDF_RC$lock("nrow")
 #'
 #' @rdname FDF-class
 #'
+#' @importFrom methods new
 #' @export
 #'
 FDF <- function(df, backingfile = tempfile()) {

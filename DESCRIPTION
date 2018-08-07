@@ -18,4 +18,5 @@ LinkingTo:
     Rcpp,
     BH
 Imports: 
-    Rcpp
+    Rcpp,
+    methods

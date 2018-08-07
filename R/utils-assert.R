@@ -115,10 +115,8 @@ assert_noexist <- function(file) {
 
 # EXTENSION
 assert_ext <- function(file, ext) {
-  ext.file <- tools::file_ext(file)
-  if (ext.file != ext)
-    stop2("Extension '.%s' not supported, requires '.%s' instead.",
-          ext.file, ext)
+  if (!grepl(sprintf("\\.%s$", ext), file))
+    stop2("Extension of '%s' must be '.%s'.", file, ext)
 }
 
 ################################################################################

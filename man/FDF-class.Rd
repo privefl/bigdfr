@@ -18,4 +18,23 @@ Default stores in the temporary directory.}
 \description{
 A reference class for storing and accessing data frames stored on disk.
 }
+\details{
+An FDF object has many field:
+\itemize{
+\item \code{$address}: address of the external pointer containing the underlying
+C++ object, to be used as a \code{XPtr<FDF>} in C++ code
+\item \code{$extptr}: use \code{$address} instead
+\item \code{$nrow}
+\item \code{$ncol}
+\item \code{$types}
+\item \code{$backingfile}: File that stores the numeric data of the FDF
+\item \code{$rds}: 'rds' file (that may not exist) in which this object is stored
+\item \code{$is_saved}: whether this object stored in \code{$rds}?
+}
+
+And some methods:
+\itemize{
+\item \code{$save()}: Save the FDF object in \code{$rds}. Returns the FDF.
+}
+}
 

@@ -4,12 +4,20 @@
 \name{bigdfr-package}
 \alias{bigdfr}
 \alias{bigdfr-package}
-\title{bigdfr: What the Package Does (One Line, Title Case)}
+\title{bigdfr: Operate with Data Frames Stored on Disk}
 \description{
-What the package does (one paragraph).
+Operate with data frames stored in a binary file on disk.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/privefl/bigdfr}
+  \item Report bugs at \url{https://github.com/privefl/bigdfr/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Florian Privé \email{florian.prive.21@gmail.com}
 
 }
 \keyword{internal}

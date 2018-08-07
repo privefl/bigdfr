@@ -1,9 +1,9 @@
 Package: bigdfr
 Version: 0.0.0.9000
-Title: What the Package Does (One Line, Title Case)
-Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", , "first.last@example.com", c("aut", "cre"))
-License: What license it uses
+Title: Operate with Data Frames Stored on Disk 
+Description: Operate with data frames stored in a binary file on disk.
+Authors@R: person("Florian", "Privé", , "florian.prive.21@gmail.com", c("aut", "cre"))
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
@@ -11,3 +11,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 Suggests: 
     covr
+URL: https://github.com/privefl/bigdfr
+BugReports: https://github.com/privefl/bigdfr/issues

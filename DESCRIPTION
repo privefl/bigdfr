@@ -10,7 +10,8 @@ ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 Suggests: 
-    covr
+    covr,
+    testthat
 URL: https://github.com/privefl/bigdfr
 BugReports: https://github.com/privefl/bigdfr/issues
 LinkingTo: 

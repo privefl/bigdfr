@@ -5,3 +5,7 @@ getXPtrFDF <- function(path, n, types) {
     .Call(`_bigdfr_getXPtrFDF`, path, n, types)
 }
 
+add_bytes <- function(fileName, nbyte) {
+    invisible(.Call(`_bigdfr_add_bytes`, fileName, nbyte))
+}
+

@@ -31,4 +31,8 @@ private:
   std::vector<size_t> column_offsets;
 };
 
+inline void myassert(bool cond, const char *msg) {
+  if (!cond) throw Rcpp::exception(msg);
+}
+
 #endif // FDF_H

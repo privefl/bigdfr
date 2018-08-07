@@ -1,6 +1,8 @@
 /******************************************************************************/
 
 #include "FDF.h"
+#include <stdexcept>
+#include <fstream>
 
 using namespace Rcpp;
 using namespace boost::interprocess;
@@ -58,3 +60,24 @@ SEXP getXPtrFDF(std::string path, size_t n, IntegerVector types) {
 
 /******************************************************************************/
 
+// [[Rcpp::export]]
+void add_bytes(std::string fileName, std::size_t nbyte) {
+
+  myassert(nbyte > 0, "Dimensions should be at least 1.");
+
+  try {
+
+    std::fstream filestr(fileName.c_str());
+    if (filestr) {
+      std::streambuf* pbuf = filestr.rdbuf();
+      pbuf->pubseekoff(nbyte - 1, filestr.end);
+      pbuf->sputc(0);
+      filestr.close();
+    }
+
+  } catch(std::exception& ex) {
+    throw std::runtime_error("Problem resizing the backing file.");
+  }
+}
+
+/******************************************************************************/

@@ -1,0 +1,21 @@
+context("test-file.R")
+
+test_that("Increasing the file works", {
+  expect_true(file.create(tmp <- tempfile()))
+  expect_equal(file.size(tmp), 0)
+  add_bytes(tmp, 2)
+  expect_equal(file.size(tmp), 2)
+  add_bytes(tmp, 2)
+  expect_equal(file.size(tmp), 4)
+  expect_equal(readBin(tmp, 0L), 0)
+  add_bytes(tmp, 4)
+  expect_equal(file.size(tmp), 8)
+  expect_equal(readBin(tmp, 0), 0)
+  expect_equal(readBin(tmp, 0L, n = 2), c(0, 0))
+  # Don't change content of previous bytes
+  writeBin(1:5, tmp <- tempfile())
+  expect_equal(file.size(tmp), 20)
+  add_bytes(tmp, 8)
+  expect_equal(file.size(tmp), 28)
+  expect_equal(readBin(tmp, 0L, n = 7), c(1:5, 0, 0))
+})

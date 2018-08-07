@@ -18,9 +18,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// add_bytes
+void add_bytes(std::string fileName, std::size_t nbyte);
+RcppExport SEXP _bigdfr_add_bytes(SEXP fileNameSEXP, SEXP nbyteSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fileName(fileNameSEXP);
+    Rcpp::traits::input_parameter< std::size_t >::type nbyte(nbyteSEXP);
+    add_bytes(fileName, nbyte);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
+    {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
     {NULL, NULL, 0}
 };
 

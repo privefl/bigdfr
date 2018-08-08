@@ -5,6 +5,42 @@
 
 using namespace Rcpp;
 
+// fill_double
+void fill_double(SEXP xptr, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_double(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
+    fill_double(xptr, j, vec);
+    return R_NilValue;
+END_RCPP
+}
+// fill_int
+void fill_int(SEXP xptr, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_int(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
+    fill_int(xptr, j, vec);
+    return R_NilValue;
+END_RCPP
+}
+// fill_short
+void fill_short(SEXP xptr, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_short(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
+    fill_short(xptr, j, vec);
+    return R_NilValue;
+END_RCPP
+}
 // getXPtrFDF
 SEXP getXPtrFDF(std::string path, size_t n, IntegerVector ind_row, IntegerVector types);
 RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP nSEXP, SEXP ind_rowSEXP, SEXP typesSEXP) {
@@ -32,6 +68,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_bigdfr_fill_double", (DL_FUNC) &_bigdfr_fill_double, 3},
+    {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
+    {"_bigdfr_fill_short", (DL_FUNC) &_bigdfr_fill_short, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 4},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
     {NULL, NULL, 0}

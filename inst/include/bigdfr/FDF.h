@@ -6,15 +6,9 @@
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/noncopyable.hpp>
-#include <Rcpp.h>
+#include <bigdfr/utils.h>
 
 using std::size_t;
-
-/******************************************************************************/
-
-inline void myassert(bool cond, const char *msg) {
-  if (!cond) throw Rcpp::exception(msg);
-}
 
 /******************************************************************************/
 

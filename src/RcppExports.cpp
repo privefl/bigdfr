@@ -6,15 +6,16 @@
 using namespace Rcpp;
 
 // getXPtrFDF
-SEXP getXPtrFDF(std::string path, size_t n, IntegerVector types);
-RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP nSEXP, SEXP typesSEXP) {
+SEXP getXPtrFDF(std::string path, size_t n, IntegerVector ind_row, IntegerVector types);
+RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP nSEXP, SEXP ind_rowSEXP, SEXP typesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
     Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ind_row(ind_rowSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type types(typesSEXP);
-    rcpp_result_gen = Rcpp::wrap(getXPtrFDF(path, n, types));
+    rcpp_result_gen = Rcpp::wrap(getXPtrFDF(path, n, ind_row, types));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -31,7 +32,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
+    {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 4},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
     {NULL, NULL, 0}
 };

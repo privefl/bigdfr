@@ -39,11 +39,15 @@ FDF_RC <- methods::setRefClass(
     types       = "integer",
     backingfile = "character",
     rds         = "character",
+    ind_row     = "integer",
 
     #### Active bindings
     address = function() {
       if (identical(.self$extptr, methods::new("externalptr"))) { # nil
-        .self$extptr <- getXPtrFDF(.self$backingfile, .self$nrow, .self$types)
+        .self$extptr <- getXPtrFDF(.self$backingfile,
+                                   .self$nrow,
+                                   .self$ind_row,
+                                   .self$types)
       }
       .self$extptr
     },
@@ -64,6 +68,7 @@ FDF_RC <- methods::setRefClass(
       .self$backingfile <- create_file(backingfile)
       .self$rds         <- ""
       .self$nrow        <- nrow(df)
+      .self$ind_row     <- seq_len(nrow(df))
       .self$types       <- AUTHORIZED_TYPES[coltypes]
 
       ## Add columns and fill them with data

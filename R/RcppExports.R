@@ -9,8 +9,8 @@ fill_int <- function(xptr, j, vec) {
     invisible(.Call(`_bigdfr_fill_int`, xptr, j, vec))
 }
 
-fill_short <- function(xptr, j, vec) {
-    invisible(.Call(`_bigdfr_fill_short`, xptr, j, vec))
+fill_ushort <- function(xptr, j, vec) {
+    invisible(.Call(`_bigdfr_fill_ushort`, xptr, j, vec))
 }
 
 getXPtrFDF <- function(path, n, ind_row, types) {

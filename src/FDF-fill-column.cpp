@@ -32,7 +32,7 @@ void fill_int(SEXP xptr, size_t j, SEXP vec) {
 }
 
 // [[Rcpp::export]]
-void fill_short(SEXP xptr, size_t j, SEXP vec) {
+void fill_ushort(SEXP xptr, size_t j, SEXP vec) {
   fill<unsigned short, INTSXP>(xptr, j, vec);
 }
 

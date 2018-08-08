@@ -10,4 +10,11 @@ test_that("FDF initialization works", {
   expect_error(FDF(mtcars)$save(tempfile()), "must be '.rds'")
   expect_s4_class(test2 <- FDF(mtcars)$save(tempfile(fileext = ".rds")), "FDF")
   expect_true(test2$is_saved)
+
+  expect_equal(readBin(test$backingfile, what = 0, n = 150 * 4),
+               unlist(iris[1:4]), check.attributes = FALSE)
+  read_ushort <- readBin(test$backingfile, what = 1L, size = 2,  n = 10e3)
+  expect_equal(tail(read_ushort, 150), as.integer(iris$Species))
+  expect_identical(test$nstr, 3L)
+  expect_equal(test$strings, c(levels(iris$Species), rep(NA, 2^16 - 3)))
 })

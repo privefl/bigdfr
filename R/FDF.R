@@ -7,6 +7,40 @@ ERROR_TYPE <- "Some column types are not authorized."
 
 ################################################################################
 
+transform_and_fill <- function(self, df, j) {
+
+  cl <- class(vec <- df[[j]])
+  if (cl == "numeric") {
+    fill_double(self$address, j, vec)
+  } else if (cl == "integer") {
+    fill_int(self$address, j, vec)
+  } else if (cl == "character") {
+    fill_int(self$address, j, vec)
+  } else if (cl == "factor") {
+    u_fct <- levels(vec)
+    L <- self$nstr
+    matches <- match(u_fct, self$strings)
+    for (i in which(is.na(matches))) {
+      self$strings[L <- L + 1L] <- u_fct[i]
+      matches[i] <- L
+    }
+    self$nstr <- L
+    fill_ushort(self$address, j, matches[vec])
+  } else {
+    u_chr <- unique(vec)
+    L <- self$nstr
+    matches <- match(u_chr, self$strings)
+    for (i in which(is.na(matches))) {
+      self$strings[L <- L + 1L] <- u_chr[i]
+      matches[i] <- L
+    }
+    self$nstr <- L
+    fill_ushort(self$address, j, match(vec, strings))
+  }
+}
+
+################################################################################
+
 #' Class FBM
 #'
 #' A reference class for storing and accessing data frames stored on disk.
@@ -40,6 +74,8 @@ FDF_RC <- methods::setRefClass(
     backingfile = "character",
     rds         = "character",
     ind_row     = "integer",
+    strings     = "character",
+    nstr        = "integer",
 
     #### Active bindings
     address = function() {
@@ -68,11 +104,16 @@ FDF_RC <- methods::setRefClass(
       .self$backingfile <- create_file(backingfile)
       .self$rds         <- ""
       .self$nrow        <- nrow(df)
-      .self$ind_row     <- seq_len(nrow(df))
+      .self$ind_row     <- rows_along(df)
       .self$types       <- AUTHORIZED_TYPES[coltypes]
+      .self$strings     <- rep(NA_character_, 2^16)
+      .self$nstr        <- 0L
 
       ## Add columns and fill them with data
       add_bytes(.self$backingfile, .self$nrow * sum(.self$types))
+      for (j in cols_along(df)) {
+        transform_and_fill(.self, df, j)
+      }
 
       .self$address  # connect once
       .self
@@ -112,5 +153,28 @@ FDF <- function(df, backingfile = tempfile()) {
   assert_class(df, "data.frame")
   do.call(methods::new, args = c(Class = "FDF", as.list(environment())))
 }
+
+################################################################################
+#### Sequence generation ####
+
+#' Sequence generation
+#'
+#' Similar to [seq_along], it creates sequences of size `nrow(x)` or `ncol(x)`.
+#'
+#' @param x Any object on which you can call `nrow` and `ncol`.
+#'
+#' @examples
+#' dim(iris)
+#' str(rows_along(iris))
+#' str(cols_along(iris))
+#'
+#' @rdname seq-dim
+#' @keywords internal
+#' @export
+rows_along <- function(x) seq_len(nrow(x))
+
+#' @rdname seq-dim
+#' @export
+cols_along <- function(x) seq_len(ncol(x))
 
 ################################################################################

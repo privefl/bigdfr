@@ -22,7 +22,10 @@ transform_and_fill <- function(self, df, j) {
     u_fct <- levels(vec)
     L <- self$nstr
     matches <- match(u_fct, self$strings)
-    for (i in which(is.na(matches))) {
+    ind_nomatch <- which(is.na(matches))
+    if (L + length(ind_nomatch) > 2^16)
+      stop2("Can't have more than %s different strings.", 2^16)
+    for (i in ind_nomatch) {
       matches[i] <- L
       self$strings[L <- L + 1L] <- u_fct[i]
     }
@@ -32,7 +35,10 @@ transform_and_fill <- function(self, df, j) {
     u_chr <- unique(vec)
     L <- self$nstr
     matches <- match(u_chr, self$strings)
-    for (i in which(is.na(matches))) {
+    ind_nomatch <- which(is.na(matches))
+    if (L + length(ind_nomatch) > 2^16)
+      stop2("Can't have more than %s different strings.", 2^16)
+    for (i in ind_nomatch) {
       self$strings[L <- L + 1L] <- u_chr[i]
     }
     self$nstr <- L
@@ -85,12 +91,9 @@ FDF_RC <- methods::setRefClass(
 
     #### Active bindings
     address = function() {
-      if (identical(.self$extptr, methods::new("externalptr"))) { # nil
-        .self$extptr <- getXPtrFDF(.self$backingfile,
-                                   .self$nrow,
-                                   .self$ind_row,
-                                   .self$types)
-      }
+      if (identical(.self$extptr, methods::new("externalptr")))  ## nil pointer
+        .self$init_address()
+
       .self$extptr
     },
 
@@ -151,6 +154,20 @@ FDF_RC <- methods::setRefClass(
       saveRDS(.self, path.expand(rds))
       .self$rds <- normalizePath(rds)
       .self
+    },
+
+    init_address = function() {
+      .self$extptr <- getXPtrFDF(.self$backingfile,
+                                 .self$nrow,
+                                 .self$ind_row,
+                                 .self$types)
+    },
+
+    show = function() {
+      cat(sprintf(
+        "A Filebacked Data Frame with %s rows and %s columns.\n",
+        .self$nrow, .self$ncol))
+      invisible(.self)
     }
   )
 )

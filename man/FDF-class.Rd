@@ -5,7 +5,7 @@
 \alias{FDF-class}
 \alias{FDF_RC}
 \alias{FDF}
-\title{Class FBM}
+\title{Class FDF}
 \usage{
 FDF(df, backingfile = tempfile())
 }

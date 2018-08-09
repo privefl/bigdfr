@@ -46,8 +46,9 @@ template <typename T>
 class ColAcc {
 public:
   ColAcc(const FDF * xpDF, size_t j) {
-    _pMat = static_cast<T*>(xpDF->column(j));
+    _pMat    = static_cast<T*>(xpDF->column(j));
     _ind_row = xpDF->get_ind_row();
+    _type    = xpDF->column_type(j);
   }
 
   inline T& operator[](size_t i) {
@@ -55,10 +56,12 @@ public:
   }
 
   size_t nrow() const { return _ind_row.size(); }
+  int type() const { return _type; }
 
 protected:
   T* _pMat;
   std::vector<size_t> _ind_row;
+  int _type;
 };
 
 /******************************************************************************/

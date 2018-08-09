@@ -21,8 +21,8 @@ transform_and_fill <- function(self, df, j) {
     L <- self$nstr
     matches <- match(u_fct, self$strings)
     for (i in which(is.na(matches))) {
-      self$strings[L <- L + 1L] <- u_fct[i]
       matches[i] <- L
+      self$strings[L <- L + 1L] <- u_fct[i]
     }
     self$nstr <- L
     fill_ushort(self$address, j, matches[vec])
@@ -32,16 +32,15 @@ transform_and_fill <- function(self, df, j) {
     matches <- match(u_chr, self$strings)
     for (i in which(is.na(matches))) {
       self$strings[L <- L + 1L] <- u_chr[i]
-      matches[i] <- L
     }
     self$nstr <- L
-    fill_ushort(self$address, j, match(vec, strings))
+    fill_ushort(self$address, j, match(vec, self$strings) - 1L)
   }
 }
 
 ################################################################################
 
-#' Class FBM
+#' Class FDF
 #'
 #' A reference class for storing and accessing data frames stored on disk.
 #'
@@ -96,9 +95,10 @@ FDF_RC <- methods::setRefClass(
 
     initialize = function(df, backingfile) {
 
+      assert_class(df, "data.frame")
       assert_pos(nrow(df))
+      assert_pos(ncol(df))
       coltypes <- sapply(df, class)
-      assert_pos(length(coltypes))
       if (!all(coltypes %in% names(AUTHORIZED_TYPES))) stop2(ERROR_TYPE)
 
       .self$backingfile <- create_file(backingfile)
@@ -150,7 +150,6 @@ FDF_RC$lock("nrow")
 #' @export
 #'
 FDF <- function(df, backingfile = tempfile()) {
-  assert_class(df, "data.frame")
   do.call(methods::new, args = c(Class = "FDF", as.list(environment())))
 }
 
@@ -176,5 +175,19 @@ rows_along <- function(x) seq_len(nrow(x))
 #' @rdname seq-dim
 #' @export
 cols_along <- function(x) seq_len(ncol(x))
+
+################################################################################
+
+#' Dimension and type methods for class `FDF`.
+#'
+#' @param x A [FDF][FDF-class].
+#'
+#' @rdname FDF-methods
+#' @export
+setMethod("dim",    signature(x = "FDF"), function(x) c(x$nrow, x$ncol))
+
+#' @rdname FDF-methods
+#' @export
+setMethod("length", signature(x = "FDF"), function(x) x$ncol)
 
 ################################################################################

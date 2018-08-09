@@ -5,6 +5,31 @@
 
 using namespace Rcpp;
 
+// extract_numeric
+SEXP extract_numeric(SEXP xptr, size_t j);
+RcppExport SEXP _bigdfr_extract_numeric(SEXP xptrSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_numeric(xptr, j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extract_string
+CharacterVector extract_string(SEXP xptr, size_t j, CharacterVector strings);
+RcppExport SEXP _bigdfr_extract_string(SEXP xptrSEXP, SEXP jSEXP, SEXP stringsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type strings(stringsSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_string(xptr, j, strings));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fill_double
 void fill_double(SEXP xptr, size_t j, SEXP vec);
 RcppExport SEXP _bigdfr_fill_double(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
@@ -68,6 +93,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_bigdfr_extract_numeric", (DL_FUNC) &_bigdfr_extract_numeric, 2},
+    {"_bigdfr_extract_string", (DL_FUNC) &_bigdfr_extract_string, 3},
     {"_bigdfr_fill_double", (DL_FUNC) &_bigdfr_fill_double, 3},
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},

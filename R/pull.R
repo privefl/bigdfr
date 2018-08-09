@@ -1,5 +1,19 @@
 ################################################################################
 
+#' @inherit dplyr::pull title description return
+#'
+#' @param .data A [FDF][FDF-class].
+#' @param var For now, ONE index of the column you want to extract.
+#'
+#' @importFrom dplyr pull
+#' @export
+#'
+#' @rdname pull
+#'
+#' @examples
+#' test <- FDF(datasets::iris)
+#' pull(test, 1)
+#' pull(test, 5)
 pull.FDF <- function(.data, var) {
 
   if (.data$types[[var]] == 2) {
@@ -11,20 +25,11 @@ pull.FDF <- function(.data, var) {
 
 ################################################################################
 
+#' @export
+#' @rdname pull
 setGeneric("pull", dplyr::pull)
 
-#' @inherit dplyr::pull title description return
-#'
-#' @param .data A [FDF][FDF-class].
-#' @param var For now, ONE index of the column you want to extract.
-#'
-#' @importFrom dplyr pull
-#' @export
-#'
-#' @examples
-#' test <- FDF(datasets::iris)
-#' pull(test, 1)
-#' pull(test, 5)
+#' @rdname pull
 setMethod("pull", "FDF", pull.FDF)
 
 ################################################################################

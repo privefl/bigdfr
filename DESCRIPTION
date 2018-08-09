@@ -22,3 +22,16 @@ Imports:
     methods,
     dplyr,
     magrittr
+Collate: 
+    'FDF.R'
+    'FDF-no-acc.R'
+    'RcppExports.R'
+    'arrange.R'
+    'as-tibble.R'
+    'bigdfr-package.R'
+    'filter.R'
+    'pull.R'
+    'select.R'
+    'utils-assert.R'
+    'utils-pipe.R'
+    'utils.R'

@@ -3,9 +3,10 @@
 #' @inherit dplyr::pull title description return
 #'
 #' @param .data A [FDF][FDF-class].
-#' @param var For now, ONE index of the column you want to extract.
+#' @inheritParams tidyselect::vars_pull
 #'
 #' @importFrom dplyr pull
+#' @importFrom tidyselect vars_pull enquo
 #' @export
 #'
 #' @rdname pull
@@ -14,12 +15,17 @@
 #' test <- FDF(datasets::iris)
 #' pull(test, 1)
 #' pull(test, 5)
-pull.FDF <- function(.data, var) {
+#' pull(test, Species)
+pull.FDF <- function(.data, var = -1) {
 
-  if (.data$types[[var]] == 2) {
-    extract_string(.data$address, var, .data$strings)
+  ind_vars <- .data$ind_col
+  var_name <- vars_pull(names(ind_vars), !!enquo(var))
+  ind_var <- ind_vars[[var_name]]
+
+  if (.data$types[[ind_var]] == 2) {
+    extract_string(.data$address, ind_var, .data$strings)
   } else {
-    extract_numeric(.data$address, var)
+    extract_numeric(.data$address, ind_var)
   }
 }
 

@@ -9,13 +9,13 @@
 #' @name FDF-accessors
 NULL
 
-#' @export
-#' @rdname FDF-accessors
-setMethod('[', "FDF", function(x) stop2("Accessor '[' does NOT exist for an FDF object.\n  Please use 'select' and/or 'filter' instead."))
-
-#' @export
-#' @rdname FDF-accessors
-setMethod('[[', "FDF", function(x) stop2("Accessor '[[' does NOT exist for an FDF object.\n  Please use 'pull' instead."))
+#' #' @export
+#' #' @rdname FDF-accessors
+#' setMethod('[', "FDF", function(x) stop2("Accessor '[' does NOT exist for an FDF object.\n  Please use 'select' and/or 'filter' instead."))
+#'
+#' #' @export
+#' #' @rdname FDF-accessors
+#' setMethod('[[', "FDF", function(x) stop2("Accessor '[[' does NOT exist for an FDF object.\n  Please use 'pull' instead."))
 
 
 ################################################################################

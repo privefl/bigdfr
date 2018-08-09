@@ -21,7 +21,8 @@ Imports:
     Rcpp,
     methods,
     dplyr,
-    magrittr
+    magrittr,
+    tidyselect (>= 0.2.3)
 Collate: 
     'FDF.R'
     'FDF-no-acc.R'

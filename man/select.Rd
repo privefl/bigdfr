@@ -7,16 +7,28 @@
 \alias{select,FDF-method}
 \title{Select/rename variables by name}
 \usage{
-select.FDF(.data, subset)
+select.FDF(.data, ...)
 
 select(.data, ...)
 
-\S4method{select}{FDF}(.data, subset)
+\S4method{select}{FDF}(.data, ...)
 }
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
 
-\item{subset}{Logical, integer or character vector to further subset \code{.data$ind_col}.}
+\item{...}{Expressions to compute
+
+These arguments are automatically \link[rlang:quo]{quoted} and
+\link[rlang:eval_tidy]{evaluated} in a context where elements of
+\code{vars} are objects representing their positions within
+\code{vars}. They support \link[rlang:quasiquotation]{unquoting} and
+splicing. See \code{vignette("programming")} for an introduction to
+these concepts.
+
+Note that except for \code{:}, \code{-} and \code{c()}, all complex expressions
+are evaluated outside that context. This is to prevent accidental
+matching to \code{vars} elements when you refer to variables from the
+calling context.}
 }
 \value{
 An object of the same class as \code{.data}.
@@ -29,6 +41,6 @@ keeps all variables.
 (test <- FDF(datasets::iris))
 select(test, 1:4)
 select(test, -5)
-select(test, c(TRUE, FALSE))
 select(test, c("Sepal.Length", "Sepal.Width"))
+select(test, Sepal.Length, Sepal.Width)
 }

@@ -3,10 +3,10 @@
 #' @inherit dplyr::select title description return
 #'
 #' @param .data A [FDF][FDF-class].
-#' @param subset
-#'   Logical, integer or character vector to further subset `.data$ind_col`.
+#' @inheritParams tidyselect::vars_select
 #'
 #' @importFrom dplyr select
+#' @importFrom tidyselect vars_select quos
 #' @export
 #'
 #' @rdname select
@@ -15,13 +15,15 @@
 #' (test <- FDF(datasets::iris))
 #' select(test, 1:4)
 #' select(test, -5)
-#' select(test, c(TRUE, FALSE))
 #' select(test, c("Sepal.Length", "Sepal.Width"))
-select.FDF <- function(.data, subset) {
+#' select(test, Sepal.Length, Sepal.Width)
+select.FDF <- function(.data, ...) {
 
-  ind_col_filtered <- .data$ind_col[subset]
+  ind_vars <- .data$ind_col
+  var_names <- vars_select(names(ind_vars), !!!quos(...))
+
   new_data <- .data$copy()
-  new_data$ind_col <- ind_col_filtered
+  new_data$ind_col <- ind_vars[var_names]
   new_data$init_address()
   new_data
 }

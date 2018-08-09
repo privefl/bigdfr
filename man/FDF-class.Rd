@@ -30,6 +30,10 @@ C++ object, to be used as a \code{XPtr<FDF>} in C++ code
 \item \code{$backingfile}: File that stores the numeric data of the FDF
 \item \code{$rds}: 'rds' file (that may not exist) in which this object is stored
 \item \code{$is_saved}: whether this object stored in \code{$rds}?
+\item \code{$ind_row}: Indices of rows for a subview of the FDF
+\item \code{$ind_col}: Indices of columns for a subview view of the FDF
+\item \code{$strings}: 2^16 strings to match with integers (between 0 and 65535)
+\item \code{$nstr}: Number of unique strings already matched with an integer
 }
 
 And some methods:

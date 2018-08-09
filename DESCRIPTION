@@ -20,4 +20,5 @@ LinkingTo:
 Imports: 
     Rcpp,
     methods,
-    dplyr
+    dplyr,
+    magrittr

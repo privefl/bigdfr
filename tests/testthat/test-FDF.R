@@ -2,7 +2,11 @@ context("test-FDF.R")
 
 test_that("FDF initialization works", {
 
-  test <- FDF(iris <- datasets::iris)
+  test0 <- FDF(iris <- datasets::iris)
+  test <- test0$copy()
+  test0$nstr <- 19L
+  expect_identical(test$nstr, 3L)
+
   expect_s4_class(test, "FDF")
   expect_equal(dim(test),    dim(iris))
   expect_equal(nrow(test),   nrow(iris))

@@ -1,9 +1,11 @@
 ################################################################################
 
-AUTHORIZED_TYPES <-
-  c("numeric" = 8L, "integer" = 4L, "factor" = 2L, "character" = 2L)
+AUTHORIZED_TYPES <- c("numeric" = 8L, "integer" = 4L, "character" = 2L)
 
 ERROR_TYPE <- "Some column types are not authorized."
+
+FIELDS_TO_COPY <- c("extptr", "nrow_all", "types", "backingfile",
+                    "ind_row", "ind_col", "strings", "nstr")
 
 ################################################################################
 
@@ -55,6 +57,10 @@ transform_and_fill <- function(self, df, j) {
 #'   - `$backingfile`: File that stores the numeric data of the FDF
 #'   - `$rds`: 'rds' file (that may not exist) in which this object is stored
 #'   - `$is_saved`: whether this object stored in `$rds`?
+#'   - `$ind_row`: Indices of rows for a subview of the FDF
+#'   - `$ind_col`: Indices of columns for a subview view of the FDF
+#'   - `$strings`: 2^16 strings to match with integers (between 0 and 65535)
+#'   - `$nstr`: Number of unique strings already matched with an integer
 #'
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
@@ -68,11 +74,12 @@ FDF_RC <- methods::setRefClass(
   fields = list(
 
     extptr      = "externalptr",
-    nrow        = "numeric",
+    nrow_all    = "integer",
     types       = "integer",
     backingfile = "character",
     rds         = "character",
     ind_row     = "integer",
+    ind_col     = "integer",
     strings     = "character",
     nstr        = "integer",
 
@@ -87,43 +94,56 @@ FDF_RC <- methods::setRefClass(
       .self$extptr
     },
 
-    ncol = function() length(.self$types),
+    nrow = function() length(.self$ind_row),
+    ncol = function() length(.self$ind_col),
+
     is_saved = function() file.exists(.self$rds)
   ),
 
   methods = list(
 
-    initialize = function(df, backingfile) {
+    initialize = function(df_or_FDF, backingfile) {
 
-      assert_class(df, "data.frame")
-      assert_pos(nrow(df))
-      assert_pos(ncol(df))
-      coltypes <- sapply(df, class)
-      if (!all(coltypes %in% names(AUTHORIZED_TYPES))) stop2(ERROR_TYPE)
+      if (inherits(df_or_FDF, "FDF")) {  ## COPY FROM A FDF
 
-      .self$backingfile <- create_file(backingfile)
-      .self$rds         <- ""
-      .self$nrow        <- nrow(df)
-      .self$ind_row     <- rows_along(df)
-      .self$types       <- AUTHORIZED_TYPES[coltypes]
-      .self$strings     <- rep(NA_character_, 2^16)
-      .self$nstr        <- 0L
+        fdf <- df_or_FDF
+        for (field in FIELDS_TO_COPY) {
+          .self[[field]] <- fdf[[field]]
+        }
 
-      ## Add columns and fill them with data
-      add_bytes(.self$backingfile, .self$nrow * sum(.self$types))
-      for (j in cols_along(df)) {
-        transform_and_fill(.self, df, j)
+      } else {                           ## INIT FROM A DF
+
+        df <- df_or_FDF
+        assert_class(df, "data.frame")
+        assert_pos(nrow(df))
+        assert_pos(ncol(df))
+        coltypes <- sapply(df, class)
+        coltypes[coltypes == "factor"] <- "character"
+        if (!all(coltypes %in% names(AUTHORIZED_TYPES))) stop2(ERROR_TYPE)
+
+        .self$backingfile <- create_file(backingfile)
+        .self$nrow_all    <- nrow(df)
+        .self$ind_row     <- rows_along(df)
+        .self$ind_col     <- stats::setNames(cols_along(df), names(df))
+        .self$types       <- AUTHORIZED_TYPES[coltypes]
+        .self$strings     <- rep(NA_character_, 2^16)
+        .self$nstr        <- 0L
+
+        ## Add columns and fill them with data
+        add_bytes(.self$backingfile, .self$nrow * sum(.self$types))
+        for (j in cols_along(df)) {
+          transform_and_fill(.self, df, j)
+        }
+
+        .self$address  # connect once
       }
 
-      .self$address  # connect once
+      .self$rds <- ""
       .self
     },
 
-    add_df = function(df) {
-
-      assert_class(df, "data.frame")
-
-      invisible(.self)
+    copy = function() {
+      methods::new(Class = "FDF", df_or_FDF = .self)
     },
 
     save = function(rds) {
@@ -134,7 +154,7 @@ FDF_RC <- methods::setRefClass(
     }
   )
 )
-FDF_RC$lock("nrow")
+FDF_RC$lock("nrow_all")
 
 ################################################################################
 
@@ -150,7 +170,7 @@ FDF_RC$lock("nrow")
 #' @export
 #'
 FDF <- function(df, backingfile = tempfile()) {
-  do.call(methods::new, args = c(Class = "FDF", as.list(environment())))
+  methods::new(Class = "FDF", df_or_FDF = df, backingfile = backingfile)
 }
 
 ################################################################################

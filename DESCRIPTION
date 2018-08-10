@@ -9,9 +9,6 @@ LazyData: true
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
-Suggests: 
-    covr,
-    testthat
 URL: https://github.com/privefl/bigdfr
 BugReports: https://github.com/privefl/bigdfr/issues
 LinkingTo: 
@@ -24,6 +21,9 @@ Imports:
     magrittr,
     tidyselect (>= 0.2.3),
     rlang
+Suggests: 
+    covr,
+    testthat
 Collate: 
     'FDF.R'
     'FDF-no-acc.R'

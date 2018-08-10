@@ -23,7 +23,6 @@ Convert to tibble
 }
 \examples{
 test <- FDF(datasets::iris)
-test2 <- filter(test, order(pull(test, 3)))
-test3 <- filter(test2, 1:50)
-as_tibble(test3)
+test2 <- filter(test, Species == "setosa")
+as_tibble(test2)
 }

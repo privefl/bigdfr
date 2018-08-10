@@ -18,14 +18,14 @@
 #' pull(test, Species)
 pull.FDF <- function(.data, var = -1) {
 
-  ind_vars <- .data$ind_col
-  var_name <- vars_pull(names(ind_vars), !!enquo(var))
-  ind_var <- ind_vars[[var_name]]
+  rel_ind_vars <- .data$ind_col
+  rel_var_name <- vars_pull(names(rel_ind_vars), !!enquo(var))
+  glob_ind_var <- rel_ind_vars[[rel_var_name]]
 
-  if (.data$types[[ind_var]] == 2) {
-    extract_string(.data$address, ind_var, .data$strings)
+  if (.data$types[[glob_ind_var]] == 2) {
+    extract_string(.data$address, glob_ind_var, .data$strings)
   } else {
-    extract_numeric(.data$address, ind_var)
+    extract_numeric(.data$address, glob_ind_var)
   }
 }
 

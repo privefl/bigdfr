@@ -28,7 +28,6 @@ public:
   std::vector<size_t> get_ind_row() const { return ind_row; }
 
   size_t nrow() const { return ind_row.size(); }
-  size_t ncol() const { return types.size(); }
 
 private:
   boost::interprocess::file_mapping file;

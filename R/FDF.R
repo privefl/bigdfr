@@ -25,17 +25,34 @@ types_after_verif <- function(df) {
 
 ################################################################################
 
-transform_and_fill <- function(self, df, j) {
+transform_and_fill <- function(self, df_j, j2) {
 
-  cl <- class(vec <- df[[j]])
+  cl <- class(df_j)
   if (cl == "numeric") {
-    fill_double(self$address, j, vec)
+
+    fill_double(self$address, j2, df_j)
+
   } else if (cl == "integer") {
-    fill_int(self$address, j, vec)
+
+    fill_int(self$address, j2, df_j)
+
   } else if (cl == "character") {
-    fill_int(self$address, j, vec)
+
+    u_chr <- unique(df_j)
+    L <- self$nstr
+    matches <- match(u_chr, self$strings)
+    ind_nomatch <- which(is.na(matches))
+    if (L + length(ind_nomatch) > 2^16)
+      stop2("Can't have more than %s different strings.", 2^16)
+    for (i in ind_nomatch) {
+      self$strings[L <- L + 1L] <- u_chr[i]
+    }
+    self$nstr <- L
+    fill_ushort(self$address, j2, match(df_j, self$strings) - 1L)
+
   } else if (cl == "factor") {
-    u_fct <- levels(vec)
+
+    u_fct <- levels(df_j)
     L <- self$nstr
     matches <- match(u_fct, self$strings)
     ind_nomatch <- which(is.na(matches))
@@ -46,19 +63,12 @@ transform_and_fill <- function(self, df, j) {
       self$strings[L <- L + 1L] <- u_fct[i]
     }
     self$nstr <- L
-    fill_ushort(self$address, j, matches[vec])
+    fill_ushort(self$address, j2, matches[df_j])
+
   } else {
-    u_chr <- unique(vec)
-    L <- self$nstr
-    matches <- match(u_chr, self$strings)
-    ind_nomatch <- which(is.na(matches))
-    if (L + length(ind_nomatch) > 2^16)
-      stop2("Can't have more than %s different strings.", 2^16)
-    for (i in ind_nomatch) {
-      self$strings[L <- L + 1L] <- u_chr[i]
-    }
-    self$nstr <- L
-    fill_ushort(self$address, j, match(vec, self$strings) - 1L)
+
+    stop2(ERROR_TYPE)
+
   }
 }
 
@@ -96,12 +106,12 @@ FDF_RC <- methods::setRefClass(
   fields = list(
 
     extptr      = "externalptr",
-    nrow_all    = "integer",
-    types       = "integer",
+    nrow_all    = "integer",      ## nrow at initialization
+    types       = "integer",      ## global types of ALL columns
     backingfile = "character",
     rds         = "character",
-    ind_row     = "integer",
-    ind_col     = "integer",
+    ind_row     = "integer",      ## global indices to access
+    ind_col     = "integer",      ## global indices to access in order of names
     strings     = "character",
     nstr        = "integer",
 
@@ -115,6 +125,7 @@ FDF_RC <- methods::setRefClass(
 
     nrow = function() length(.self$ind_row),
     ncol = function() length(.self$ind_col),
+    colnames = function() stats::setNames(nm = names(.self$ind_col)),
 
     is_saved = function() file.exists(.self$rds)
   ),
@@ -145,7 +156,7 @@ FDF_RC <- methods::setRefClass(
         ## Add columns and fill them with data
         add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))
         for (j in cols_along(df)) {
-          transform_and_fill(.self, df, j)
+          transform_and_fill(.self, df[[j]], j)
         }
       }
 
@@ -161,22 +172,23 @@ FDF_RC <- methods::setRefClass(
 
       types_before <- .self$types
       types_to_add <- types_after_verif(df)
-      keep <-
+      new_ind_col  <- length(types_before) + cols_along(df)
 
       .copy <- .self$copy()
       .copy$types   <- c(types_before, types_to_add)
       .copy$ind_col <- c(
         .self$ind_col[ !(names(.self$ind_col) %in% names(df)) ],
-        stats::setNames(length(types_before) + cols_along(df), names(df))
+        stats::setNames(new_ind_col, names(df))
       )
 
       ## Add columns and fill them with data
       add_bytes(.self$backingfile, .self$nrow_all * sum(types_to_add))
+      .copy$init_address()
       for (j in cols_along(df)) {
-        transform_and_fill(.copy, df, j)
+        transform_and_fill(.copy, df[[j]], new_ind_col[j])
       }
 
-      .copy$init_address()
+      .copy
     },
 
     save = function(rds) {
@@ -186,14 +198,16 @@ FDF_RC <- methods::setRefClass(
       .self
     },
 
+    ## Need this when modifying $ind_row or $types
     init_address = function() {
       .self$extptr <- getXPtrFDF(.self$backingfile,
-                                 .self$nrow,
+                                 .self$nrow_all,
                                  .self$ind_row,
                                  .self$types)
       .self
     },
 
+    ## Need this as data mask
     as_env = function(parent = parent.frame()) {
       name_inds <- names(inds <- .self$ind_col)
       e <- new.env(parent = parent, size = length(inds) + 10L)
@@ -203,6 +217,7 @@ FDF_RC <- methods::setRefClass(
       e
     },
 
+    ## When printing
     show = function() {
       cat(sprintf(
         "A Filebacked Data Frame with %s rows and %s columns.\n",

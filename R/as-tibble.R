@@ -12,15 +12,14 @@
 #'
 #' @examples
 #' test <- FDF(datasets::iris)
-#' test2 <- filter(test, order(pull(test, 3)))
-#' test3 <- filter(test2, 1:50)
-#' as_tibble(test3)
+#' test2 <- filter(test, Species == "setosa")
+#' as_tibble(test2)
 as_tibble.FDF <- function(x, ...) {
 
   assert_nodots()
 
   dplyr::as_data_frame(
-    lapply(x$ind_col, function(col) {
+    lapply(x$colnames, function(col) {
       pull(x, col)
     })
   )

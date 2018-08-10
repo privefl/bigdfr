@@ -3,20 +3,33 @@
 \docType{methods}
 \name{filter.FDF}
 \alias{filter.FDF}
+\alias{filter_int}
 \alias{filter}
 \alias{filter,FDF-method}
 \title{Return rows with matching conditions}
 \usage{
-filter.FDF(.data, subset)
+filter.FDF(.data, ...)
+
+filter_int(.data, subset)
 
 filter(.data, ...)
 
-\S4method{filter}{FDF}(.data, subset)
+\S4method{filter}{FDF}(.data, ...)
 }
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
 
-\item{subset}{Logical or integer vector to further subset \code{.data$ind_row}.}
+\item{...}{Logical predicates defined in terms of the variables in \code{.data}.
+Multiple conditions are combined with \code{&}. Only rows where the
+condition evaluates to \code{TRUE} are kept.
+
+These arguments are automatically \link[rlang:quo]{quoted} and
+\link[rlang:eval_tidy]{evaluated} in the context of the data
+frame. They support \link[rlang:quasiquotation]{unquoting} and
+splicing. See \code{vignette("programming")} for an introduction to
+these concepts.}
+
+\item{subset}{Integer vector to (further) subset \code{.data$ind_row}.}
 }
 \value{
 An object of the same class as \code{.data}.
@@ -28,6 +41,7 @@ dropped.
 }
 \examples{
 (test <- FDF(datasets::iris))
-filter(test, 1:50)
-filter(test, c(TRUE, FALSE, FALSE))
+filter(test, Species == "setosa")
+filter(test, Species == "setosa", Sepal.Length < 5)
+filter_int(test, 1:50)
 }

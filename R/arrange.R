@@ -27,7 +27,6 @@ arrange.FDF <- function(.data, order) {
   new_data <- .data$copy()
   new_data$ind_row <- ind_row_arranged
   new_data$init_address()
-  new_data
 }
 
 ################################################################################

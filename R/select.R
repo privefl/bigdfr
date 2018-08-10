@@ -25,7 +25,6 @@ select.FDF <- function(.data, ...) {
   new_data <- .data$copy()
   new_data$ind_col <- ind_vars[var_names]
   new_data$init_address()
-  new_data
 }
 
 ################################################################################

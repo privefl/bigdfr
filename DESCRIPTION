@@ -22,7 +22,8 @@ Imports:
     methods,
     dplyr,
     magrittr,
-    tidyselect (>= 0.2.3)
+    tidyselect (>= 0.2.3),
+    rlang
 Collate: 
     'FDF.R'
     'FDF-no-acc.R'
@@ -31,6 +32,7 @@ Collate:
     'as-tibble.R'
     'bigdfr-package.R'
     'filter.R'
+    'mutate.R'
     'pull.R'
     'select.R'
     'utils-assert.R'

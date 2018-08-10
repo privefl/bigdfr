@@ -9,6 +9,22 @@ FIELDS_TO_COPY <- c("extptr", "nrow_all", "types", "backingfile",
 
 ################################################################################
 
+types_after_verif <- function(df) {
+
+  assert_class(df, "data.frame")
+  assert_pos(nrow(df))
+  assert_pos(ncol(df))
+
+  coltypes <- sapply(df, class)
+  coltypes[coltypes == "factor"] <- "character"
+  if (!all(coltypes %in% names(AUTHORIZED_TYPES)))
+    stop2(ERROR_TYPE)
+
+  AUTHORIZED_TYPES[coltypes]
+}
+
+################################################################################
+
 transform_and_fill <- function(self, df, j) {
 
   cl <- class(vec <- df[[j]])
@@ -117,28 +133,20 @@ FDF_RC <- methods::setRefClass(
       } else {                           ## INIT FROM A DF
 
         df <- df_or_FDF
-        assert_class(df, "data.frame")
-        assert_pos(nrow(df))
-        assert_pos(ncol(df))
-        coltypes <- sapply(df, class)
-        coltypes[coltypes == "factor"] <- "character"
-        if (!all(coltypes %in% names(AUTHORIZED_TYPES))) stop2(ERROR_TYPE)
 
+        .self$types       <- types_after_verif(df)
         .self$backingfile <- create_file(backingfile)
         .self$nrow_all    <- nrow(df)
         .self$ind_row     <- rows_along(df)
         .self$ind_col     <- stats::setNames(cols_along(df), names(df))
-        .self$types       <- AUTHORIZED_TYPES[coltypes]
         .self$strings     <- rep(NA_character_, 2^16)
         .self$nstr        <- 0L
 
         ## Add columns and fill them with data
-        add_bytes(.self$backingfile, .self$nrow * sum(.self$types))
+        add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))
         for (j in cols_along(df)) {
           transform_and_fill(.self, df, j)
         }
-
-        .self$address  # connect once
       }
 
       .self$rds <- ""
@@ -147,6 +155,28 @@ FDF_RC <- methods::setRefClass(
 
     copy = function() {
       methods::new(Class = "FDF", df_or_FDF = .self)
+    },
+
+    add_columns = function(df) {
+
+      types_before <- .self$types
+      types_to_add <- types_after_verif(df)
+      keep <-
+
+      .copy <- .self$copy()
+      .copy$types   <- c(types_before, types_to_add)
+      .copy$ind_col <- c(
+        .self$ind_col[ !(names(.self$ind_col) %in% names(df)) ],
+        stats::setNames(length(types_before) + cols_along(df), names(df))
+      )
+
+      ## Add columns and fill them with data
+      add_bytes(.self$backingfile, .self$nrow_all * sum(types_to_add))
+      for (j in cols_along(df)) {
+        transform_and_fill(.copy, df, j)
+      }
+
+      .copy$init_address()
     },
 
     save = function(rds) {
@@ -161,6 +191,16 @@ FDF_RC <- methods::setRefClass(
                                  .self$nrow,
                                  .self$ind_row,
                                  .self$types)
+      .self
+    },
+
+    as_env = function(parent = parent.frame()) {
+      name_inds <- names(inds <- .self$ind_col)
+      e <- new.env(parent = parent, size = length(inds) + 10L)
+      for (i in inds) {
+        delayedAssign(name_inds[i], pull(.self, i), assign.env = e)
+      }
+      e
     },
 
     show = function() {

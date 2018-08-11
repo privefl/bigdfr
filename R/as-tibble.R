@@ -18,7 +18,7 @@ as_tibble.FDF <- function(x, ...) {
 
   assert_nodots()
 
-  dplyr::as_data_frame(
+  as_tibble(
     lapply(x$colnames, function(col) {
       pull(x, col)
     })

@@ -38,7 +38,7 @@ test_that("pull() works with subset()", {
   iris$Species <- as.character(iris$Species)
   iris_subset <- iris[subset <- sample(5, 3)]
   test <- select(FDF(iris), subset)
-  expect_identical(test$ind_col, stats::setNames(subset, names(iris_subset)))
+  expect_identical(test$ind_col, set_names(subset, names(iris_subset)))
   expect_identical(pull(test, 1),  iris_subset[[1]])
   expect_identical(pull(test, -1), iris_subset[[3]])
   expect_error(pull(test, 1:2))

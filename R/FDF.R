@@ -50,6 +50,7 @@ types_after_verif <- function(df) {
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
 #'
+#' @importFrom rlang set_names
 #' @exportClass FDF
 #'
 #' @include fill-transformed.R
@@ -80,7 +81,7 @@ FDF_RC <- methods::setRefClass(
 
     nrow = function() length(.self$ind_row),
     ncol = function() length(.self$ind_col),
-    colnames = function() stats::setNames(nm = names(.self$ind_col)),
+    colnames = function() set_names(names(.self$ind_col)),
 
     is_saved = function() file.exists(.self$rds)
   ),
@@ -104,7 +105,7 @@ FDF_RC <- methods::setRefClass(
         .self$backingfile <- create_file(backingfile)
         .self$nrow_all    <- nrow(df)
         .self$ind_row     <- rows_along(df)
-        .self$ind_col     <- stats::setNames(cols_along(df), names(df))
+        .self$ind_col     <- set_names(cols_along(df), names(df))
         .self$strings     <- rep(NA_character_, NSTR_MAX)
         .self$nstr        <- 1L   ## Always include NA_character_ first
 
@@ -126,6 +127,9 @@ FDF_RC <- methods::setRefClass(
     add_columns = function(df) {
 
       types_before <- .self$types
+      if (file.size(.self$backingfile) != .self$nrow_all * sum(types_before))
+        stop2("Inconsistency between types and file size.")
+
       types_to_add <- types_after_verif(df)
       new_ind_col  <- length(types_before) + cols_along(df)
 
@@ -133,7 +137,7 @@ FDF_RC <- methods::setRefClass(
       .copy$types   <- c(types_before, types_to_add)
       .copy$ind_col <- c(
         .self$ind_col[ !(names(.self$ind_col) %in% names(df)) ],
-        stats::setNames(new_ind_col, names(df))
+        set_names(new_ind_col, names(df))
       )
 
       ## Add columns and fill them with data
@@ -166,7 +170,7 @@ FDF_RC <- methods::setRefClass(
     as_env = function(parent = parent.frame()) {
       name_inds <- names(inds <- .self$ind_col)
       e <- new.env(parent = parent, size = length(inds) + 10L)
-      ## lapply() is mandatory so that all 'i' is not always the same
+      ## lapply() is mandatory so that all 'i' has not always the same value
       lapply(inds, function(i) {
         delayedAssign(name_inds[i], pull(.self, i), assign.env = e)
       })

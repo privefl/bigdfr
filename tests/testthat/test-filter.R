@@ -11,4 +11,6 @@ test_that("filter() works", {
   test3 <- filter(test, Species == "setosa", Sepal.Length < 5)
   expect_identical(as_tibble(test3), as_tibble(filter(test2, Sepal.Length < 5)))
   expect_identical(as_tibble(test3), filter(iris, Species == "setosa", Sepal.Length < 5))
+
+  expect_s4_class(dplyr::filter(test, Species == "setosa"), "FDF")
 })

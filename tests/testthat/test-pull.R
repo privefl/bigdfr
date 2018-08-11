@@ -13,6 +13,8 @@ test_that("pull() works", {
   expect_identical(pull(test, -1),      iris[[5]])
   expect_identical(pull(test, Species), iris[[5]])
   expect_error(pull(test, 1:2))
+
+  expect_identical(dplyr::pull(test, 1), iris[[1]])
 })
 
 ################################################################################

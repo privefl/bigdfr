@@ -9,4 +9,6 @@ test_that("select() works", {
                              iris[c("Sepal.Length", "Sepal.Width")])
   expect_identical(as_tibble(select(test, Sepal.Length, Sepal.Width)),
                    iris[c("Sepal.Length", "Sepal.Width")])
+
+  expect_s4_class(dplyr::select(test, 1:4), "FDF")
 })

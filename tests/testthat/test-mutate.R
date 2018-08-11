@@ -32,6 +32,10 @@ test_that("mutate() works", {
   airquality2 <- mutate(datasets::airquality, Temp_Celsius = (Temp - 32) / 1.8,
                         Temp_Kelvin = Temp_Celsius + 273.15)
   expect_identical(as_tibble(test2), as_tibble(airquality2))
+
+  test <- FDF(datasets::airquality)
+  test2 <- dplyr::mutate(test, Temp_Celsius = (Temp - 32) / 1.8)
+  expect_s4_class(test2, "FDF")
 })
 
 ################################################################################

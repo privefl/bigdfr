@@ -6,7 +6,7 @@ context("test-FDF.R")
 
 test_that("FDF initialization works", {
 
-  test0 <- FDF(iris <- datasets::iris)
+  (test0 <- FDF(iris <- datasets::iris))
   test <- test0$copy()
   test0$nstr <- 19L
   expect_identical(test$nstr, 4L)

@@ -25,13 +25,14 @@ Suggests:
     covr,
     testthat
 Collate: 
+    'fill-transformed.R'
     'FDF.R'
     'FDF-no-acc.R'
     'RcppExports.R'
+    'filter.R'
     'arrange.R'
     'as-tibble.R'
     'bigdfr-package.R'
-    'filter.R'
     'mutate.R'
     'pull.R'
     'select.R'

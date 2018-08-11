@@ -7,6 +7,8 @@ ERROR_TYPE <- "Some column types are not authorized."
 FIELDS_TO_COPY <- c("extptr", "nrow_all", "types", "backingfile",
                     "ind_row", "ind_col", "strings", "nstr")
 
+NSTR_MAX <- 2^16
+
 ################################################################################
 
 types_after_verif <- function(df) {
@@ -21,55 +23,6 @@ types_after_verif <- function(df) {
     stop2(ERROR_TYPE)
 
   AUTHORIZED_TYPES[coltypes]
-}
-
-################################################################################
-
-transform_and_fill <- function(self, df_j, j2) {
-
-  cl <- class(df_j)
-  if (cl == "numeric") {
-
-    fill_double(self$address, j2, df_j)
-
-  } else if (cl == "integer") {
-
-    fill_int(self$address, j2, df_j)
-
-  } else if (cl == "character") {
-
-    u_chr <- unique(df_j)
-    L <- self$nstr
-    matches <- match(u_chr, self$strings)
-    ind_nomatch <- which(is.na(matches))
-    if (L + length(ind_nomatch) > 2^16)
-      stop2("Can't have more than %s different strings.", 2^16)
-    for (i in ind_nomatch) {
-      self$strings[L <- L + 1L] <- u_chr[i]
-    }
-    self$nstr <- L
-    fill_ushort(self$address, j2, match(df_j, self$strings) - 1L)
-
-  } else if (cl == "factor") {
-
-    u_fct <- levels(df_j)
-    L <- self$nstr
-    matches <- match(u_fct, self$strings)
-    ind_nomatch <- which(is.na(matches))
-    if (L + length(ind_nomatch) > 2^16)
-      stop2("Can't have more than %s different strings.", 2^16)
-    for (i in ind_nomatch) {
-      matches[i] <- L
-      self$strings[L <- L + 1L] <- u_fct[i]
-    }
-    self$nstr <- L
-    fill_ushort(self$address, j2, matches[df_j])
-
-  } else {
-
-    stop2(ERROR_TYPE)
-
-  }
 }
 
 ################################################################################
@@ -98,6 +51,8 @@ transform_and_fill <- function(self, df_j, j2) {
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
 #'
 #' @exportClass FDF
+#'
+#' @include fill-transformed.R
 #'
 FDF_RC <- methods::setRefClass(
 
@@ -150,13 +105,13 @@ FDF_RC <- methods::setRefClass(
         .self$nrow_all    <- nrow(df)
         .self$ind_row     <- rows_along(df)
         .self$ind_col     <- stats::setNames(cols_along(df), names(df))
-        .self$strings     <- rep(NA_character_, 2^16)
-        .self$nstr        <- 0L
+        .self$strings     <- rep(NA_character_, NSTR_MAX)
+        .self$nstr        <- 1L   ## Always include NA_character_ first
 
         ## Add columns and fill them with data
         add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))
         for (j in cols_along(df)) {
-          transform_and_fill(.self, df[[j]], j)
+          fill_transformed(.self, df[[j]], j)
         }
       }
 
@@ -185,7 +140,7 @@ FDF_RC <- methods::setRefClass(
       add_bytes(.self$backingfile, .self$nrow_all * sum(types_to_add))
       .copy$init_address()
       for (j in cols_along(df)) {
-        transform_and_fill(.copy, df[[j]], new_ind_col[j])
+        fill_transformed(.copy, df[[j]], new_ind_col[j])
       }
 
       .copy
@@ -214,6 +169,7 @@ FDF_RC <- methods::setRefClass(
       for (i in inds) {
         delayedAssign(name_inds[i], pull(.self, i), assign.env = e)
       }
+      delayedAssign("ERROR_DELAYED", stop("ERROR NOT DELAYED"), assign.env = e)
       e
     },
 

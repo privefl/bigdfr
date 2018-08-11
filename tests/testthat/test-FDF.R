@@ -5,7 +5,7 @@ test_that("FDF initialization works", {
   test0 <- FDF(iris <- datasets::iris)
   test <- test0$copy()
   test0$nstr <- 19L
-  expect_identical(test$nstr, 3L)
+  expect_identical(test$nstr, 4L)
 
   expect_s4_class(test, "FDF")
   expect_equal(dim(test),    dim(iris))
@@ -23,7 +23,7 @@ test_that("FDF initialization works", {
   expect_equal(readBin(test$backingfile, what = 0, n = 150 * 4),
                unlist(iris[1:4]), check.attributes = FALSE)
   read_ushort <- readBin(test$backingfile, what = 1L, size = 2,  n = 10e3)
-  expect_identical(tail(read_ushort, 150), as.integer(iris$Species) - 1L)
-  expect_identical(test$nstr, 3L)
-  expect_identical(test$strings, c(levels(iris$Species), rep(NA, 2^16 - 3)))
+  expect_identical(tail(read_ushort, 150), as.integer(iris$Species))
+  expect_identical(test$nstr, 4L)
+  expect_identical(test$strings, c(NA, levels(iris$Species), rep(NA, 2^16 - 4)))
 })

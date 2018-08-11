@@ -28,4 +28,5 @@ Arrange rows by variables
 \examples{
 test <- FDF(datasets::iris)
 test2 <- arrange(test, Sepal.Length)
+test3 <- arrange(test, Species, desc(Sepal.Length))
 }

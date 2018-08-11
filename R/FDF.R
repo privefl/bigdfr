@@ -174,6 +174,7 @@ FDF_RC <- methods::setRefClass(
       lapply(inds, function(i) {
         delayedAssign(name_inds[i], pull(.self, i), assign.env = e)
       })
+      ## Make sure code doesn't access all columns in memory
       delayedAssign("ERROR_DELAYED", stop("ERROR NOT DELAYED"), assign.env = e)
       e
     },

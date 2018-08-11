@@ -6,6 +6,7 @@
 #'
 #' @importFrom dplyr mutate
 #' @export
+#' @method mutate FDF
 #'
 #' @rdname mutate
 #'
@@ -24,17 +25,16 @@ mutate.FDF <- function(.data, ...) {
       quo_set_env(e) %>%
       eval_tidy()
   }
-  return(as.data.frame(as.list(e)[name_dots]))
 
-  new_data <- .data$copy()
-  new_data$ind_col <- ind_vars[var_names]
-  new_data$init_address()
-  new_data
+  name_dots %>%
+    mget(e) %>%
+    as.data.frame() %>%
+    .data$add_columns()
 }
 
 ################################################################################
 
-#' @export
+#' @exportMethod mutate
 #' @rdname mutate
 setGeneric("mutate", dplyr::mutate)
 

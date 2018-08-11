@@ -7,7 +7,7 @@
 \alias{select,FDF-method}
 \title{Select/rename variables by name}
 \usage{
-select.FDF(.data, ...)
+\method{select}{FDF}(.data, ...)
 
 select(.data, ...)
 

@@ -166,9 +166,10 @@ FDF_RC <- methods::setRefClass(
     as_env = function(parent = parent.frame()) {
       name_inds <- names(inds <- .self$ind_col)
       e <- new.env(parent = parent, size = length(inds) + 10L)
-      for (i in inds) {
+      ## lapply() is mandatory so that all 'i' is not always the same
+      lapply(inds, function(i) {
         delayedAssign(name_inds[i], pull(.self, i), assign.env = e)
-      }
+      })
       delayedAssign("ERROR_DELAYED", stop("ERROR NOT DELAYED"), assign.env = e)
       e
     },

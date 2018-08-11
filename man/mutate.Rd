@@ -7,7 +7,7 @@
 \alias{mutate,FDF-method}
 \title{Add new variables}
 \usage{
-mutate.FDF(.data, ...)
+\method{mutate}{FDF}(.data, ...)
 
 mutate(.data, ...)
 

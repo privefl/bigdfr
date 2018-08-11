@@ -8,9 +8,9 @@
 \alias{filter,FDF-method}
 \title{Return rows with matching conditions}
 \usage{
-filter.FDF(.data, ...)
+\method{filter}{FDF}(.data, ...)
 
-filter_int(.data, subset)
+filter_int(.data, subset, check = TRUE)
 
 filter(.data, ...)
 
@@ -30,6 +30,8 @@ splicing. See \code{vignette("programming")} for an introduction to
 these concepts.}
 
 \item{subset}{Integer vector to (further) subset \code{.data$ind_row}.}
+
+\item{check}{Whether to check \code{subset}? Default is \code{TRUE}.}
 }
 \value{
 An object of the same class as \code{.data}.

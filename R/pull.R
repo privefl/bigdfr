@@ -8,6 +8,7 @@
 #' @importFrom dplyr pull
 #' @importFrom tidyselect vars_pull enquo
 #' @export
+#' @method pull FDF
 #'
 #' @rdname pull
 #'
@@ -31,7 +32,7 @@ pull.FDF <- function(.data, var = -1) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod pull
 #' @rdname pull
 setGeneric("pull", dplyr::pull)
 

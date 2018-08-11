@@ -8,6 +8,7 @@
 #' @importFrom dplyr select
 #' @importFrom tidyselect vars_select quos
 #' @export
+#' @method select FDF
 #'
 #' @rdname select
 #'
@@ -29,7 +30,7 @@ select.FDF <- function(.data, ...) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod select
 #' @rdname select
 setGeneric("select", dplyr::select)
 

@@ -7,7 +7,7 @@
 \alias{pull,FDF-method}
 \title{Pull out a single variable}
 \usage{
-pull.FDF(.data, var = -1)
+\method{pull}{FDF}(.data, var = -1)
 
 pull(.data, var = -1)
 

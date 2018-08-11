@@ -7,16 +7,17 @@
 \alias{arrange,FDF-method}
 \title{Arrange rows by variables}
 \usage{
-arrange.FDF(.data, order)
+\method{arrange}{FDF}(.data, ...)
 
 arrange(.data, ...)
 
-\S4method{arrange}{FDF}(.data, order)
+\S4method{arrange}{FDF}(.data, ...)
 }
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
 
-\item{order}{Integer vector or orders for \code{.data$ind_row}.}
+\item{...}{Comma separated list of unquoted variable names. Use
+\code{\link[=desc]{desc()}} to sort a variable in descending order.}
 }
 \value{
 An object of the same class as \code{.data}.
@@ -26,12 +27,5 @@ Arrange rows by variables
 }
 \examples{
 test <- FDF(datasets::iris)
-pull(test, 3)
-order <- order(pull(test, 3))
-test2 <- arrange(test, order)
-pull(test2, 3)
-test3 <- filter(test, 1:50)
-pull(test3, 2)
-test4 <- arrange(test3, order(pull(test3, 2)))
-pull(test4, 2)
+test2 <- arrange(test, Sepal.Length)
 }

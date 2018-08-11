@@ -16,6 +16,7 @@ verif_lgl <- function(x, n, i) {
 #' @importFrom dplyr filter
 #' @importFrom rlang quos quo_get_env quo_set_env eval_tidy
 #' @export
+#' @method filter FDF
 #'
 #' @rdname filter
 #'
@@ -35,7 +36,7 @@ filter.FDF <- function(.data, ...) {
       verif_lgl(.data$nrow, i)
   })
 
-  filter_int(.data, subset = which(Reduce('&', list_bool)))
+  filter_int(.data, subset = which(Reduce('&', list_bool)), check = FALSE)
 }
 
 ################################################################################
@@ -43,13 +44,18 @@ filter.FDF <- function(.data, ...) {
 #' @export
 #'
 #' @param subset Integer vector to (further) subset `.data$ind_row`.
+#' @param check Whether to check `subset`? Default is `TRUE`.
 #'
 #' @rdname filter
 #'
 #' @examples
 #' filter_int(test, 1:50)
-filter_int <- function(.data, subset) {
+filter_int <- function(.data, subset, check = TRUE) {
+
   ind_row_filtered <- .data$ind_row[subset]
+  if (check && anyNA(ind_row_filtered))
+    stop2("'subset' must have values between 1 and %d", .data$nrow)
+
   new_data <- .data$copy()
   new_data$ind_row <- ind_row_filtered
   new_data$init_address()
@@ -57,7 +63,7 @@ filter_int <- function(.data, subset) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod filter
 #' @rdname filter
 setGeneric("filter", dplyr::filter)
 

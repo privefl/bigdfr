@@ -46,11 +46,11 @@ assert_lengths <- function(...) {
 
 ################################################################################
 
-# # INTEGERS
-# assert_int <- function(x) {
-#   if (!is.null(x) && any(x != trunc(x)))
-#     stop2("'%s' should contain only integers.", deparse(substitute(x)))
-# }
+# INTEGERS
+assert_int <- function(x) {
+  if (!is.null(x) && any(x != trunc(x)))
+    stop2("'%s' should contain only integers.", deparse(substitute(x)))
+}
 
 ################################################################################
 
@@ -106,10 +106,10 @@ assert_noexist <- function(file) {
     stop2("File '%s' already exists.", file)
 }
 
-# assert_exist <- function(file) {
-#   if (!file.exists(file))
-#     stop2("File '%s' doesn't exist.", file)
-# }
+assert_exist <- function(file) {
+  if (!file.exists(file))
+    stop2("File '%s' doesn't exist.", file)
+}
 
 ################################################################################
 

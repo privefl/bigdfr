@@ -20,7 +20,9 @@ Imports:
     dplyr,
     magrittr,
     tidyselect (>= 0.2.3),
-    rlang (>= 0.2.1)
+    rlang (>= 0.2.1),
+    bigreadr (>= 0.1.2)
+Remotes: privefl/bigreadr
 Suggests: 
     covr,
     testthat
@@ -35,6 +37,7 @@ Collate:
     'bigdfr-package.R'
     'mutate.R'
     'pull.R'
+    'read.R'
     'select.R'
     'utils-assert.R'
     'utils-pipe.R'

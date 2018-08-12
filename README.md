@@ -31,6 +31,6 @@ X2 <- X %>%
   mutate(Sepal.Length = Sepal.Length + 1) %>%
   arrange(desc(Sepal.Length))
   
-# Export as tibble (fully in memory) for example after sufficient filtering
+# Export as tibble (fully in memory, e.g. after sufficient filtering)
 as_tibble(X2)
 ```

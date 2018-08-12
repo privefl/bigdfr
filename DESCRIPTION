@@ -26,7 +26,8 @@ Imports:
 Remotes: privefl/bigreadr
 Suggests: 
     covr,
-    testthat
+    testthat,
+    data.table
 Collate: 
     'fill-transformed.R'
     'FDF.R'

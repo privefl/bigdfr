@@ -7,3 +7,30 @@
 # R package {bigdfr}
 
 R package to operate with data frames stored on disk
+
+## Example
+
+```r
+# devtools::install_github("privefl/bigdfr")
+library(bigdfr)
+
+# Create a temporary file of ~349 MB (just as an example)
+csv <- bigreadr::fwrite2(iris[rep(seq_len(nrow(iris)), 1e5), ], 
+                         tempfile(fileext = ".csv"))
+format(file.size(csv), big.mark = ",")
+
+# Read the csv file in FDF format
+(X <- FDF_read(csv))
+head(X)
+file.size(X$backingfile)
+X$types
+
+# Standard {dplyr} operations
+X2 <- X %>% 
+  filter(Species == "virginica", Sepal.Length < 5) %>%
+  mutate(Sepal.Length = Sepal.Length + 1) %>%
+  arrange(desc(Sepal.Length))
+  
+# Export as tibble (fully in memory) for example after sufficient filtering
+as_tibble(X2)
+```

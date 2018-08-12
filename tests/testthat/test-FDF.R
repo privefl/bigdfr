@@ -7,7 +7,9 @@ context("test-FDF.R")
 test_that("FDF initialization works", {
 
   (test <- FDF(iris <- mutate(datasets::iris, is_setosa = Species == "setosa")))
+  expect_false(identical(test$address, methods::new("externalptr")))
   test0 <- test$copy(nstr = 19L)
+  expect_true(identical(test0$extptr, methods::new("externalptr")))
   expect_identical(test0$nstr, 19L)
   expect_identical(test$nstr, 4L)
 

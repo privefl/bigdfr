@@ -5,7 +5,7 @@ AUTHORIZED_TYPES <- c(
 
 ERROR_TYPE <- "Some column types are not authorized."
 
-FIELDS_TO_COPY <- c("extptr", "nrow_all", "types", "backingfile",
+FIELDS_TO_COPY <- c("nrow_all", "types", "backingfile",
                     "ind_row", "ind_col", "strings", "nstr")
 
 NSTR_MAX <- 2^16
@@ -89,17 +89,23 @@ FDF_RC <- methods::setRefClass(
 
   methods = list(
 
-    initialize = function(df_or_FDF, backingfile) {
+    initialize = function(df_or_FDF, backingfile, ...) {
 
       if (inherits(df_or_FDF, "FDF")) {  ## COPY FROM A FDF
 
+        name_dots <- names(dots <- list(...))
+        for (i in seq_along(dots)) {
+          .self[[name_dots[i]]] <- dots[[i]]
+        }
+
         fdf <- df_or_FDF
-        for (field in FIELDS_TO_COPY) {
+        for (field in setdiff(FIELDS_TO_COPY, name_dots)) {
           .self[[field]] <- fdf[[field]]
         }
 
       } else {                           ## INIT FROM A DF
 
+        assert_nodots()
         df <- df_or_FDF
 
         .self$types       <- types_after_verif(df)
@@ -122,12 +128,7 @@ FDF_RC <- methods::setRefClass(
     },
 
     copy = function(...) {
-      .copy <- methods::new(Class = "FDF", df_or_FDF = .self)
-      name_dots <- names(dots <- list(...))
-      for (i in seq_along(dots)) {
-        .copy[[name_dots[i]]] <- dots[[i]]
-      }
-      .copy
+      methods::new(Class = "FDF", df_or_FDF = .self, ...)
     },
 
     add_columns = function(df) {

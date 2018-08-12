@@ -6,8 +6,9 @@ using namespace Rcpp;
 /******************************************************************************/
 
 template<typename T, int RTYPE>
-Vector<RTYPE> extract(XPtr<FDF> xpDF, size_t j) {
+Vector<RTYPE> extract(SEXP xptr, size_t j) {
 
+  XPtr<FDF> xpDF(xptr);
   ColAcc<T> col(xpDF, j - 1);
 
   size_t n = col.nrow();
@@ -20,16 +21,26 @@ Vector<RTYPE> extract(XPtr<FDF> xpDF, size_t j) {
   return vec;
 }
 
-// [[Rcpp::export]]
-SEXP extract_numeric(SEXP xptr, size_t j) {
+/******************************************************************************/
 
-  XPtr<FDF> xpDF(xptr);
-  switch(xpDF->column_type(j - 1)) {
-  case 8: return extract<double, REALSXP>(xpDF, j);
-  case 4: return extract<int, INTSXP>(xpDF, j);
-  case 2: return extract<unsigned short, INTSXP>(xpDF, j);
-  default: stop(ERROR_REPORT);
-  }
+// [[Rcpp::export]]
+SEXP extract_dbl(SEXP xptr, size_t j) {
+  return extract<double, REALSXP>(xptr, j);
+}
+
+// [[Rcpp::export]]
+SEXP extract_int(SEXP xptr, size_t j) {
+  return extract<int, INTSXP>(xptr, j);
+}
+
+// [[Rcpp::export]]
+SEXP extract_lgl(SEXP xptr, size_t j) {
+  return extract<int, LGLSXP>(xptr, j);
+}
+
+// [[Rcpp::export]]
+SEXP extract_ushort(SEXP xptr, size_t j) {
+  return extract<unsigned short, INTSXP>(xptr, j);
 }
 
 /******************************************************************************/
@@ -40,7 +51,6 @@ CharacterVector extract_string(SEXP xptr, size_t j, CharacterVector strings) {
   XPtr<FDF> xpDF(xptr);
   ColAcc<unsigned short> col(xpDF, j - 1);
 
-  myassert(col.type() == 2, ERROR_REPORT);
   myassert(strings.size() == 65536, "'strings' should be of size 65536.");
 
   size_t n = col.nrow();

@@ -36,8 +36,9 @@ transform_fct <- function(self, df_j) {
 fill_transformed <- function(self, df_j, j2) {
 
   switch(class(df_j),
-         numeric   = fill_double(self$address, j2, df_j),
-         integer   = fill_int   (self$address, j2, df_j),
+         numeric   = fill_dbl(self$address, j2, df_j),
+         integer   = fill_int(self$address, j2, df_j),
+         logical   = fill_lgl(self$address, j2, df_j),
          character = fill_ushort(self$address, j2, transform_chr(self, df_j)),
          factor    = fill_ushort(self$address, j2, transform_fct(self, df_j)),
          stop2(ERROR_TYPE))

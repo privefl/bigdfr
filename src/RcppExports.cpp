@@ -5,15 +5,51 @@
 
 using namespace Rcpp;
 
-// extract_numeric
-SEXP extract_numeric(SEXP xptr, size_t j);
-RcppExport SEXP _bigdfr_extract_numeric(SEXP xptrSEXP, SEXP jSEXP) {
+// extract_dbl
+SEXP extract_dbl(SEXP xptr, size_t j);
+RcppExport SEXP _bigdfr_extract_dbl(SEXP xptrSEXP, SEXP jSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_numeric(xptr, j));
+    rcpp_result_gen = Rcpp::wrap(extract_dbl(xptr, j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extract_int
+SEXP extract_int(SEXP xptr, size_t j);
+RcppExport SEXP _bigdfr_extract_int(SEXP xptrSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_int(xptr, j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extract_lgl
+SEXP extract_lgl(SEXP xptr, size_t j);
+RcppExport SEXP _bigdfr_extract_lgl(SEXP xptrSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_lgl(xptr, j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// extract_ushort
+SEXP extract_ushort(SEXP xptr, size_t j);
+RcppExport SEXP _bigdfr_extract_ushort(SEXP xptrSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_ushort(xptr, j));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -30,15 +66,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// fill_double
-void fill_double(SEXP xptr, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_double(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+// fill_dbl
+void fill_dbl(SEXP xptr, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_dbl(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_double(xptr, j, vec);
+    fill_dbl(xptr, j, vec);
     return R_NilValue;
 END_RCPP
 }
@@ -51,6 +87,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
     fill_int(xptr, j, vec);
+    return R_NilValue;
+END_RCPP
+}
+// fill_lgl
+void fill_lgl(SEXP xptr, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_lgl(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
+    fill_lgl(xptr, j, vec);
     return R_NilValue;
 END_RCPP
 }
@@ -105,10 +153,14 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bigdfr_extract_numeric", (DL_FUNC) &_bigdfr_extract_numeric, 2},
+    {"_bigdfr_extract_dbl", (DL_FUNC) &_bigdfr_extract_dbl, 2},
+    {"_bigdfr_extract_int", (DL_FUNC) &_bigdfr_extract_int, 2},
+    {"_bigdfr_extract_lgl", (DL_FUNC) &_bigdfr_extract_lgl, 2},
+    {"_bigdfr_extract_ushort", (DL_FUNC) &_bigdfr_extract_ushort, 2},
     {"_bigdfr_extract_string", (DL_FUNC) &_bigdfr_extract_string, 3},
-    {"_bigdfr_fill_double", (DL_FUNC) &_bigdfr_fill_double, 3},
+    {"_bigdfr_fill_dbl", (DL_FUNC) &_bigdfr_fill_dbl, 3},
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
+    {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 4},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},

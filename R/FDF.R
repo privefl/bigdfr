@@ -1,6 +1,7 @@
 ################################################################################
 
-AUTHORIZED_TYPES <- c("numeric" = 8L, "integer" = 4L, "character" = 2L)
+AUTHORIZED_TYPES <- c(
+  "numeric" = 8L, "integer" = 4L, "logical" = 4L, "character" = 2L)
 
 ERROR_TYPE <- "Some column types are not authorized."
 

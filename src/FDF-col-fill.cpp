@@ -22,13 +22,18 @@ void fill(SEXP xptr, size_t j, Vector<RTYPE> vec) {
 /******************************************************************************/
 
 // [[Rcpp::export]]
-void fill_double(SEXP xptr, size_t j, SEXP vec) {
+void fill_dbl(SEXP xptr, size_t j, SEXP vec) {
   fill<double, REALSXP>(xptr, j, vec);
 }
 
 // [[Rcpp::export]]
 void fill_int(SEXP xptr, size_t j, SEXP vec) {
   fill<int, INTSXP>(xptr, j, vec);
+}
+
+// [[Rcpp::export]]
+void fill_lgl(SEXP xptr, size_t j, SEXP vec) {
+  fill<int, LGLSXP>(xptr, j, vec);
 }
 
 // [[Rcpp::export]]

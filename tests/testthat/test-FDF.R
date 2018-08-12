@@ -6,7 +6,7 @@ context("test-FDF.R")
 
 test_that("FDF initialization works", {
 
-  (test0 <- FDF(iris <- datasets::iris))
+  (test0 <- FDF(iris <- mutate(datasets::iris, is_setosa = Species == "setosa")))
   test <- test0$copy()
   test0$nstr <- 19L
   expect_identical(test$nstr, 4L)
@@ -17,7 +17,7 @@ test_that("FDF initialization works", {
   expect_equal(ncol(test),   ncol(iris))
   expect_equal(length(test), length(iris))
 
-  expect_equal(file.size(test$backingfile), 150 * (4 * 8 + 1 * 2))
+  expect_equal(file.size(test$backingfile), 150 * (4 * 8 + 1 * 2 + 1 * 4))
   iris$osef <- list(1)
   expect_error(FDF(iris), ERROR_TYPE, fixed = TRUE)
   expect_error(FDF(mtcars)$save(tempfile()), "must be '.rds'")
@@ -27,7 +27,7 @@ test_that("FDF initialization works", {
   expect_equal(readBin(test$backingfile, what = 0, n = 150 * 4),
                unlist(iris[1:4]), check.attributes = FALSE)
   read_ushort <- readBin(test$backingfile, what = 1L, size = 2,  n = 10e3)
-  expect_identical(tail(read_ushort, 150), as.integer(iris$Species))
+  expect_identical(head(tail(read_ushort, 150 * 3), 150), as.integer(iris$Species))
   expect_identical(test$nstr, 4L)
   expect_identical(test$strings, c(NA, levels(iris$Species), rep(NA, 2^16 - 4)))
 })

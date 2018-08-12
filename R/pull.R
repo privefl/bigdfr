@@ -23,11 +23,12 @@ pull.FDF <- function(.data, var = -1) {
   rel_var_name <- vars_pull(names(rel_ind_vars), !!enquo(var))
   glob_ind_var <- rel_ind_vars[[rel_var_name]]
 
-  if (.data$types[[glob_ind_var]] == 2) {
-    extract_string(.data$address, glob_ind_var, .data$strings)
-  } else {
-    extract_numeric(.data$address, glob_ind_var)
-  }
+  switch(names(.data$types)[glob_ind_var],
+         numeric   = extract_dbl(.data$address, glob_ind_var),
+         integer   = extract_int(.data$address, glob_ind_var),
+         logical   = extract_lgl(.data$address, glob_ind_var),
+         character = extract_string(.data$address, glob_ind_var, .data$strings),
+         stop2(ERROR_TYPE))
 }
 
 ################################################################################

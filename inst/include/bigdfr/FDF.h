@@ -48,6 +48,7 @@ public:
     _pMat    = static_cast<T*>(xpDF->column(j));
     _ind_row = xpDF->get_ind_row();
     _type    = xpDF->column_type(j);
+    myassert(_type == sizeof(T), ERROR_REPORT);
   }
 
   inline T& operator[](size_t i) {

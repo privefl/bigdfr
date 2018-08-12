@@ -1,6 +1,6 @@
 Package: bigdfr
 Date: 2018-08-12
-Version: 0.0.1.9000
+Version: 0.0.2.9000
 Title: Operate with Data Frames Stored on Disk 
 Description: Operate with data frames stored in a binary file on disk.
 Authors@R: person("Florian", "Privé", , "florian.prive.21@gmail.com", c("aut", "cre"))

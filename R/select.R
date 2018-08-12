@@ -6,7 +6,7 @@
 #' @inheritParams tidyselect::vars_select
 #'
 #' @importFrom dplyr select
-#' @importFrom tidyselect vars_select quos
+#' @importFrom tidyselect vars_select vars_select_helpers
 #' @export
 #' @method select FDF
 #'
@@ -18,10 +18,14 @@
 #' select(test, -5)
 #' select(test, c("Sepal.Length", "Sepal.Width"))
 #' select(test, Sepal.Length, Sepal.Width)
+#' select(test, starts_with("Sepal"))
 select.FDF <- function(.data, ...) {
 
+  dots <- rlang::quos(...)
+  dots <- lapply(dots, rlang::env_bury, !!!vars_select_helpers)
+
   ind_vars <- .data$ind_col
-  var_names <- vars_select(names(ind_vars), !!!quos(...))
+  var_names <- vars_select(names(ind_vars), !!!dots)
 
   new_data <- .data$copy()
   new_data$ind_col <- ind_vars[var_names]

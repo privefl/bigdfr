@@ -43,4 +43,5 @@ select(test, 1:4)
 select(test, -5)
 select(test, c("Sepal.Length", "Sepal.Width"))
 select(test, Sepal.Length, Sepal.Width)
+select(test, starts_with("Sepal"))
 }

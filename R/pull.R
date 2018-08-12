@@ -6,7 +6,7 @@
 #' @inheritParams tidyselect::vars_pull
 #'
 #' @importFrom dplyr pull
-#' @importFrom tidyselect vars_pull enquo
+#' @importFrom tidyselect vars_pull
 #' @export
 #' @method pull FDF
 #'
@@ -20,7 +20,7 @@
 pull.FDF <- function(.data, var = -1) {
 
   rel_ind_vars <- .data$ind_col
-  rel_var_name <- vars_pull(names(rel_ind_vars), !!enquo(var))
+  rel_var_name <- vars_pull(names(rel_ind_vars), !!rlang::enquo(var))
   glob_ind_var <- rel_ind_vars[[rel_var_name]]
 
   switch(names(.data$types)[glob_ind_var],

@@ -10,7 +10,7 @@ dplyr::desc
 #'
 #' @param .data A [FDF][FDF-class].
 #'
-#' @importFrom dplyr arrange quos
+#' @importFrom dplyr arrange
 #' @export
 #' @method arrange FDF
 #'

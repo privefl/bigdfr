@@ -10,13 +10,13 @@
 \alias{tail,FDF-method}
 \title{Convert to a tibble of the n first/last elements.}
 \usage{
-head.FDF(x, n = 6L, ...)
+\method{head}{FDF}(x, n = 6L, ...)
 
 head(x, ...)
 
 \S4method{head}{FDF}(x, n = 6L, ...)
 
-tail.FDF(x, n = 6L, ...)
+\method{tail}{FDF}(x, n = 6L, ...)
 
 tail(x, ...)
 

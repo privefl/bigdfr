@@ -7,6 +7,7 @@
 #'
 #' @importFrom dplyr as_tibble
 #' @export
+#' @method as_tibble FDF
 #'
 #' @rdname as_tibble
 #'

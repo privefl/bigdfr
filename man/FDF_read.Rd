@@ -4,31 +4,30 @@
 \alias{FDF_read}
 \title{Read a file}
 \usage{
-FDF_read(file, select = NULL, nb_parts = NULL, filter = NULL,
-  backingfile = drop_ext(file), skip = 0, progress = FALSE, ...)
+FDF_read(file, filter = NULL, backingfile = drop_ext(file), ...)
 }
 \arguments{
-\item{file}{Path to file that you want to read.}
-
-\item{select}{Indices of columns to keep (sorted). Default keeps them all.}
-
-\item{nb_parts}{Number of parts in which to split reading (and transforming).
-Parts are referring to blocks of selected columns.
-Default use global option \code{bigreadr.part.size} to set a good value.}
+\item{file}{File to read.}
 
 \item{filter}{Vector used to subset the rows of each data frame.}
 
 \item{backingfile}{Path to the file storing the data frame on disk.
 Default uses \code{file} without its extension.}
 
-\item{skip}{Number of lines to skip at the beginning of \code{file}.}
-
-\item{progress}{Show progress? Default is \code{FALSE}.}
-
-\item{...}{More arguments to be passed to \link[data.table:fread]{data.table::fread}.}
+\item{...}{Arguments passed on to \code{bigreadr::big_fread2}
+\describe{
+  \item{nb_parts}{Number of parts in which to split reading (and transforming).
+Parts are referring to blocks of selected columns.
+Default uses \code{part_size} to set a good value.}
+  \item{skip}{Number of lines to skip at the beginning of \code{file}.}
+  \item{select}{Indices of columns to keep (sorted). Default keeps them all.}
+  \item{progress}{Show progress? Default is \code{FALSE}.}
+  \item{part_size}{Size of the parts if \code{nb_parts} is not supplied.
+Default is \code{500 * 1024^2} (500 MB).}
+}}
 }
 \value{
-A Filebacked Data Frame of with <nrow> rows and <length(select)> columns.
+A Filebacked Data Frame.
 }
 \description{
 Read a file as a Filebacked Data Frame by using package {bigreadr}.

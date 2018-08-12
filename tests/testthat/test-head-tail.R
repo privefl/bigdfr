@@ -1,7 +1,7 @@
 context("test-head-tail.R")
 
 test_that("head() and tail() works", {
-  for (fun in list(head, tail)) {
+  for (fun in list(head, tail, utils::head, utils::tail)) {
 
     test <- FDF(iris <- mutate(datasets::iris, Species = as.character(Species)))
     expect_identical(fun(test), fun(as_tibble(iris)))

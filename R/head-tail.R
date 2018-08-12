@@ -8,6 +8,7 @@
 #'
 #' @importFrom utils head
 #' @export
+#' @method head FDF
 #'
 #' @include filter.R
 #'
@@ -39,6 +40,7 @@ setMethod("head", "FDF", head.FDF)
 
 #' @importFrom utils tail
 #' @export
+#' @method tail FDF
 #'
 #' @rdname head
 #'

@@ -67,7 +67,7 @@ filter_int <- function(.data, subset, check = TRUE) {
 #' @rdname filter
 setGeneric("filter", dplyr::filter)
 
-#' @rdname filter
-setMethod("filter", "FDF", filter.FDF)
+#' #' @rdname filter
+#' setMethod("filter", "FDF", filter.FDF)
 
 ################################################################################

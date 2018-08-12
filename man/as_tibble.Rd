@@ -7,7 +7,7 @@
 \alias{as_tibble,FDF-method}
 \title{Convert to tibble}
 \usage{
-as_tibble.FDF(x, ...)
+\method{as_tibble}{FDF}(x, ...)
 
 as_tibble(x, ...)
 

@@ -6,7 +6,7 @@ AUTHORIZED_TYPES <- c(
 ERROR_TYPE <- "Some column types are not authorized."
 
 FIELDS_TO_COPY <- c("nrow_all", "types", "backingfile",
-                    "ind_row", "ind_col", "strings", "nstr")
+                    "ind_row", "ind_col", "strings", "nstr", "groups")
 
 NSTR_MAX <- 2^16
 
@@ -47,11 +47,11 @@ types_after_verif <- function(df) {
 #'   - `$ind_col`: Indices of columns for a subview view of the FDF
 #'   - `$strings`: 2^16 strings to match with integers (between 0 and 65535)
 #'   - `$nstr`: Number of unique strings already matched with an integer
+#'   - `$groups`: Tibble with position indices of `$ind_row` for each group.
 #'
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
 #'
-#' @importFrom rlang set_names
 #' @exportClass FDF
 #'
 #' @include fill-transformed.R
@@ -71,6 +71,7 @@ FDF_RC <- methods::setRefClass(
     ind_col     = "integer",      ## global indices to access in order of names
     strings     = "character",
     nstr        = "integer",
+    groups      = "data.frame",
 
     #### Active bindings
     address = function() {
@@ -84,7 +85,8 @@ FDF_RC <- methods::setRefClass(
     ncol = function() length(.self$ind_col),
     colnames = function() set_names(names(.self$ind_col)),
 
-    is_saved = function() file.exists(.self$rds)
+    is_saved = function() file.exists(.self$rds),
+    is_grouped = function() (ncol(.self$groups) > 1)
   ),
 
   methods = list(
@@ -185,8 +187,8 @@ FDF_RC <- methods::setRefClass(
     ## When printing
     show = function() {
       cat(sprintf(
-        "A Filebacked Data Frame with %s rows and %s columns.\n",
-        .self$nrow, .self$ncol))
+        "# A%s Filebacked Data Frame with %s rows and %s columns.\n",
+        `if`(.self$is_grouped, " grouped", ""), .self$nrow, .self$ncol))
       invisible(.self)
     }
   )

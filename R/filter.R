@@ -14,7 +14,6 @@ verif_lgl <- function(x, n, i) {
 #' @param .data A [FDF][FDF-class].
 #'
 #' @importFrom dplyr filter
-#' @importFrom rlang quos quo_get_env quo_set_env eval_tidy
 #' @export
 #' @method filter FDF
 #'

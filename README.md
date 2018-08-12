@@ -34,3 +34,8 @@ X2 <- X %>%
 # Export as tibble (fully in memory, e.g. after sufficient filtering)
 as_tibble(X2)
 ```
+
+## Differences with {dplyr}
+
+- In `group_by`, variables are passed the same way as in `select`. If you want to use temporary variables, use `mutate`.
+

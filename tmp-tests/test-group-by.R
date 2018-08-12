@@ -36,19 +36,32 @@ profvis::profvis({split(seq_along(long_vec), long_vec)})
 group <- function(prev, df, by_name) {
 
   prev %>%
-    mutate(NESTED = lapply(ind_row, function(ind) {
+    mutate(NESTED = lapply(rel_ind_row, function(ind) {
       by <- df[[by_name]][ind + 1L]
       u_by <- unique(by)
       tibble(!!sym(by_name) := u_by,
-             ind_row = lapply(u_by, function(x) ind[by == x]))
+             rel_ind_row = lapply(u_by, function(x) ind[by == x]))
     })) %>%
-    select(-ind_row) %>%
+    select(-rel_ind_row) %>%
     tidyr::unnest(NESTED)
 }
-(first <- tibble(ind_row = list(ind_row)))
+
+df <- mtcars
+ind_row <- rows_along(df) - 1L
+(first <- tibble(rel_ind_row = list(seq_along(ind_row))))
 (second <- group(first, df, "cyl"))
 (third <- group(second, df, "vs"))
 (fourth <- group(third, df, "am"))
 
+## Summarize drops ONE group (last one)
 mtcars %>%
-  group_by()
+  group_by(cyl, vs, am) %>%
+  summarise(min(mpg))
+fourth
+
+
+mtcars %>%
+  group_by(cyl) %>%
+  summarise(min(mpg))
+
+second

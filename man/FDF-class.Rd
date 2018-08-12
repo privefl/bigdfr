@@ -34,6 +34,7 @@ C++ object, to be used as a \code{XPtr<FDF>} in C++ code
 \item \code{$ind_col}: Indices of columns for a subview view of the FDF
 \item \code{$strings}: 2^16 strings to match with integers (between 0 and 65535)
 \item \code{$nstr}: Number of unique strings already matched with an integer
+\item \code{$groups}: Tibble with position indices of \code{$ind_row} for each group.
 }
 
 And some methods:

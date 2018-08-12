@@ -16,6 +16,7 @@
 #' (test <- FDF(datasets::iris))
 #' select(test, 1:4)
 #' select(test, -5)
+#' select(test, -Species)
 #' select(test, c("Sepal.Length", "Sepal.Width"))
 #' select(test, Sepal.Length, Sepal.Width)
 #' select(test, starts_with("Sepal"))
@@ -27,9 +28,7 @@ select.FDF <- function(.data, ...) {
   ind_vars <- .data$ind_col
   var_names <- vars_select(names(ind_vars), !!!dots)
 
-  new_data <- .data$copy()
-  new_data$ind_col <- ind_vars[var_names]
-  new_data$init_address()
+  .data$copy(ind_col = ind_vars[var_names])
 }
 
 ################################################################################

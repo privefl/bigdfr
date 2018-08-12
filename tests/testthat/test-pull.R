@@ -23,7 +23,7 @@ test_that("pull() works with filter()", {
   iris <- datasets::iris
   iris$Species <- as.character(iris$Species)
   test <- filter(FDF(iris), Species == "virginica")
-  expect_identical(test$ind_row, 101:150)
+  expect_identical(test$ind_row, 101:150 - 1L)
   iris_virginica <- filter(iris, Species == "virginica")
   expect_identical(pull(test, 1),       iris_virginica[[1]])
   expect_identical(pull(test, 4),       iris_virginica[[4]])

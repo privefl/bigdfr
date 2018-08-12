@@ -24,10 +24,10 @@ pull.FDF <- function(.data, var = -1) {
   glob_ind_var <- rel_ind_vars[[rel_var_name]]
 
   switch(names(.data$types)[glob_ind_var],
-         numeric   = extract_dbl(.data$address, glob_ind_var),
-         integer   = extract_int(.data$address, glob_ind_var),
-         logical   = extract_lgl(.data$address, glob_ind_var),
-         character = extract_string(.data$address, glob_ind_var, .data$strings),
+         numeric   = extract_dbl(.data, glob_ind_var),
+         integer   = extract_int(.data, glob_ind_var),
+         logical   = extract_lgl(.data, glob_ind_var),
+         character = extract_string(.data, glob_ind_var, .data$strings),
          stop2(ERROR_TYPE))
 }
 

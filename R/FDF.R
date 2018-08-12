@@ -105,7 +105,7 @@ FDF_RC <- methods::setRefClass(
         .self$types       <- types_after_verif(df)
         .self$backingfile <- create_file(backingfile)
         .self$nrow_all    <- nrow(df)
-        .self$ind_row     <- rows_along(df)
+        .self$ind_row     <- rows_along(df) - 1L  ## begin at 0 in C++
         .self$ind_col     <- set_names(cols_along(df), names(df))
         .self$strings     <- rep(NA_character_, NSTR_MAX)
         .self$nstr        <- 1L   ## Always include NA_character_ first
@@ -121,8 +121,13 @@ FDF_RC <- methods::setRefClass(
       .self
     },
 
-    copy = function() {
-      methods::new(Class = "FDF", df_or_FDF = .self)
+    copy = function(...) {
+      .copy <- methods::new(Class = "FDF", df_or_FDF = .self)
+      name_dots <- names(dots <- list(...))
+      for (i in seq_along(dots)) {
+        .copy[[name_dots[i]]] <- dots[[i]]
+      }
+      .copy
     },
 
     add_columns = function(df) {
@@ -158,13 +163,9 @@ FDF_RC <- methods::setRefClass(
       .self
     },
 
-    ## Need this when modifying $ind_row or $types
+    ## Need this when modifying $types (or $backingfile)
     init_address = function() {
-      .self$extptr <- getXPtrFDF(.self$backingfile,
-                                 .self$nrow_all,
-                                 .self$ind_row,
-                                 .self$types)
-      .self
+      .self$extptr <- getXPtrFDF(.self$backingfile, .self$nrow_all, .self$types)
     },
 
     ## Need this as data mask

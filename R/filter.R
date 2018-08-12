@@ -56,9 +56,7 @@ filter_int <- function(.data, subset, check = TRUE) {
   if (check && anyNA(ind_row_filtered))
     stop2("'subset' must have values between 1 and %d", .data$nrow)
 
-  new_data <- .data$copy()
-  new_data$ind_row <- ind_row_filtered
-  new_data$init_address()
+  .data$copy(ind_row = ind_row_filtered)
 }
 
 ################################################################################

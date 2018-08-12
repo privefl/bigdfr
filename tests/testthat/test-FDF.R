@@ -6,9 +6,9 @@ context("test-FDF.R")
 
 test_that("FDF initialization works", {
 
-  (test0 <- FDF(iris <- mutate(datasets::iris, is_setosa = Species == "setosa")))
-  test <- test0$copy()
-  test0$nstr <- 19L
+  (test <- FDF(iris <- mutate(datasets::iris, is_setosa = Species == "setosa")))
+  test0 <- test$copy(nstr = 19L)
+  expect_identical(test0$nstr, 19L)
   expect_identical(test$nstr, 4L)
 
   expect_s4_class(test, "FDF")

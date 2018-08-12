@@ -10,8 +10,7 @@ test_that("add_columns() works", {
   expect_identical(dim(test2), dim(iris))
   expect_identical(test2$ind_col, set_names(6:10, names(iris)))
   expect_identical(test2$types, rep(test$types, 2))
-  expect_identical(extract_ushort(test2$address, 5),
-                   extract_ushort(test2$address, 10))
+  expect_identical(extract_ushort(test2, 5), extract_ushort(test2, 10))
   expect_identical(as_tibble(test2),
                    dplyr::mutate_if(as_tibble(iris), is.factor, as.character))
   iris2 <- rev(stats::setNames(iris, paste0(names(iris), 2)))

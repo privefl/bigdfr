@@ -41,6 +41,7 @@ keeps all variables.
 (test <- FDF(datasets::iris))
 select(test, 1:4)
 select(test, -5)
+select(test, -Species)
 select(test, c("Sepal.Length", "Sepal.Width"))
 select(test, Sepal.Length, Sepal.Width)
 select(test, starts_with("Sepal"))

@@ -6,125 +6,124 @@
 using namespace Rcpp;
 
 // extract_dbl
-SEXP extract_dbl(SEXP xptr, size_t j);
-RcppExport SEXP _bigdfr_extract_dbl(SEXP xptrSEXP, SEXP jSEXP) {
+SEXP extract_dbl(Environment X, size_t j);
+RcppExport SEXP _bigdfr_extract_dbl(SEXP XSEXP, SEXP jSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_dbl(xptr, j));
+    rcpp_result_gen = Rcpp::wrap(extract_dbl(X, j));
     return rcpp_result_gen;
 END_RCPP
 }
 // extract_int
-SEXP extract_int(SEXP xptr, size_t j);
-RcppExport SEXP _bigdfr_extract_int(SEXP xptrSEXP, SEXP jSEXP) {
+SEXP extract_int(Environment X, size_t j);
+RcppExport SEXP _bigdfr_extract_int(SEXP XSEXP, SEXP jSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_int(xptr, j));
+    rcpp_result_gen = Rcpp::wrap(extract_int(X, j));
     return rcpp_result_gen;
 END_RCPP
 }
 // extract_lgl
-SEXP extract_lgl(SEXP xptr, size_t j);
-RcppExport SEXP _bigdfr_extract_lgl(SEXP xptrSEXP, SEXP jSEXP) {
+SEXP extract_lgl(Environment X, size_t j);
+RcppExport SEXP _bigdfr_extract_lgl(SEXP XSEXP, SEXP jSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_lgl(xptr, j));
+    rcpp_result_gen = Rcpp::wrap(extract_lgl(X, j));
     return rcpp_result_gen;
 END_RCPP
 }
 // extract_ushort
-SEXP extract_ushort(SEXP xptr, size_t j);
-RcppExport SEXP _bigdfr_extract_ushort(SEXP xptrSEXP, SEXP jSEXP) {
+SEXP extract_ushort(Environment X, size_t j);
+RcppExport SEXP _bigdfr_extract_ushort(SEXP XSEXP, SEXP jSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_ushort(xptr, j));
+    rcpp_result_gen = Rcpp::wrap(extract_ushort(X, j));
     return rcpp_result_gen;
 END_RCPP
 }
 // extract_string
-CharacterVector extract_string(SEXP xptr, size_t j, CharacterVector strings);
-RcppExport SEXP _bigdfr_extract_string(SEXP xptrSEXP, SEXP jSEXP, SEXP stringsSEXP) {
+CharacterVector extract_string(Environment X, size_t j, CharacterVector strings);
+RcppExport SEXP _bigdfr_extract_string(SEXP XSEXP, SEXP jSEXP, SEXP stringsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type strings(stringsSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_string(xptr, j, strings));
+    rcpp_result_gen = Rcpp::wrap(extract_string(X, j, strings));
     return rcpp_result_gen;
 END_RCPP
 }
 // fill_dbl
-void fill_dbl(SEXP xptr, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_dbl(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+void fill_dbl(Environment X, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_dbl(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_dbl(xptr, j, vec);
+    fill_dbl(X, j, vec);
     return R_NilValue;
 END_RCPP
 }
 // fill_int
-void fill_int(SEXP xptr, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_int(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+void fill_int(Environment X, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_int(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_int(xptr, j, vec);
+    fill_int(X, j, vec);
     return R_NilValue;
 END_RCPP
 }
 // fill_lgl
-void fill_lgl(SEXP xptr, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_lgl(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+void fill_lgl(Environment X, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_lgl(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_lgl(xptr, j, vec);
+    fill_lgl(X, j, vec);
     return R_NilValue;
 END_RCPP
 }
 // fill_ushort
-void fill_ushort(SEXP xptr, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_ushort(SEXP xptrSEXP, SEXP jSEXP, SEXP vecSEXP) {
+void fill_ushort(Environment X, size_t j, SEXP vec);
+RcppExport SEXP _bigdfr_fill_ushort(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_ushort(xptr, j, vec);
+    fill_ushort(X, j, vec);
     return R_NilValue;
 END_RCPP
 }
 // getXPtrFDF
-SEXP getXPtrFDF(std::string path, size_t n, IntegerVector ind_row, IntegerVector types);
-RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP nSEXP, SEXP ind_rowSEXP, SEXP typesSEXP) {
+SEXP getXPtrFDF(std::string path, size_t n_all, IntegerVector types);
+RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP n_allSEXP, SEXP typesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
-    Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type ind_row(ind_rowSEXP);
+    Rcpp::traits::input_parameter< size_t >::type n_all(n_allSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type types(typesSEXP);
-    rcpp_result_gen = Rcpp::wrap(getXPtrFDF(path, n, ind_row, types));
+    rcpp_result_gen = Rcpp::wrap(getXPtrFDF(path, n_all, types));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -162,7 +161,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
-    {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 4},
+    {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
     {"_bigdfr_NA_replace", (DL_FUNC) &_bigdfr_NA_replace, 2},
     {NULL, NULL, 0}

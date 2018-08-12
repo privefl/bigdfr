@@ -6,39 +6,40 @@ using namespace Rcpp;
 /******************************************************************************/
 
 template<typename T, int RTYPE>
-void fill(SEXP xptr, size_t j, Vector<RTYPE> vec) {
+void fill(SEXP xptr, size_t j, Vector<RTYPE> vec,
+          const IntegerVector& ind_row) {
 
   XPtr<FDF> xpDF(xptr);
   ColAcc<T> col(xpDF, j - 1);
 
-  size_t n = col.nrow();
-  myassert(n == size_t(vec.size()), ERROR_DIM);
+  int n = ind_row.size();
+  myassert(n == vec.size(), ERROR_DIM);
 
-  for (size_t i = 0; i < n; i++) {
-    col[i] = vec[i];
+  for (int i = 0; i < n; i++) {
+    col[ind_row[i]] = vec[i];
   }
 }
 
 /******************************************************************************/
 
 // [[Rcpp::export]]
-void fill_dbl(SEXP xptr, size_t j, SEXP vec) {
-  fill<double, REALSXP>(xptr, j, vec);
+void fill_dbl(Environment X, size_t j, SEXP vec) {
+  fill<double, REALSXP>(X["address"], j, vec, X["ind_row"]);
 }
 
 // [[Rcpp::export]]
-void fill_int(SEXP xptr, size_t j, SEXP vec) {
-  fill<int, INTSXP>(xptr, j, vec);
+void fill_int(Environment X, size_t j, SEXP vec) {
+  fill<int, INTSXP>(X["address"], j, vec, X["ind_row"]);
 }
 
 // [[Rcpp::export]]
-void fill_lgl(SEXP xptr, size_t j, SEXP vec) {
-  fill<int, LGLSXP>(xptr, j, vec);
+void fill_lgl(Environment X, size_t j, SEXP vec) {
+  fill<int, LGLSXP>(X["address"], j, vec, X["ind_row"]);
 }
 
 // [[Rcpp::export]]
-void fill_ushort(SEXP xptr, size_t j, SEXP vec) {
-  fill<unsigned short, INTSXP>(xptr, j, vec);
+void fill_ushort(Environment X, size_t j, SEXP vec) {
+  fill<unsigned short, INTSXP>(X["address"], j, vec, X["ind_row"]);
 }
 
 /******************************************************************************/

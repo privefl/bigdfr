@@ -37,7 +37,8 @@ test_that("read with or without dimnames", {
         header2 <- header && (skip == 0)
 
         tmp <- tempfile()
-        test <- FDF_read(csv, select = 5:50, skip = skip, backingfile = tmp)
+        test <- FDF_read(csv, select = 5:50, skip = skip, backingfile = tmp,
+                         nb_parts = sample(5, 1))
         df_part <- df[5:50]
 
         expect_true(all(tail(test$types, 30) == `if`(t == "integer", 4L, 8L)))

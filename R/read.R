@@ -38,7 +38,7 @@ FDF_read <- function(file, select = NULL,
       X <<- FDF(df, backingfile = backingfile)
       init <<- FALSE
     } else {
-      X$add_columns(df)
+      X <<- X$add_columns(df)
     }
     NULL
   }

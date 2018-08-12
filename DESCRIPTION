@@ -30,7 +30,6 @@ Suggests:
 Collate: 
     'fill-transformed.R'
     'FDF.R'
-    'FDF-no-acc.R'
     'RcppExports.R'
     'filter.R'
     'arrange.R'

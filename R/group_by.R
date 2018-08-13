@@ -32,9 +32,7 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
   data <- .data
 
   ind_row <- data$ind_row
-  current_groups <- `if`(!add || nrow(data$groups) == 0,
-                         tibble(rel_ind_row = list(seq_along(ind_row))),
-                         data$groups)
+  current_groups <- `if`(add, data$groups, init_groups(data$nrow))
 
   for (name in var_names) {
 

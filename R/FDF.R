@@ -26,6 +26,10 @@ types_after_verif <- function(df) {
   AUTHORIZED_TYPES[coltypes]
 }
 
+init_groups = function(n) {
+  tibble(rel_ind_row = list(seq_len(n)))
+}
+
 ################################################################################
 
 #' Class FDF
@@ -71,7 +75,7 @@ FDF_RC <- methods::setRefClass(
     ind_col     = "integer",      ## global indices to access in order of names
     strings     = "character",
     nstr        = "integer",
-    groups      = "data.frame",
+    groups      = "tbl_df",
 
     #### Active bindings
     address = function() {
@@ -93,7 +97,7 @@ FDF_RC <- methods::setRefClass(
 
     initialize = function(df_or_FDF, backingfile, ...) {
 
-      if (inherits(df_or_FDF, "FDF")) {  ## COPY FROM A FDF
+      if (inherits(df_or_FDF, "FDF")) {            ## COPY FROM A FDF
 
         name_dots <- names(dots <- list(...))
         for (i in seq_along(dots)) {
@@ -105,7 +109,7 @@ FDF_RC <- methods::setRefClass(
           .self[[field]] <- fdf[[field]]
         }
 
-      } else {                           ## INIT FROM A DF
+      } else {                                     ## INIT FROM A DF
 
         assert_nodots()
         df <- df_or_FDF
@@ -113,10 +117,11 @@ FDF_RC <- methods::setRefClass(
         .self$types       <- types_after_verif(df)
         .self$backingfile <- create_file(backingfile)
         .self$nrow_all    <- nrow(df)
-        .self$ind_row     <- rows_along(df) - 1L  ## begin at 0 in C++
+        .self$ind_row     <- 0L:(nrow(df) - 1L)  ## begin at 0 in C++
         .self$ind_col     <- set_names(cols_along(df), names(df))
         .self$strings     <- rep(NA_character_, NSTR_MAX)
         .self$nstr        <- 1L   ## Always include NA_character_ first
+        .self$groups      <- init_groups(nrow(df))
 
         ## Add columns and fill them with data
         add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))

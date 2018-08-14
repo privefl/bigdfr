@@ -70,5 +70,13 @@ microbenchmark::microbenchmark(
 # BIGDFR 2048.818 2052.0113 2138.2401 2111.184 2203.7107 2306.8719    10
 #  DPLYR  289.145  290.2044  295.5219  293.894  297.5263  307.7652    10
 
-profvis::profvis({summarize(Xg, mean = mean(Sepal.Length))})
+profvis::profvis({summarize(Xg, mean = mean(Sepal.Length), names = "Sepal.Length")})
 # All: 171 MB // 2.1 sec ; extract_dbl: 133 MB // 1.8 sec
+
+
+system.time(X3 <- mutate(X, bool = Species == "setosa"))
+# utilisateur     système      écoulé
+#       0.242       0.076       0.318
+system.time(X4 <- mutate(X2, bool = Species == "setosa"))
+# utilisateur     système      écoulé
+#       0.065       0.000       0.066

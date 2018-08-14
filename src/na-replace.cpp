@@ -13,9 +13,3 @@ IntegerVector NA_to_0(SEXP x_) {
 
   return x;
 }
-
-/*** R
-x <- c(1:3, NA)
-y <- NA_to_0(x)
-stopifnot(sum(is.na(x)) == 0)
-*/

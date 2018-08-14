@@ -4,6 +4,16 @@ context("test-fill-transformed.R")
 
 ################################################################################
 
+test_that("NA_to_0() works", {
+  expect_error(NA_to_0(1), "report")
+  x <- c(1:3, NA)
+  y <- NA_to_0(x)
+  expect_equal(sum(is.na(y)), 0)
+  expect_equal(sum(is.na(x)), 0)
+})
+
+################################################################################
+
 test_that("transform_chr() works", {
   fake <- rlang::env(nstr = 1L, strings = rep(NA_character_, NSTR_MAX))
   df_j <- as.character(iris$Species)

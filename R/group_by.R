@@ -10,7 +10,7 @@ utils::globalVariables(c("NESTED", "rel_ind_row"))
 #' @param add When `add = FALSE`, the default, `group_by()` will override
 #'   existing groups. To add to the existing groups, use `add = TRUE`.
 #'
-#' @importFrom dplyr group_by tibble
+#' @importFrom dplyr group_by
 #' @importFrom rlang :=
 #' @export
 #' @method group_by FDF

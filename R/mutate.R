@@ -19,15 +19,15 @@ mutate.FDF <- function(.data, ...) {
   name_dots <- names(dots <- quos(...))
   if (length(dots) == 0) return(.data)
 
-  e <- .data$as_env(parent = quo_get_env(dots[[1]]))
+  e_new <- list()
   for (i in seq_along(dots)) {
-    e[[name_dots[i]]] <- dots[[i]] %>%
-      quo_set_env(e) %>%
+    e <- .data$as_env(parent = quo_get_env(dots[[i]]))
+    e_new[[name_dots[i]]] <- dots[[i]] %>%
+      quo_set_env(as_env(e_new, parent = e)) %>%
       eval_tidy()
   }
 
-  name_dots %>%
-    mget(e) %>%
+  e_new[name_dots] %>%
     as.data.frame() %>%
     .data$add_columns()
 }

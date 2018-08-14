@@ -27,8 +27,8 @@ arrange.FDF <- function(.data, ...) {
   dots <- quos(...)
   if (length(dots) == 0) return(.data)
 
-  e <- .data$as_env(parent = quo_get_env(dots[[1]]))
   list_vec <- lapply(dots, function(q) {
+    e <- .data$as_env(parent = quo_get_env(q))
     eval_tidy(quo_set_env(q, e))
   })
   order <- do.call(base::order, list_vec)

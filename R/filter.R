@@ -28,8 +28,8 @@ filter.FDF <- function(.data, ...) {
   dots <- quos(...)
   if (length(dots) == 0) return(.data)
 
-  e <- .data$as_env(parent = quo_get_env(dots[[1]]))
   list_bool <- lapply(seq_along(dots), function(i) {
+    e <- .data$as_env(parent = quo_get_env(dots[[i]]))
     quo_set_env(dots[[i]], e) %>%
       eval_tidy() %>%
       verif_lgl(.data$nrow, i)

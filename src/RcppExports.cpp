@@ -138,15 +138,14 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// NA_replace
-SEXP NA_replace(SEXP x, SEXP by);
-RcppExport SEXP _bigdfr_NA_replace(SEXP xSEXP, SEXP bySEXP) {
+// NA_to_0
+IntegerVector NA_to_0(IntegerVector x);
+RcppExport SEXP _bigdfr_NA_to_0(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type by(bySEXP);
-    rcpp_result_gen = Rcpp::wrap(NA_replace(x, by));
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(NA_to_0(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -163,7 +162,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
-    {"_bigdfr_NA_replace", (DL_FUNC) &_bigdfr_NA_replace, 2},
+    {"_bigdfr_NA_to_0", (DL_FUNC) &_bigdfr_NA_to_0, 1},
     {NULL, NULL, 0}
 };
 

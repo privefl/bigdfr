@@ -28,7 +28,7 @@ transform_fct <- function(self, df_j) {
     self$strings[L <- L + 1L] <- u_fct[i]
   }
   self$nstr <- L
-  NA_replace(matches[df_j])
+  NA_to_0(matches[df_j])
 }
 
 ################################################################################

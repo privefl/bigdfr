@@ -12,7 +12,6 @@ slapply <- function(X, FUN) {
 #' @param .data A [FDF][FDF-class].
 #'
 #' @importFrom dplyr summarize summarise
-#' @importFrom magrittr %<>%
 #' @export
 #' @method summarise FDF
 #'
@@ -35,21 +34,19 @@ summarise.FDF <- function(.data, ...) {
   name_dots <- names(dots <- quos(...))
   data <- .data
   groups <- data$groups
+  rel_ind_row <- groups$rel_ind_row
 
   for (i in seq_along(dots)) {
 
     parent_env <- quo_get_env(dots[[i]])
 
-    groups %<>%
-      mutate(
-        !!sym(name_dots[i]) := slapply(rel_ind_row, function(ind) {
-          .copy <- data$copy(ind_row = data$ind_row[ind])
-          e <- .copy$as_env(parent = parent_env)
-          dots[[i]] %>%
-            quo_set_env(as_env(groups, parent = e)) %>%
-            eval_tidy()
-        })
-      )
+    groups[[name_dots[i]]] <- slapply(rel_ind_row, function(ind) {
+      .copy <- data$copy(ind_row = data$ind_row[ind])
+      e <- .copy$as_env(parent = parent_env)
+      dots[[i]] %>%
+        quo_set_env(as_env(groups, parent = e)) %>%
+        eval_tidy()
+    })
   }
 
   select(groups, -rel_ind_row)

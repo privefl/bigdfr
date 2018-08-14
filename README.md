@@ -8,6 +8,7 @@
 
 R package to operate with data frames stored on disk
 
+
 ## Example
 
 ```r
@@ -40,18 +41,21 @@ X %>%
   summarize(min_length = min(Sepal.Length))
 ```
 
+
+## Differences with {dplyr}
+
+- In `group_by`, variables are passed the same way as in `select`. If you want to use temporary variables, use `mutate`.
+- This is allowed to `summarize` data with a function that returns a value of length > 1 (you'll get a list-column).
+- When adding columns to an FDF (e.g. with `mutate`), these columns always go last even if they existed before. This means that you can do `FDF(iris) %>% mutate(Sepal.Width = Sepal.Width + 10) %>% pull()` to get the newly created "Sepal.Width" variable.
+- You can't have list-columns stored in a FDF.
+
+
 ## TODO
 
 1. speed up `group_by()`
 1. support factors
 1. implement `n()`
 1. implement grouped mutates and filters
-1. implement fresh backingfile?
+1. implement fresh backingfile? (when subview is too small -> just use `as_tibble()`?)
+1. support dates
 1. ...
-
-
-## Differences with {dplyr}
-
-- In `group_by`, variables are passed the same way as in `select`. If you want to use temporary variables, use `mutate`.
-- This is allowed to `summarize` data with a function that returns a value of length > 1.
-- When adding columns to an FDF (e.g. with `mutate`), these columns always go last even if they existed before. This means that you can do `FDF(iris) %>% mutate(Sepal.Width = Sepal.Width + 10) %>% pull()` to get the newly created "Sepal.Width" variable.

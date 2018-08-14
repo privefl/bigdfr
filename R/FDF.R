@@ -263,7 +263,7 @@ cols_along <- function(x) seq_len(ncol(x))
 #'
 #' @rdname FDF-methods
 #' @export
-setMethod("dim",    signature(x = "FDF"), function(x) c(x$nrow, x$ncol))
+setMethod("dim", signature(x = "FDF"), function(x) c(x$nrow, x$ncol))
 
 #' @rdname FDF-methods
 #' @export

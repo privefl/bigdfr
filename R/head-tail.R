@@ -33,9 +33,6 @@ head.FDF <- function(x, n = 6L, ...) {
 #' @rdname head
 setGeneric("head", utils::head)
 
-#' @rdname head
-setMethod("head", "FDF", head.FDF)
-
 ################################################################################
 
 #' @importFrom utils tail
@@ -62,8 +59,5 @@ tail.FDF <- function(x, n = 6L, ...) {
 #' @export
 #' @rdname head
 setGeneric("tail", utils::tail)
-
-#' @rdname head
-setMethod("tail", "FDF", tail.FDF)
 
 ################################################################################

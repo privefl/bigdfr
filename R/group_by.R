@@ -57,7 +57,4 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
 #' @rdname group_by
 setGeneric("group_by", dplyr::group_by)
 
-#' @rdname group_by
-setMethod("group_by", "FDF", group_by.FDF)
-
 ################################################################################

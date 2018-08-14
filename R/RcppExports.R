@@ -37,6 +37,18 @@ fill_ushort <- function(X, j, vec) {
     invisible(.Call(`_bigdfr_fill_ushort`, X, j, vec))
 }
 
+extract_fct_dbl <- function(xptr, j, ind_row) {
+    .Call(`_bigdfr_extract_fct_dbl`, xptr, j, ind_row)
+}
+
+extract_fct_int <- function(xptr, j, ind_row) {
+    .Call(`_bigdfr_extract_fct_int`, xptr, j, ind_row)
+}
+
+extract_fct_ushort <- function(xptr, j, ind_row) {
+    .Call(`_bigdfr_extract_fct_ushort`, xptr, j, ind_row)
+}
+
 getXPtrFDF <- function(path, n_all, types) {
     .Call(`_bigdfr_getXPtrFDF`, path, n_all, types)
 }

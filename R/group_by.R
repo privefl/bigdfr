@@ -1,5 +1,30 @@
 ################################################################################
 
+get_fct <- function(.data, name, ind_row) {
+
+  glob_ind_var <- .data$ind_col[[name]]
+  type <- names(.data$types)[glob_ind_var]
+  fct <- switch(
+    type,
+    numeric   = extract_fct_dbl(.data$address, glob_ind_var, ind_row),
+    integer   = extract_fct_int(.data$address, glob_ind_var, ind_row),
+    logical   = extract_fct_int(.data$address, glob_ind_var, ind_row),
+    character = extract_fct_ushort(.data$address, glob_ind_var, ind_row),
+    stop2(ERROR_TYPE)
+  ) ## levels and integers
+
+  lvl <- fct[[1]]
+  if (type == "logical") {
+    lvl <- as.logical(lvl)
+  } else if (type == "character") {
+    lvl <- .data$strings[lvl + 1L]
+  }
+
+  list(int = fct[[2]], lvl = lvl)
+}
+
+################################################################################
+
 utils::globalVariables(c("NESTED", "rel_ind_row"))
 
 ################################################################################
@@ -21,8 +46,8 @@ utils::globalVariables(c("NESTED", "rel_ind_row"))
 #' (test <- FDF(datasets::iris))
 #' (test2 <- group_by(test, Species))
 #' test2$groups
-#' group_by(test, Sepal.Length, Sepal.Width)
-#' group_by(test, starts_with("Sepal"))
+#' group_by(test, Sepal.Length, Sepal.Width)$groups
+#' group_by(test, starts_with("Sepal"))$groups
 group_by.FDF <- function(.data, ..., add = FALSE) {
 
   if (length(quos(...)) == 0)
@@ -38,11 +63,9 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
 
     current_groups <- current_groups %>%
       mutate(NESTED = lapply(rel_ind_row, function(ind) {
-        .part <- data$copy(ind_row = ind_row[ind])
-        by <- pull(.part, name)
-        u_by <- sort(unique(by))
-        tibble(!!sym(name) := u_by,
-               rel_ind_row = lapply(u_by, function(x) ind[by == x]))
+        fct <- get_fct(data, name, ind_row[ind])
+        splt <- split(ind, structure(fct$int, class = "factor", levels = fct$lvl))
+        tibble(!!sym(name) := fct$lvl, rel_ind_row = splt)
       })) %>%
       select(-rel_ind_row) %>%
       tidyr::unnest(NESTED)

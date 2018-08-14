@@ -36,6 +36,6 @@ Group by one or more variables
 (test <- FDF(datasets::iris))
 (test2 <- group_by(test, Species))
 test2$groups
-group_by(test, Sepal.Length, Sepal.Width)
-group_by(test, starts_with("Sepal"))
+group_by(test, Sepal.Length, Sepal.Width)$groups
+group_by(test, starts_with("Sepal"))$groups
 }

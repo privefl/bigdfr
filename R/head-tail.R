@@ -29,7 +29,7 @@ head.FDF <- function(x, n = 6L, ...) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod head
 #' @rdname head
 setGeneric("head", utils::head)
 
@@ -56,7 +56,7 @@ tail.FDF <- function(x, n = 6L, ...) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod tail
 #' @rdname head
 setGeneric("tail", utils::tail)
 

@@ -34,7 +34,7 @@ as_tibble.FDF <- function(x, ...) {
 
 ################################################################################
 
-#' @export
+#' @exportMethod as_tibble
 #' @rdname as_tibble
 setGeneric("as_tibble", dplyr::as_tibble)
 

@@ -43,6 +43,7 @@ Collate:
     'pull.R'
     'read.R'
     'select.R'
+    'summarize.R'
     'utils-assert.R'
     'utils-pipe.R'
     'utils.R'

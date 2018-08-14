@@ -45,7 +45,7 @@ add_bytes <- function(fileName, nbyte) {
     invisible(.Call(`_bigdfr_add_bytes`, fileName, nbyte))
 }
 
-NA_to_0 <- function(x) {
-    .Call(`_bigdfr_NA_to_0`, x)
+NA_to_0 <- function(x_) {
+    .Call(`_bigdfr_NA_to_0`, x_)
 }
 

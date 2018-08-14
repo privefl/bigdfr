@@ -41,7 +41,7 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
         .part <- data$copy(ind_row = ind_row[ind])
         by <- pull(.part, name)
         u_by <- sort(unique(by))
-        tibble(!!rlang::sym(name) := u_by,
+        tibble(!!sym(name) := u_by,
                rel_ind_row = lapply(u_by, function(x) ind[by == x]))
       })) %>%
       select(-rel_ind_row) %>%

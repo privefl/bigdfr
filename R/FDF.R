@@ -26,6 +26,21 @@ types_after_verif <- function(df) {
   AUTHORIZED_TYPES[coltypes]
 }
 
+#----
+
+create_file <- function(file) {
+
+  file <- path.expand(file)
+  assert_noexist(file)
+  assert_dir(dirname(file))
+  if (!file.create(file))
+    stop2("Problem while create file '%s'.", file)
+
+  normalizePath(file)
+}
+
+#----
+
 init_groups = function(n) {
   tibble(rel_ind_row = list(seq_len(n)))
 }

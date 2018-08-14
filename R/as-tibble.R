@@ -38,7 +38,4 @@ as_tibble.FDF <- function(x, ...) {
 #' @rdname as_tibble
 setGeneric("as_tibble", dplyr::as_tibble)
 
-#' @rdname as_tibble
-setMethod("as_tibble", "FDF", as_tibble.FDF)
-
 ################################################################################

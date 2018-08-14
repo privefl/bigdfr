@@ -43,7 +43,4 @@ arrange.FDF <- function(.data, ...) {
 #' @rdname arrange
 setGeneric("arrange", dplyr::arrange)
 
-#' @rdname arrange
-setMethod("arrange", "FDF", arrange.FDF)
-
 ################################################################################

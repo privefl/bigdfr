@@ -61,14 +61,8 @@ summarise.FDF <- function(.data, ...) {
 #' @rdname summarize
 setGeneric("summarize", dplyr::summarize)
 
-#' @rdname summarize
-setMethod("summarize", "FDF", summarise.FDF)
-
 #' @exportMethod summarise
 #' @rdname summarize
 setGeneric("summarise", dplyr::summarise)
-
-#' @rdname summarize
-setMethod("summarise", "FDF", summarise.FDF)
 
 ################################################################################

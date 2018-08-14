@@ -37,7 +37,4 @@ pull.FDF <- function(.data, var = -1) {
 #' @rdname pull
 setGeneric("pull", dplyr::pull)
 
-#' @rdname pull
-setMethod("pull", "FDF", pull.FDF)
-
 ################################################################################

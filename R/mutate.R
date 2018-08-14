@@ -38,7 +38,4 @@ mutate.FDF <- function(.data, ...) {
 #' @rdname mutate
 setGeneric("mutate", dplyr::mutate)
 
-#' @rdname mutate
-setMethod("mutate", "FDF", mutate.FDF)
-
 ################################################################################

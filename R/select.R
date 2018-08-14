@@ -37,7 +37,4 @@ select.FDF <- function(.data, ...) {
 #' @rdname select
 setGeneric("select", dplyr::select)
 
-#' @rdname select
-setMethod("select", "FDF", select.FDF)
-
 ################################################################################

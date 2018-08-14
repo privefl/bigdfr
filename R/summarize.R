@@ -1,13 +1,20 @@
 ################################################################################
 
+slapply <- function(X, FUN) {
+  res <- lapply(X, FUN)
+  `if`(all(lengths(res) == 1), unlist(res, recursive = FALSE), res)
+}
+
+################################################################################
+
 #' @inherit dplyr::summarize title description params
 #'
 #' @param .data A [FDF][FDF-class].
 #'
-#' @importFrom dplyr summarize
+#' @importFrom dplyr summarize summarise
 #' @importFrom magrittr %<>%
 #' @export
-#' @method summarize FDF
+#' @method summarise FDF
 #'
 #' @rdname summarize
 #'
@@ -18,7 +25,12 @@
 #' test %>%
 #'   group_by(Species) %>%
 #'   summarize(mean = mean(Sepal.Length))
-summarize.FDF <- function(.data, ...) {
+#'
+#' # You can also get a list-column
+#' test %>%
+#'   group_by(Species) %>%
+#'   summarize(range = range(Sepal.Length))
+summarise.FDF <- function(.data, ...) {
 
   name_dots <- names(dots <- quos(...))
   data <- .data
@@ -30,7 +42,7 @@ summarize.FDF <- function(.data, ...) {
 
     groups %<>%
       mutate(
-        !!sym(name_dots[i]) := sapply(rel_ind_row, function(ind) {
+        !!sym(name_dots[i]) := slapply(rel_ind_row, function(ind) {
           .copy <- data$copy(ind_row = data$ind_row[ind])
           e <- .copy$as_env(parent = parent_env)
           dots[[i]] %>%
@@ -50,6 +62,13 @@ summarize.FDF <- function(.data, ...) {
 setGeneric("summarize", dplyr::summarize)
 
 #' @rdname summarize
-setMethod("summarize", "FDF", summarize.FDF)
+setMethod("summarize", "FDF", summarise.FDF)
+
+#' @exportMethod summarise
+#' @rdname summarize
+setGeneric("summarise", dplyr::summarise)
+
+#' @rdname summarize
+setMethod("summarise", "FDF", summarise.FDF)
 
 ################################################################################

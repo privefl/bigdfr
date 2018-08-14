@@ -38,4 +38,4 @@ as_tibble(X2)
 ## Differences with {dplyr}
 
 - In `group_by`, variables are passed the same way as in `select`. If you want to use temporary variables, use `mutate`.
-
+- It is this allowed to summarize data with a function that returns a value of length > 1.

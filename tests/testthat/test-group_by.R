@@ -1,6 +1,11 @@
+################################################################################
+
 context("test-group_by.R")
 
+################################################################################
+
 test_that("group_by() works", {
+
   test <- FDF(iris <- datasets::iris)
   test2 <- group_by(test, Species)
   expect_s3_class(test$groups, "tbl_df")
@@ -18,6 +23,8 @@ test_that("group_by() works", {
                      group_by(cyl, vs, am) %>%
                      dplyr::summarise(rel_ind_row = list(id)) %>%
                      dplyr::ungroup())
+
+  expect_s4_class(dplyr::group_by(test, cyl, vs, am), "FDF")
 })
 
-
+################################################################################

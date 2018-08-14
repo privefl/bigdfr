@@ -52,6 +52,7 @@ X %>%
 
 ## TODO
 
+1. SPEED UP EVERYTHING
 1. support factors
 1. implement `n()`
 1. implement grouped mutates and filters

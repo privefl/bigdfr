@@ -42,5 +42,33 @@ microbenchmark::microbenchmark(
 #  DPLYR 434.1219 443.9586 455.5181 451.2141 471.8601 484.0129    10
 #  SPLIT 176.8536 177.9356 220.8731 206.6348 249.4011 299.6146    10
 
-profvis::profvis(group_by(X, Species)) ## 450 MB / 570 ms
-profvis::profvis(group_by(X2, Species)) ## 57 MB / 470 ms
+profvis::profvis(group_by(X,  Species)) ## 450 MB / 570 ms
+profvis::profvis(group_by(X2, Species)) ##  57 MB / 470 ms
+
+
+
+microbenchmark::microbenchmark(
+  BIGDFR = group_by(X, Petal.Length),
+  DPLYR =  group_by(X2, Petal.Length),
+  times = 10
+)
+# Unit: milliseconds
+#   expr      min       lq     mean    median        uq      max neval
+# BIGDFR 795.4027 798.9297 982.5882 1008.7556 1042.5664 1267.032    10
+#  DPLYR 386.6005 392.7857 430.2401  403.8572  462.1967  516.301    10
+
+profvis::profvis(Xg <- group_by(X,  Petal.Length)) ## 515 MB / 1000 ms
+profvis::profvis(Xg2 <- group_by(X2, Petal.Length)) ##  50 MB /  450 ms
+
+microbenchmark::microbenchmark(
+  BIGDFR = summarize(Xg, mean = mean(Sepal.Length)),
+  DPLYR =  summarize(Xg2, mean = mean(Sepal.Length)),
+  times = 10
+)
+# Unit: milliseconds
+#   expr      min        lq      mean   median        uq       max neval
+# BIGDFR 2048.818 2052.0113 2138.2401 2111.184 2203.7107 2306.8719    10
+#  DPLYR  289.145  290.2044  295.5219  293.894  297.5263  307.7652    10
+
+profvis::profvis({summarize(Xg, mean = mean(Sepal.Length))})
+# All: 171 MB // 2.1 sec ; extract_dbl: 133 MB // 1.8 sec

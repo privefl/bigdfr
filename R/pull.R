@@ -1,5 +1,21 @@
 ################################################################################
 
+extract_var <- function(.data, rel_var_name,
+                        list_ind_row = list(.data$ind_row)) {
+
+  glob_ind_var <- .data$ind_col[[rel_var_name]]
+  addr <- .data$address
+
+  switch(
+    names(.data$types)[glob_ind_var],
+    numeric   = extract_dbl(addr, glob_ind_var, list_ind_row),
+    integer   = extract_int(addr, glob_ind_var, list_ind_row),
+    logical   = extract_lgl(addr, glob_ind_var, list_ind_row),
+    character = extract_string(addr, glob_ind_var, list_ind_row, .data$strings),
+    stop2(ERROR_TYPE)
+  )
+}
+
 #' @inherit dplyr::pull title description return
 #'
 #' @param .data A [FDF][FDF-class].
@@ -18,17 +34,7 @@
 #' pull(test, 5)
 #' pull(test, Species)
 pull.FDF <- function(.data, var = -1) {
-
-  rel_ind_vars <- .data$ind_col
-  rel_var_name <- vars_pull(names(rel_ind_vars), !!rlang::enquo(var))
-  glob_ind_var <- rel_ind_vars[[rel_var_name]]
-
-  switch(names(.data$types)[glob_ind_var],
-         numeric   = extract_dbl(.data, glob_ind_var),
-         integer   = extract_int(.data, glob_ind_var),
-         logical   = extract_lgl(.data, glob_ind_var),
-         character = extract_string(.data, glob_ind_var, .data$strings),
-         stop2(ERROR_TYPE))
+  extract_var(.data, vars_pull(.data$colnames, !!rlang::enquo(var)))[[1]]
 }
 
 ################################################################################

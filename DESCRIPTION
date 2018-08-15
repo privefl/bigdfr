@@ -45,5 +45,6 @@ Collate:
     'select.R'
     'summarize.R'
     'utils-assert.R'
+    'utils-eval.R'
     'utils-pipe.R'
 Language: en-US

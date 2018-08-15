@@ -43,8 +43,8 @@ Collate:
     'pull.R'
     'read.R'
     'select.R'
+    'utils-eval.R'
     'summarize.R'
     'utils-assert.R'
-    'utils-eval.R'
     'utils-pipe.R'
 Language: en-US

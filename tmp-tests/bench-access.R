@@ -15,7 +15,8 @@ Xg <- group_by(X,  Petal.Length) ## 515 MB / 1000 ms
 
 system.time(
   tmp <- lapply(Xg$groups$rel_ind_row, function(ind) {
-    mean(X2$Sepal.Length[ind])
+    part <- X2$Sepal.Length[ind]
+    mean(part)
   })
 ) # 0.2 max
 all(lengths(tmp) == 1)
@@ -40,4 +41,4 @@ system.time({
   tmp3 <- lapply(list_pull, mean)
 }) # 0.2 sec
 
-all.equal(tmp, tmp3)
+identical(tmp, tmp3)

@@ -19,6 +19,8 @@ slapply <- function(X, FUN) {
 #'
 #' @return A tibble with group values and summarized values.
 #'
+#' @include utils-eval.R
+#'
 #' @examples
 #' test <- FDF(datasets::iris)
 #' test %>%
@@ -32,18 +34,25 @@ slapply <- function(X, FUN) {
 summarise.FDF <- function(.data, ...) {
 
   name_dots <- names(dots <- quos(...))
-  data <- .data
-  groups <- data$groups
-  rel_ind_row <- groups$rel_ind_row
+  groups <- .data$groups
+  list_ind_row <- lapply(groups$rel_ind_row, function(ind) .data$ind_row[ind])
 
   for (i in seq_along(dots)) {
 
-    parent_env <- quo_get_env(dots[[i]])
+    quo_i <- dots[[i]]
+    parent_env <- quo_get_env(quo_i)
+    names_involved <- get_call_names(quo_i)
+    names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(groups))
+    print(names_to_get)
 
-    groups[[name_dots[i]]] <- slapply(rel_ind_row, function(ind) {
-      .copy <- data$copy(ind_row = data$ind_row[ind])
-      e <- .copy$as_env(parent = parent_env)
-      dots[[i]] %>%
+    names_pulled <- lapply(set_names(names_to_get), function(var_name) {
+      bigdfr:::extract_var(.data, var_name, list_ind_row)
+    })
+
+    groups[[name_dots[i]]] <- slapply(seq_along(list_ind_row), function(k) {
+      names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
+      e <- list2env(names_pulled_group_k, parent = parent_env)
+      quo_i %>%
         quo_set_env(as_env(groups, parent = e)) %>%
         eval_tidy()
     })

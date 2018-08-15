@@ -45,6 +45,12 @@ init_groups = function(n) {
   tibble(rel_ind_row = list(seq_len(n)))
 }
 
+#----
+
+set_names <- function(x, names = x) {
+  stats::setNames(x, names)
+}
+
 ################################################################################
 
 #' Class FDF

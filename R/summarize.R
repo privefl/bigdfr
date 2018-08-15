@@ -37,9 +37,10 @@ summarise.FDF <- function(.data, ...) {
   if (.data$is_grouped) {
     groups <- .data$groups
     list_ind_row <- groups$ind_row
+    groups$ind_row <- NULL
   } else {
     list_ind_row <- list(.data$ind_row)
-    groups <- tibble(ind_row = list_ind_row)
+    groups <- as_tibble(matrix(nrow = 1, ncol = 0))
   }
 
   for (i in seq_along(dots)) {
@@ -62,7 +63,7 @@ summarise.FDF <- function(.data, ...) {
     })
   }
 
-  select(groups, -ind_row)
+  groups
 }
 
 ################################################################################

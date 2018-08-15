@@ -34,8 +34,13 @@ slapply <- function(X, FUN) {
 summarise.FDF <- function(.data, ...) {
 
   name_dots <- names(dots <- quos(...))
-  groups <- .data$groups
-  list_ind_row <- lapply(groups$rel_ind_row, function(ind) .data$ind_row[ind])
+  if (.data$is_grouped) {
+    groups <- .data$groups
+    list_ind_row <- groups$ind_row
+  } else {
+    list_ind_row <- list(.data$ind_row)
+    groups <- tibble(ind_row = list_ind_row)
+  }
 
   for (i in seq_along(dots)) {
 
@@ -43,10 +48,9 @@ summarise.FDF <- function(.data, ...) {
     parent_env <- quo_get_env(quo_i)
     names_involved <- get_call_names(quo_i)
     names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(groups))
-    print(names_to_get)
 
     names_pulled <- lapply(set_names(names_to_get), function(var_name) {
-      bigdfr:::extract_var(.data, var_name, list_ind_row)
+      extract_var(.data, var_name, list_ind_row)
     })
 
     groups[[name_dots[i]]] <- slapply(seq_along(list_ind_row), function(k) {
@@ -58,7 +62,7 @@ summarise.FDF <- function(.data, ...) {
     })
   }
 
-  select(groups, -rel_ind_row)
+  select(groups, -ind_row)
 }
 
 ################################################################################

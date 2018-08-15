@@ -41,12 +41,6 @@ create_file <- function(file) {
 
 #----
 
-init_groups = function(n) {
-  tibble(rel_ind_row = list(seq_len(n)))
-}
-
-#----
-
 set_names <- function(x, names = x) {
   stats::setNames(x, names)
 }
@@ -111,7 +105,7 @@ FDF_RC <- methods::setRefClass(
     colnames = function() set_names(names(.self$ind_col)),
 
     is_saved = function() file.exists(.self$rds),
-    is_grouped = function() (ncol(.self$groups) > 1)
+    is_grouped = function() (ncol(.self$groups) > 0)
   ),
 
   methods = list(
@@ -142,7 +136,7 @@ FDF_RC <- methods::setRefClass(
         .self$ind_col     <- set_names(cols_along(df), names(df))
         .self$strings     <- rep(NA_character_, NSTR_MAX)
         .self$nstr        <- 1L   ## Always include NA_character_ first
-        .self$groups      <- init_groups(nrow(df))
+        .self$groups      <- tibble()
 
         ## Add columns and fill them with data
         add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))

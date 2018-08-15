@@ -25,7 +25,7 @@ get_fct <- function(.data, name, ind_row) {
 
 ################################################################################
 
-utils::globalVariables(c("NESTED", "rel_ind_row"))
+utils::globalVariables(c("NESTED", "ind_row"))
 
 ################################################################################
 
@@ -57,17 +57,18 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
   data <- .data
 
   ind_row <- data$ind_row
-  current_groups <- `if`(add, data$groups, init_groups(data$nrow))
+  current_groups <- `if`(add && data$is_grouped, data$groups,
+                         tibble(ind_row = list(data$ind_row)))
 
   for (name in var_names) {
 
     current_groups <- current_groups %>%
-      mutate(NESTED = lapply(rel_ind_row, function(ind) {
-        fct <- get_fct(data, name, ind_row[ind])
+      mutate(NESTED = lapply(ind_row, function(ind) {
+        fct <- get_fct(data, name, ind)
         splt <- split(ind, structure(fct$int, class = "factor", levels = fct$lvl))
-        tibble(!!sym(name) := fct$lvl, rel_ind_row = splt)
+        tibble(!!sym(name) := fct$lvl, ind_row = splt)
       })) %>%
-      select(-rel_ind_row) %>%
+      select(-ind_row) %>%
       tidyr::unnest(NESTED)
   }
 

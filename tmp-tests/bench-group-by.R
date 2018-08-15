@@ -60,20 +60,8 @@ microbenchmark::microbenchmark(
 profvis::profvis(Xg <- group_by(X,  Petal.Length)) ## 515 MB / 1000 ms
 profvis::profvis(Xg2 <- group_by(X2, Petal.Length)) ##  50 MB /  450 ms
 
-microbenchmark::microbenchmark(
-  BIGDFR = summarize(Xg, mean = mean(Sepal.Length)),
-  DPLYR =  summarize(Xg2, mean = mean(Sepal.Length)),
-  times = 10
-)
-# Unit: milliseconds
-#   expr      min        lq      mean   median        uq       max neval
-# BIGDFR 2048.818 2052.0113 2138.2401 2111.184 2203.7107 2306.8719    10
-#  DPLYR  289.145  290.2044  295.5219  293.894  297.5263  307.7652    10
 
-profvis::profvis({summarize(Xg, mean = mean(Sepal.Length), names = "Sepal.Length")})
-# All: 171 MB // 2.1 sec ; extract_dbl: 133 MB // 1.8 sec
-
-
+# TODO: move mutate in its own file
 system.time(X3 <- mutate(X, bool = Species == "setosa"))
 # utilisateur     système      écoulé
 #       0.242       0.076       0.318

@@ -57,9 +57,7 @@ summarise.FDF <- function(.data, ...) {
     groups[[name_dots[i]]] <- slapply(seq_along(list_ind_row), function(k) {
       names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
       e <- list2env(names_pulled_group_k, parent = parent_env)
-      quo_i %>%
-        quo_set_env(as_env(groups, parent = e)) %>%
-        eval_tidy()
+      eval_tidy(quo_set_env(quo_i, as_env(groups, parent = e)))
     })
   }
 

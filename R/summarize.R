@@ -33,7 +33,7 @@ slapply <- function(X, FUN) {
 #'   summarize(range = range(Sepal.Length))
 summarise.FDF <- function(.data, ...) {
 
-  name_dots <- names(dots <- quos(...))
+  name_dots <- names(dots <- quos(..., .named = TRUE))
 
   groups <- .data$groups
   list_ind_row <- groups$ind_row

@@ -35,3 +35,22 @@ test_that("group_by() works", {
 })
 
 ################################################################################
+
+test_that("all verbs works with group_by()", {
+
+  test <- FDF(datasets::iris) %>% filter_int(sample(150))
+  test2 <- group_by(test, Species)
+  grouped_iris <- as_tibble(test2)
+  # as_tibble() also exports groups (version {dplyr})
+  expect_identical(grouped_iris, group_by(as_tibble(test), Species))
+  # pull() doesn't care about groups
+  expect_identical(pull(test2, Species), pull(grouped_iris, Species))
+  # summarize() computes by groups
+  expect_identical(summarise(test2, mean(Petal.Length)),
+                   summarise(grouped_iris, mean(Petal.Length)))
+  # mutate()
+  # filter()
+  # arrange()
+})
+
+################################################################################

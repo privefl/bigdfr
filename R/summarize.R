@@ -34,14 +34,10 @@ slapply <- function(X, FUN) {
 summarise.FDF <- function(.data, ...) {
 
   name_dots <- names(dots <- quos(...))
-  if (.data$is_grouped) {
-    groups <- .data$groups
-    list_ind_row <- groups$ind_row
-    groups$ind_row <- NULL
-  } else {
-    list_ind_row <- list(.data$ind_row)
-    groups <- as_tibble(matrix(nrow = 1, ncol = 0))
-  }
+
+  groups <- .data$groups
+  list_ind_row <- groups$ind_row
+  groups$ind_row <- NULL
 
   for (i in seq_along(dots)) {
 

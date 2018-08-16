@@ -57,6 +57,10 @@ add_bytes <- function(fileName, nbyte) {
     invisible(.Call(`_bigdfr_add_bytes`, fileName, nbyte))
 }
 
+rel_to_abs <- function(list_ind_row, list_ind, sizes) {
+    invisible(.Call(`_bigdfr_rel_to_abs`, list_ind_row, list_ind, sizes))
+}
+
 NA_to_0 <- function(x_) {
     .Call(`_bigdfr_NA_to_0`, x_)
 }

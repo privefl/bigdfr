@@ -5,8 +5,8 @@ AUTHORIZED_TYPES <- c(
 
 ERROR_TYPE <- "Some column types are not authorized."
 
-FIELDS_TO_COPY <- c("nrow_all", "types", "backingfile",
-                    "ind_row", "ind_col", "strings", "nstr", "groups")
+FIELDS_TO_COPY <- c("nrow_all", "types", "backingfile", "groups_internal",
+                    "ind_row", "ind_col", "strings", "nstr")
 
 NSTR_MAX <- 2^16
 
@@ -67,6 +67,7 @@ set_names <- function(x, names = x) {
 #'   - `$strings`: 2^16 strings to match with integers (between 0 and 65535)
 #'   - `$nstr`: Number of unique strings already matched with an integer
 #'   - `$groups`: Tibble with position indices of `$ind_row` for each group.
+#'   - `$groups_internal`: use `$groups` instead
 #'
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
@@ -90,7 +91,7 @@ FDF_RC <- methods::setRefClass(
     ind_col     = "integer",      ## global indices to access in order of names
     strings     = "character",
     nstr        = "integer",
-    groups      = "tbl_df",
+    groups_internal = "tbl_df",
 
     #### Active bindings
     address = function() {
@@ -105,7 +106,11 @@ FDF_RC <- methods::setRefClass(
     colnames = function() set_names(names(.self$ind_col)),
 
     is_saved = function() file.exists(.self$rds),
-    is_grouped = function() (ncol(.self$groups) > 0)
+    is_grouped = function() (ncol(.self$groups_internal) > 0),
+    groups = function() {
+      `if`(.self$is_grouped, .self$groups_internal,
+           tibble(ind_row = list(.self$ind_row)))
+    }
   ),
 
   methods = list(
@@ -136,7 +141,7 @@ FDF_RC <- methods::setRefClass(
         .self$ind_col     <- set_names(cols_along(df), names(df))
         .self$strings     <- rep(NA_character_, NSTR_MAX)
         .self$nstr        <- 1L   ## Always include NA_character_ first
-        .self$groups      <- tibble()
+        .self$groups_internal <- tibble()
 
         ## Add columns and fill them with data
         add_bytes(.self$backingfile, .self$nrow_all * sum(.self$types))

@@ -52,11 +52,10 @@ X %>%
 
 ## TODO
 
-1. SPEED UP EVERYTHING
+1. MAKE SURE EVERYTHING IS FAST
+1. implement grouped mutates and filters
 1. support factors
 1. implement `n()`
-1. implement grouped mutates and filters
-1. use less memory in `group_by()`
 1. implement fresh backingfile? (when subview is too small -> just use `as_tibble()`?)
 1. support dates
 1. ...

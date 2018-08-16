@@ -95,12 +95,12 @@ List test_multimap2(SEXP xptr, size_t j, IntegerVector ind_row) {
     keys[k] = first;
     int size = sizes[k];
     IntegerVector res_i(size);
-    Rcout << "Size of range for " << first << " : "  << size << std::endl;
-    Rcout << first << ": ";
+    // Rcout << "Size of range for " << first << " : "  << size << std::endl;
+    // Rcout << first << ": ";
     for (int i = 0; i < size; i++, it++) {
       res_i[i] = it->second;
     }
-    Rcout << res_i << std::endl;
+    // Rcout << res_i << std::endl;
     indices[k] = res_i;
   }
 

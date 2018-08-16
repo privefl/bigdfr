@@ -27,6 +27,11 @@ test_that("summarize() works", {
     expect_equal(ncol(summarize(test)), 0)
   }
 
+  grouped <- group_by(test, Species)
+  groups_save <- grouped$groups
+  summarise(grouped, mean(Petal.Length))
+  expect_identical(grouped$groups, groups_save)
+
   expect_identical(summarize(iris, Species = 150, Species = Species + 1),
                    summarize(test, Species = 150, Species = Species + 1))
 

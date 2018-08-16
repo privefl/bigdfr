@@ -35,6 +35,7 @@ C++ object, to be used as a \code{XPtr<FDF>} in C++ code
 \item \code{$strings}: 2^16 strings to match with integers (between 0 and 65535)
 \item \code{$nstr}: Number of unique strings already matched with an integer
 \item \code{$groups}: Tibble with position indices of \code{$ind_row} for each group.
+\item \code{$groups_internal}: use \code{$groups} instead
 }
 
 And some methods:

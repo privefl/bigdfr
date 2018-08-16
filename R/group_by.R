@@ -1,34 +1,5 @@
 ################################################################################
 
-get_fct <- function(.data, name, ind_row) {
-
-  glob_ind_var <- .data$ind_col[[name]]
-  type <- names(.data$types)[glob_ind_var]
-  fct <- switch(
-    type,
-    numeric   = extract_fct_dbl(.data$address, glob_ind_var, ind_row),
-    integer   = extract_fct_int(.data$address, glob_ind_var, ind_row),
-    logical   = extract_fct_int(.data$address, glob_ind_var, ind_row),
-    character = extract_fct_ushort(.data$address, glob_ind_var, ind_row),
-    stop2(ERROR_TYPE)
-  ) ## levels and integers
-
-  lvl <- fct[[1]]
-  if (type == "logical") {
-    lvl <- as.logical(lvl)
-  } else if (type == "character") {
-    lvl <- .data$strings[lvl + 1L]
-  }
-
-  list(int = fct[[2]], lvl = lvl)
-}
-
-################################################################################
-
-utils::globalVariables(c("NESTED", "ind_row"))
-
-################################################################################
-
 #' @inherit dplyr::group_by title
 #'
 #' @inheritParams select.FDF
@@ -36,7 +7,6 @@ utils::globalVariables(c("NESTED", "ind_row"))
 #'   existing groups. To add to the existing groups, use `add = TRUE`.
 #'
 #' @importFrom dplyr group_by
-#' @importFrom rlang :=
 #' @export
 #' @method group_by FDF
 #'
@@ -46,33 +16,48 @@ utils::globalVariables(c("NESTED", "ind_row"))
 #' (test <- FDF(datasets::iris))
 #' (test2 <- group_by(test, Species))
 #' test2$groups
-#' group_by(test, Sepal.Length, Sepal.Width)$groups
 #' group_by(test, starts_with("Sepal"))$groups
+#' group_by(test2, Sepal.Length, add = TRUE)$groups
 group_by.FDF <- function(.data, ..., add = FALSE) {
 
   if (length(quos(...)) == 0)
     stop2("You must group by at least one variable.")
 
-  var_names <- select.FDF(.data, ...)$colnames
-  data <- .data
+  .copy <- .data$copy()
+  if (!add) .copy$groups_internal <- tibble()
 
-  ind_row <- data$ind_row
-  current_groups <- `if`(add && data$is_grouped, data$groups,
-                         tibble(ind_row = list(data$ind_row)))
+  groups <- .copy$groups
+  list_ind_row <- groups$ind_row
+  groups$ind_row <- NULL
 
-  for (name in var_names) {
+  # Get grouping variables in memory
+  var_names <- select.FDF(.copy, ...)$colnames
+  names_pulled <- lapply(var_names, function(var_name) {
+    extract_var(.copy, var_name, list_ind_row)
+  })
 
-    current_groups <- current_groups %>%
-      mutate(NESTED = lapply(ind_row, function(ind) {
-        fct <- get_fct(data, name, ind)
-        splt <- split(ind, structure(fct$int, class = "factor", levels = fct$lvl))
-        tibble(!!sym(name) := fct$lvl, ind_row = splt)
-      })) %>%
-      select(-ind_row) %>%
-      tidyr::unnest(NESTED)
-  }
+  # Let {dplyr} do the hard work
+  list_info_groups <- lapply(seq_along(list_ind_row), function(k) {
+    names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
+    grouped_df <- dplyr::group_by_at(as_tibble(names_pulled_group_k),
+                                     names(names_pulled_group_k))
+    attributes(grouped_df)[c("labels", "indices")]
+  })
 
-  data$copy(groups = current_groups)
+  # Get relative grouping indices and make them absolute
+  list_list_ind <- lapply(list_info_groups, function(x) x$indices)
+  sizes <- sapply(list_list_ind, length)
+  list_ind <- unlist(list_list_ind, recursive = FALSE)
+  rel_to_abs(list_ind_row, list_ind, sizes)
+
+  # Bind previous groups, new groups and corresponding indices
+  .copy$groups_internal <- dplyr::bind_cols(
+    groups[rep(seq_along(sizes), sizes), ],
+    do.call(dplyr::bind_rows, lapply(list_info_groups, function(x) x$labels)),
+    tibble(ind_row = list_ind)
+  )
+
+  .copy
 }
 
 ################################################################################

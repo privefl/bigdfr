@@ -182,6 +182,18 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// rel_to_abs
+void rel_to_abs(ListOf<IntegerVector> list_ind_row, ListOf<IntegerVector> list_ind, IntegerVector sizes);
+RcppExport SEXP _bigdfr_rel_to_abs(SEXP list_ind_rowSEXP, SEXP list_indSEXP, SEXP sizesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind(list_indSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sizes(sizesSEXP);
+    rel_to_abs(list_ind_row, list_ind, sizes);
+    return R_NilValue;
+END_RCPP
+}
 // NA_to_0
 IntegerVector NA_to_0(SEXP x_);
 RcppExport SEXP _bigdfr_NA_to_0(SEXP x_SEXP) {
@@ -209,6 +221,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_extract_fct_ushort", (DL_FUNC) &_bigdfr_extract_fct_ushort, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
+    {"_bigdfr_rel_to_abs", (DL_FUNC) &_bigdfr_rel_to_abs, 3},
     {"_bigdfr_NA_to_0", (DL_FUNC) &_bigdfr_NA_to_0, 1},
     {NULL, NULL, 0}
 };

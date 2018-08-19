@@ -62,6 +62,9 @@ test_that("all verbs works with group_by()", {
     as_tibble(arrange(test2, Species, desc(Sepal.Length), .by_group = TRUE)),
     arrange(grouped_iris, Species, desc(Sepal.Length), .by_group = TRUE))
   # mutate()
+  expect_identical(
+    as_tibble(mutate(test2, rank(Sepal.Width))),
+    mutate(grouped_iris, rank(Sepal.Width)))
 })
 
 ################################################################################

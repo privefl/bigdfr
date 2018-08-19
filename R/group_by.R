@@ -3,9 +3,13 @@
 #' @export
 #' @method ungroup FDF
 #'
+#' @param x A [FDF][FDF-class].
+#' @param ... Not used.
+#'
 #' @rdname group_by
-ungroup.FDF <- function(.data) {
-  .data$copy(groups_internal = tibble())
+ungroup.FDF <- function(x, ...) {
+  assert_nodots()
+  x$copy(groups_internal = tibble())
 }
 
 #' @exportMethod ungroup

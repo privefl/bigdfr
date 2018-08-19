@@ -19,38 +19,34 @@ mutate.FDF <- function(.data, ...) {
   name_dots <- names(dots <- quos(..., .named = TRUE))
   if (length(dots) == 0) return(.data)
 
-  # list_ind_row <- .data$groups$ind_row
-  #
-  # e_new <- list()
-  # for (i in seq_along(dots)) {
-  #
-  #   quo_i <- dots[[i]]
-  #   parent_env <- quo_get_env(quo_i)
-  #   names_involved <- get_call_names(quo_i)
-  #   names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(e_new))
-  #
-  #   names_pulled <- lapply(set_names(names_to_get), function(var_name) {
-  #     extract_var(.data, var_name, list_ind_row)
-  #   })
-  #
-  #   e_new[[name_dots[i]]] <- slapply(seq_along(list_ind_row), function(k) {
-  #     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
-  #     e <- list2env(names_pulled_group_k, parent = parent_env)
-  #     eval_tidy(quo_set_env(quo_i, list2env(groups, parent = e)))
-  #   })
-  # }
+  list_ind_row <- .data$groups$ind_row
 
   e_new <- list()
   for (i in seq_along(dots)) {
-    e <- .data$as_env(parent = quo_get_env(dots[[i]]))
-    e_new[[name_dots[i]]] <- dots[[i]] %>%
-      quo_set_env(as_env(e_new, parent = e)) %>%
-      eval_tidy()
+
+    quo_i <- dots[[i]]
+    parent_env <- quo_get_env(quo_i)
+    names_involved <- get_call_names(quo_i)
+    names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(e_new))
+
+    names_pulled <- lapply(set_names(names_to_get), function(var_name) {
+      extract_var(.data, var_name, list_ind_row)
+    })
+
+    e_new[[name_dots[i]]] <- lapply(seq_along(list_ind_row), function(k) {
+      names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
+      e <- list2env(names_pulled_group_k, parent = parent_env)
+      e_new_group_k <- lapply(e_new, function(x) x[[k]])
+      eval_tidy(quo_set_env(quo_i, list2env(e_new_group_k, parent = e)))
+    })
   }
 
-  e_new[name_dots] %>%
-    as.data.frame() %>%
-    .data$add_columns()
+  cols_to_add <- lapply(e_new[name_dots], unlist)
+  if (.data$is_grouped) {
+    rel_ind_row <- match(.data$ind_row, unlist(list_ind_row))
+    cols_to_add <- lapply(cols_to_add, function(x) x[rel_ind_row])
+  }
+  .data$add_columns(as_tibble(cols_to_add))
 }
 
 ################################################################################

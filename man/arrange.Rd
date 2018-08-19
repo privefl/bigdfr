@@ -5,7 +5,7 @@
 \alias{arrange}
 \title{Arrange rows by variables}
 \usage{
-\method{arrange}{FDF}(.data, ...)
+\method{arrange}{FDF}(.data, ..., .by_group = FALSE)
 
 arrange(.data, ...)
 }
@@ -14,6 +14,9 @@ arrange(.data, ...)
 
 \item{...}{Comma separated list of unquoted variable names. Use
 \code{\link[=desc]{desc()}} to sort a variable in descending order.}
+
+\item{.by_group}{If \code{TRUE}, will sort first by grouping variable. Applies to
+grouped data frames only.}
 }
 \value{
 An object of the same class as \code{.data}.

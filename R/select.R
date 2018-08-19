@@ -22,8 +22,7 @@
 #' select(test, starts_with("Sepal"))
 select.FDF <- function(.data, ...) {
 
-  dots <- quos(...)
-  dots <- lapply(dots, rlang::env_bury, !!!vars_select_helpers)
+  dots <- lapply(quos(...), rlang::env_bury, !!!vars_select_helpers)
 
   ind_vars <- .data$ind_col
   var_names <- vars_select(names(ind_vars), !!!dots)

@@ -48,9 +48,20 @@ test_that("all verbs works with group_by()", {
   # summarize() computes by groups
   expect_identical(summarise(test2, mean(Petal.Length)),
                    summarise(grouped_iris, mean(Petal.Length)))
-  # mutate()
   # filter()
+  ind <- sample(150, 50)
+  expect_identical(as_tibble(filter_int(test2, ind)), grouped_iris[ind, ])
+  expect_identical(
+    as_tibble(filter(test2, Species == "virginica", Sepal.Length < 5)),
+    filter(grouped_iris, Species == "virginica", Sepal.Length < 5))
   # arrange()
+  expect_equal( ## TODO: Make that identical?
+    as_tibble(arrange(test2, Species, desc(Sepal.Length))),
+    arrange(grouped_iris, Species, desc(Sepal.Length)))
+  expect_equal( ## TODO: Make that identical?
+    as_tibble(arrange(test2, Species, desc(Sepal.Length), .by_group = TRUE)),
+    arrange(grouped_iris, Species, desc(Sepal.Length), .by_group = TRUE))
+  # mutate()
 })
 
 ################################################################################

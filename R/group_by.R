@@ -1,5 +1,19 @@
 ################################################################################
 
+#' @export
+#' @method ungroup FDF
+#'
+#' @rdname group_by
+ungroup.FDF <- function(.data) {
+  .data$copy(groups_internal = tibble())
+}
+
+#' @exportMethod ungroup
+#' @rdname group_by
+setGeneric("ungroup", dplyr::ungroup)
+
+################################################################################
+
 #' @inherit dplyr::group_by title
 #'
 #' @inheritParams select.FDF

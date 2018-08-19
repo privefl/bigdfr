@@ -49,7 +49,7 @@ test_that("FDF initialization works", {
 
 ################################################################################
 
-test_that("as_env() works", {
+test_that("$as_env() works", {
   test <- FDF(iris <- mutate(datasets::iris, Species = as.character(Species)))
   expect_identical(mget(names(iris), envir = test$as_env()), as.list(iris))
 })

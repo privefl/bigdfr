@@ -12,7 +12,6 @@ arrange_by_group <- function(.data, dots) {
 
   groups <- .data$groups
   list_ind_row <- groups$ind_row
-  # groups$ind_row <- NULL
 
   # Get some variables in memory
   names_involved <- unique(unlist(lapply(dots, get_call_names)))
@@ -27,7 +26,7 @@ arrange_by_group <- function(.data, dots) {
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
 
     list_vec <- lapply(seq_along(dots), function(i) {
-      e <- as_env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
+      e <- list2env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
       eval_tidy(quo_set_env(dots[[i]], e))
     })
     order <- do.call(base::order, list_vec)

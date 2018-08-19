@@ -30,7 +30,6 @@ filter.FDF <- function(.data, ...) {
 
   groups <- .data$groups
   list_ind_row <- groups$ind_row
-  # groups$ind_row <- NULL
 
   # Get some variables in memory
   names_involved <- unique(unlist(lapply(dots, get_call_names)))
@@ -45,7 +44,7 @@ filter.FDF <- function(.data, ...) {
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
 
     list_bool <- lapply(seq_along(dots), function(i) {
-      e <- as_env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
+      e <- list2env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
       quo_set_env(dots[[i]], e) %>%
         eval_tidy() %>%
         verif_lgl(length(indices_k), i)

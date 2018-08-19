@@ -42,6 +42,10 @@ X %>%
   summarize(min_length = min(Sepal.Length))
 ```
 
+## How does it work?
+
+I use a binary file on disk to store variables. Operations like `mutate` grow the file to add new columns. Operation like `subset`, `filter` and `arrange` just use indices to access a subset of the file. When (and only when) some columns are needed for some computations, data are actually accessed in memory.
+
 
 ## Differences with {dplyr}
 
@@ -53,7 +57,7 @@ X %>%
 
 ## TODO
 
-1. MAKE SURE EVERYTHING IS FAST
+1. optimize when possible
 1. support factors
 1. implement `n()`
 1. implement fresh backingfile? (when subview is too small -> just use `as_tibble()`?)

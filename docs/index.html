@@ -101,6 +101,11 @@ X <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/group_by.html">group_by</a></span>(Species) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/summarize.html">summarize</a></span>(<span class="dt">min_length =</span> <span class="kw">min</span>(Sepal.Length))</code></pre></div>
 </div>
+<div id="how-does-it-work" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-does-it-work" class="anchor"></a>How does it work?</h2>
+<p>I use a binary file on disk to store variables. Operations like <code>mutate</code> grow the file to add new columns. Operation like <code>subset</code>, <code>filter</code> and <code>arrange</code> just use indices to access a subset of the file. When (and only when) some columns are needed for some computations, data are actually accessed in memory.</p>
+</div>
 <div id="differences-with-dplyr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#differences-with-dplyr" class="anchor"></a>Differences with {dplyr}</h2>
@@ -115,7 +120,7 @@ X <span class="op">%&gt;%</span>
 <h2 class="hasAnchor">
 <a href="#todo" class="anchor"></a>TODO</h2>
 <ol>
-<li>MAKE SURE EVERYTHING IS FAST</li>
+<li>optimize when possible</li>
 <li>support factors</li>
 <li>implement <code>n()</code>
 </li>

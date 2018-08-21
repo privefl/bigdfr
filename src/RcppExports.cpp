@@ -71,6 +71,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// extract_fct
+List extract_fct(SEXP xptr, size_t j, ListOf<IntegerVector> list_ind_row, IntegerVector ints);
+RcppExport SEXP _bigdfr_extract_fct(SEXP xptrSEXP, SEXP jSEXP, SEXP list_ind_rowSEXP, SEXP intsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ints(intsSEXP);
+    rcpp_result_gen = Rcpp::wrap(extract_fct(xptr, j, list_ind_row, ints));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fill_dbl
 void fill_dbl(Environment X, size_t j, SEXP vec);
 RcppExport SEXP _bigdfr_fill_dbl(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
@@ -173,6 +187,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_extract_lgl", (DL_FUNC) &_bigdfr_extract_lgl, 3},
     {"_bigdfr_extract_ushort", (DL_FUNC) &_bigdfr_extract_ushort, 3},
     {"_bigdfr_extract_string", (DL_FUNC) &_bigdfr_extract_string, 4},
+    {"_bigdfr_extract_fct", (DL_FUNC) &_bigdfr_extract_fct, 4},
     {"_bigdfr_fill_dbl", (DL_FUNC) &_bigdfr_fill_dbl, 3},
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},

@@ -11,7 +11,7 @@ test_that("group_by() works", {
   expect_s3_class(test$groups, "tbl_df")
   expect_equal(dim(test$groups), c(1, 1))
   expect_identical(test2$groups,
-                   dplyr::tibble(Species = levels(iris$Species),
+                   dplyr::tibble(Species = unique(iris$Species),
                                  ind_row = list(0:49, 50:99, 100:149)))
   expect_identical(dim(group_by(test2, Petal.Length)$groups),
                    c(length(unique(iris$Petal.Length)), 2L))

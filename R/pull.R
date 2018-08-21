@@ -1,5 +1,15 @@
 ################################################################################
 
+extract_var_fct <- function(.data, glob_ind_var, list_ind_row) {
+
+  attr <- .data$meta[[glob_ind_var]]
+  ints <- match(.data$strings, attr$levels)
+
+  res <- extract_fct(.data$address, glob_ind_var, list_ind_row, ints)
+
+  lapply(res, function(x) { attributes(x) <- attr; x })
+}
+
 extract_var <- function(.data, rel_var_name,
                         list_ind_row = list(.data$ind_row)) {
 
@@ -12,6 +22,7 @@ extract_var <- function(.data, rel_var_name,
     integer   = extract_int(addr, glob_ind_var, list_ind_row),
     logical   = extract_lgl(addr, glob_ind_var, list_ind_row),
     character = extract_string(addr, glob_ind_var, list_ind_row, .data$strings),
+    factor    = extract_var_fct(.data, glob_ind_var, list_ind_row),
     stop2(ERROR_TYPE)
   )
 }

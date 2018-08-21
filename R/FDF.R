@@ -1,16 +1,24 @@
 ################################################################################
 
 AUTHORIZED_TYPES <- c(
-  "numeric" = 8L, "integer" = 4L, "logical" = 4L, "character" = 2L)
+  "numeric" = 8L, "integer" = 4L, "logical" = 4L, "character" = 2L, "factor" = 2L)
 
 ERROR_TYPE <- "Some column types are not authorized."
 
 FIELDS_TO_COPY <- c("nrow_all", "types", "backingfile", "groups_internal",
-                    "ind_row", "ind_col", "strings", "nstr")
+                    "ind_row", "ind_col", "strings", "nstr", "meta")
 
 NSTR_MAX <- 2^16
 
 ################################################################################
+
+class2 <- function(x) {
+  class_x <- class(x)
+  if (identical(class_x, c("ordered", "factor"))) class_x <- "factor"
+  class_x
+}
+
+#----
 
 types_after_verif <- function(df) {
 
@@ -18,8 +26,7 @@ types_after_verif <- function(df) {
   assert_pos(nrow(df))
   assert_pos(ncol(df))
 
-  coltypes <- sapply(df, class)
-  coltypes[coltypes == "factor"] <- "character"
+  coltypes <- sapply(df, class2)
   if (!all(coltypes %in% names(AUTHORIZED_TYPES)))
     stop2(ERROR_TYPE)
 
@@ -68,6 +75,7 @@ set_names <- function(x, names = x) {
 #'   - `$nstr`: Number of unique strings already matched with an integer
 #'   - `$groups`: Tibble with position indices of `$ind_row` for each group.
 #'   - `$groups_internal`: use `$groups` instead
+#'   - `$meta`: Meta information for factors and character vectors.
 #'
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.
@@ -92,6 +100,7 @@ FDF_RC <- methods::setRefClass(
     strings     = "character",
     nstr        = "integer",
     groups_internal = "tbl_df",
+    meta        = "list",
 
     #### Active bindings
     address = function() {

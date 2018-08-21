@@ -21,6 +21,10 @@ extract_string <- function(xptr, j, list_ind_row, strings) {
     .Call(`_bigdfr_extract_string`, xptr, j, list_ind_row, strings)
 }
 
+extract_fct <- function(xptr, j, list_ind_row, ints) {
+    .Call(`_bigdfr_extract_fct`, xptr, j, list_ind_row, ints)
+}
+
 fill_dbl <- function(X, j, vec) {
     invisible(.Call(`_bigdfr_fill_dbl`, X, j, vec))
 }

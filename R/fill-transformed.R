@@ -1,6 +1,6 @@
 ################################################################################
 
-transform_chr <- function(self, df_j) {
+transform_chr <- function(self, df_j, j2) {
   u_chr <- unique(df_j)
   L <- self$nstr
   matches <- match(u_chr, self$strings)
@@ -11,12 +11,13 @@ transform_chr <- function(self, df_j) {
     self$strings[L <- L + 1L] <- u_chr[i]
   }
   self$nstr <- L
+  self$meta[[j2]] <- u_chr
   match(df_j, self$strings) - 1L
 }
 
 ################################################################################
 
-transform_fct <- function(self, df_j) {
+transform_fct <- function(self, df_j, j2) {
   u_fct <- levels(df_j)
   L <- self$nstr
   matches <- match(u_fct, self$strings) - 1L
@@ -28,6 +29,7 @@ transform_fct <- function(self, df_j) {
     self$strings[L <- L + 1L] <- u_fct[i]
   }
   self$nstr <- L
+  self$meta[[j2]] <- attributes(df_j)
   NA_to_0(matches[df_j])
 }
 
@@ -35,12 +37,12 @@ transform_fct <- function(self, df_j) {
 
 fill_transformed <- function(self, df_j, j2) {
 
-  switch(class(df_j),
+  switch(class2(df_j),
          numeric   = fill_dbl(self, j2, df_j),
          integer   = fill_int(self, j2, df_j),
          logical   = fill_lgl(self, j2, df_j),
-         character = fill_ushort(self, j2, transform_chr(self, df_j)),
-         factor    = fill_ushort(self, j2, transform_fct(self, df_j)),
+         character = fill_ushort(self, j2, transform_chr(self, df_j, j2)),
+         factor    = fill_ushort(self, j2, transform_fct(self, df_j, j2)),
          stop2(ERROR_TYPE))
 }
 

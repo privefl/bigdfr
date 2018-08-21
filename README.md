@@ -58,7 +58,7 @@ I use a binary file on disk to store variables. Operations like `mutate` grow th
 ## TODO
 
 1. optimize when possible
-1. support factors
+1. rethink `group_by`
 1. implement `n()`
 1. parallelize some `lapply` with {future}?
 1. user-defined summarize on all groups at once?

@@ -119,45 +119,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// extract_fct_dbl
-List extract_fct_dbl(SEXP xptr, size_t j, IntegerVector ind_row);
-RcppExport SEXP _bigdfr_extract_fct_dbl(SEXP xptrSEXP, SEXP jSEXP, SEXP ind_rowSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type ind_row(ind_rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_fct_dbl(xptr, j, ind_row));
-    return rcpp_result_gen;
-END_RCPP
-}
-// extract_fct_int
-List extract_fct_int(SEXP xptr, size_t j, IntegerVector ind_row);
-RcppExport SEXP _bigdfr_extract_fct_int(SEXP xptrSEXP, SEXP jSEXP, SEXP ind_rowSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type ind_row(ind_rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_fct_int(xptr, j, ind_row));
-    return rcpp_result_gen;
-END_RCPP
-}
-// extract_fct_ushort
-List extract_fct_ushort(SEXP xptr, size_t j, IntegerVector ind_row);
-RcppExport SEXP _bigdfr_extract_fct_ushort(SEXP xptrSEXP, SEXP jSEXP, SEXP ind_rowSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type ind_row(ind_rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(extract_fct_ushort(xptr, j, ind_row));
-    return rcpp_result_gen;
-END_RCPP
-}
 // getXPtrFDF
 SEXP getXPtrFDF(std::string path, size_t n_all, IntegerVector types);
 RcppExport SEXP _bigdfr_getXPtrFDF(SEXP pathSEXP, SEXP n_allSEXP, SEXP typesSEXP) {
@@ -216,9 +177,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
-    {"_bigdfr_extract_fct_dbl", (DL_FUNC) &_bigdfr_extract_fct_dbl, 3},
-    {"_bigdfr_extract_fct_int", (DL_FUNC) &_bigdfr_extract_fct_int, 3},
-    {"_bigdfr_extract_fct_ushort", (DL_FUNC) &_bigdfr_extract_fct_ushort, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
     {"_bigdfr_rel_to_abs", (DL_FUNC) &_bigdfr_rel_to_abs, 3},

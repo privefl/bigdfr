@@ -13,9 +13,10 @@ extract_var <- function(.data, rel_var_name,
 
   glob_ind_var <- .data$ind_col[[rel_var_name]]
   addr <- .data$address
+  class <- names(.data$types)[glob_ind_var]
 
   res <- switch(
-    names(.data$types)[glob_ind_var],
+    class,
     Date      = ,
     POSIXt    = ,
     numeric   = extract_dbl(addr, glob_ind_var, list_ind_row),
@@ -27,6 +28,7 @@ extract_var <- function(.data, rel_var_name,
   )
 
   attr <- .data$meta[glob_ind_var][[1]]
+  if (class == "character") attr$uniq <- NULL
   lapply(res, function(x) { attributes(x) <- attr; x })
 }
 

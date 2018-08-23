@@ -157,18 +157,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// rel_to_abs
-void rel_to_abs(ListOf<IntegerVector> list_ind_row, ListOf<IntegerVector> list_ind, IntegerVector sizes);
-RcppExport SEXP _bigdfr_rel_to_abs(SEXP list_ind_rowSEXP, SEXP list_indSEXP, SEXP sizesSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
-    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind(list_indSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type sizes(sizesSEXP);
-    rel_to_abs(list_ind_row, list_ind, sizes);
-    return R_NilValue;
-END_RCPP
-}
 // NA_to_0
 IntegerVector NA_to_0(SEXP x_);
 RcppExport SEXP _bigdfr_NA_to_0(SEXP x_SEXP) {
@@ -177,6 +165,47 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type x_(x_SEXP);
     rcpp_result_gen = Rcpp::wrap(NA_to_0(x_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// split_dbl
+List split_dbl(SEXP xptr, size_t j, ListOf<IntegerVector> list_ind_row);
+RcppExport SEXP _bigdfr_split_dbl(SEXP xptrSEXP, SEXP jSEXP, SEXP list_ind_rowSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_dbl(xptr, j, list_ind_row));
+    return rcpp_result_gen;
+END_RCPP
+}
+// split_int
+List split_int(SEXP xptr, size_t j, ListOf<IntegerVector> list_ind_row);
+RcppExport SEXP _bigdfr_split_int(SEXP xptrSEXP, SEXP jSEXP, SEXP list_ind_rowSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_int(xptr, j, list_ind_row));
+    return rcpp_result_gen;
+END_RCPP
+}
+// split_ushort
+List split_ushort(SEXP xptr, size_t j, ListOf<IntegerVector> list_ind_row, IntegerVector ints, int nk);
+RcppExport SEXP _bigdfr_split_ushort(SEXP xptrSEXP, SEXP jSEXP, SEXP list_ind_rowSEXP, SEXP intsSEXP, SEXP nkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type list_ind_row(list_ind_rowSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ints(intsSEXP);
+    Rcpp::traits::input_parameter< int >::type nk(nkSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_ushort(xptr, j, list_ind_row, ints, nk));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -194,8 +223,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
-    {"_bigdfr_rel_to_abs", (DL_FUNC) &_bigdfr_rel_to_abs, 3},
     {"_bigdfr_NA_to_0", (DL_FUNC) &_bigdfr_NA_to_0, 1},
+    {"_bigdfr_split_dbl", (DL_FUNC) &_bigdfr_split_dbl, 3},
+    {"_bigdfr_split_int", (DL_FUNC) &_bigdfr_split_int, 3},
+    {"_bigdfr_split_ushort", (DL_FUNC) &_bigdfr_split_ushort, 5},
     {NULL, NULL, 0}
 };
 

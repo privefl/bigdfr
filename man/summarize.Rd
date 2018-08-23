@@ -4,7 +4,7 @@
 \alias{summarise.FDF}
 \alias{summarize}
 \alias{summarise}
-\title{Reduces multiple values down to a single value}
+\title{Reduce multiple values down to a single value}
 \usage{
 \method{summarise}{FDF}(.data, ...)
 
@@ -19,7 +19,7 @@ summarise(.data, ...)
 name of the variable in the result. The value should be an expression
 that returns a single value like \code{min(x)}, \code{n()}, or \code{sum(is.na(y))}.
 
-These arguments are automatically \link[rlang:quo]{quoted} and
+The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
 \link[rlang:eval_tidy]{evaluated} in the context of the data
 frame. They support \link[rlang:quasiquotation]{unquoting} and
 splicing. See \code{vignette("programming")} for an introduction to
@@ -29,8 +29,9 @@ these concepts.}
 A tibble with group values and summarized values.
 }
 \description{
-\code{summarise()} is typically used on grouped data created by \code{\link[=group_by]{group_by()}}.
-The output will have one row for each group.
+Create one or more scalar variables summarizing the variables of an
+existing tbl. Tbls with groups created by \code{\link[=group_by]{group_by()}} will result in one
+row in the output for each group.  Tbls with no groups will result in one row.
 }
 \examples{
 test <- FDF(datasets::iris)

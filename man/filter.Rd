@@ -10,7 +10,7 @@
 
 filter_int(.data, subset, check = TRUE)
 
-filter(.data, ...)
+filter(.data, ..., .preserve = TRUE)
 }
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
@@ -19,7 +19,7 @@ filter(.data, ...)
 Multiple conditions are combined with \code{&}. Only rows where the
 condition evaluates to \code{TRUE} are kept.
 
-These arguments are automatically \link[rlang:quo]{quoted} and
+The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
 \link[rlang:eval_tidy]{evaluated} in the context of the data
 frame. They support \link[rlang:quasiquotation]{unquoting} and
 splicing. See \code{vignette("programming")} for an introduction to
@@ -28,12 +28,15 @@ these concepts.}
 \item{subset}{Integer vector to (further) subset \code{.data$ind_row}.}
 
 \item{check}{Whether to check \code{subset}? Default is \code{TRUE}.}
+
+\item{.preserve}{when \code{TRUE} (the default), the grouping structure
+is preserved, otherwise it is recalculated based on the resulting data.}
 }
 \value{
 An object of the same class as \code{.data}.
 }
 \description{
-Use \code{filter()} find rows/cases where conditions are true. Unlike
+Use \code{filter()} to choose rows/cases where conditions are true. Unlike
 base subsetting with \code{[}, rows where the condition evaluates to \code{NA} are
 dropped.
 }

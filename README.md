@@ -52,13 +52,14 @@ I use a binary file on disk to store variables. Operations like `mutate` grow th
 - In `group_by`, variables are passed the same way as in `select`. If you want to use temporary variables, use `mutate`.
 - This is allowed to `summarize` data with a function that returns a value of length > 1 (you'll get a list-column).
 - When adding columns to an FDF (e.g. with `mutate`), these columns always go last even if they existed before. This means that you can do `FDF(iris) %>% mutate(Sepal.Width = Sepal.Width + 10) %>% pull()` to get the newly created "Sepal.Width" variable.
+- `filter` drops empty groups.
 - You can't have list-columns stored in a FDF.
 
 
 ## TODO
 
 1. optimize when possible
-1. rethink `group_by`?
+1. rethink fill/mutate?
 1. implement `n()`
 1. parallelize some `lapply` with {future}?
 1. user-defined summarize on all groups at once?

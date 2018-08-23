@@ -12,8 +12,8 @@ arrange(.data, ...)
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
 
-\item{...}{Comma separated list of unquoted variable names. Use
-\code{\link[=desc]{desc()}} to sort a variable in descending order.}
+\item{...}{Comma separated list of unquoted variable names, or expressions
+involving variable names. Use \code{\link[=desc]{desc()}} to sort a variable in descending order.}
 
 \item{.by_group}{If \code{TRUE}, will sort first by grouping variable. Applies to
 grouped data frames only.}

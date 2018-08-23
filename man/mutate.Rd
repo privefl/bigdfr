@@ -3,7 +3,7 @@
 \name{mutate.FDF}
 \alias{mutate.FDF}
 \alias{mutate}
-\title{Add new variables}
+\title{Create or transform variables}
 \usage{
 \method{mutate}{FDF}(.data, ...)
 
@@ -12,10 +12,13 @@ mutate(.data, ...)
 \arguments{
 \item{.data}{A \link[=FDF-class]{FDF}.}
 
-\item{...}{Name-value pairs of expressions. Use \code{NULL} to drop
-a variable.
+\item{...}{Name-value pairs of expressions, each with length 1 or the same
+length as the number of rows in the group (if using \code{\link[=group_by]{group_by()}}) or in the entire
+input (if not using groups). The name of each argument will be the name of
+a new variable, and the value will be its corresponding value.  Use a \code{NULL}
+value in \code{mutate} to drop a variable.
 
-These arguments are automatically \link[rlang:quo]{quoted} and
+The arguments in \code{...} are automatically \link[rlang:quo]{quoted} and
 \link[rlang:eval_tidy]{evaluated} in the context of the data
 frame. They support \link[rlang:quasiquotation]{unquoting} and
 splicing. See \code{vignette("programming")} for an introduction to
@@ -25,8 +28,9 @@ these concepts.}
 An object of the same class as \code{.data}.
 }
 \description{
-\code{mutate()} adds new variables and preserves existing;
-\code{transmute()} drops existing variables.
+\code{mutate()} adds new variables and preserves existing ones;
+\code{transmute()} adds new variables and drops existing ones.  Both
+functions preserve the number of rows of the input.
 }
 \examples{
 (test <- FDF(datasets::airquality))

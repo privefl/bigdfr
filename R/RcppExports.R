@@ -49,11 +49,19 @@ add_bytes <- function(fileName, nbyte) {
     invisible(.Call(`_bigdfr_add_bytes`, fileName, nbyte))
 }
 
-rel_to_abs <- function(list_ind_row, list_ind, sizes) {
-    invisible(.Call(`_bigdfr_rel_to_abs`, list_ind_row, list_ind, sizes))
-}
-
 NA_to_0 <- function(x_) {
     .Call(`_bigdfr_NA_to_0`, x_)
+}
+
+split_dbl <- function(xptr, j, list_ind_row) {
+    .Call(`_bigdfr_split_dbl`, xptr, j, list_ind_row)
+}
+
+split_int <- function(xptr, j, list_ind_row) {
+    .Call(`_bigdfr_split_int`, xptr, j, list_ind_row)
+}
+
+split_ushort <- function(xptr, j, list_ind_row, ints, nk) {
+    .Call(`_bigdfr_split_ushort`, xptr, j, list_ind_row, ints, nk)
 }
 

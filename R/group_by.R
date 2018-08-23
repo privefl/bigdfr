@@ -18,6 +18,36 @@ setGeneric("ungroup", dplyr::ungroup)
 
 ################################################################################
 
+split_var <- function(.data, rel_var_name, list_ind_row) {
+
+  glob_ind_var <- .data$ind_col[[rel_var_name]]
+  addr <- .data$address
+
+  new_list <- switch(
+    names(.data$types)[glob_ind_var],
+    Date      = ,
+    POSIXt    = ,
+    numeric   = split_dbl(addr, glob_ind_var, list_ind_row),
+    logical   = ,
+    integer   = split_int(addr, glob_ind_var, list_ind_row),
+    character = {
+      uniq <- .data$meta[[glob_ind_var]]$uniq
+      split_ushort(addr, glob_ind_var, list_ind_row,
+                   match(.data$strings, uniq) - 1L, length(uniq))
+    },
+    factor    = {
+      uniq <- .data$meta[[glob_ind_var]]$levels
+      split_ushort(addr, glob_ind_var, list_ind_row,
+                   match(.data$strings, uniq) - 1L, length(uniq))
+    },
+    stop2(ERROR_TYPE)
+  )
+  new_list <- unlist(new_list, recursive = FALSE)
+  new_list[lengths(new_list) != 0]
+}
+
+################################################################################
+
 #' @inherit dplyr::group_by title
 #'
 #' @inheritParams select.FDF
@@ -41,41 +71,22 @@ group_by.FDF <- function(.data, ..., add = FALSE) {
   if (length(quos(...)) == 0)
     stop2("You must group by at least one variable.")
 
-  .copy <- .data$copy()
-  if (!add) .copy$groups_internal <- tibble()
+  # Get grouping variables and group indices
+  group_names <- select.FDF(.data, ...)$colnames
+  list_ind_row <- `if`(add, .data$groups$ind_row, list(.data$ind_row))
+  for (var in group_names) {
+    list_ind_row <- split_var(.data, var, list_ind_row)
+  }
 
-  groups <- .copy$groups
-  list_ind_row <- groups$ind_row
-  groups$ind_row <- NULL
+  # Get group variables
+  if (add) group_names <- c(head(names(.data$groups), -1), group_names)
+  data_groups <- select(.data, group_names)
+  data_groups$groups_internal = tibble()
+  data_groups$ind_row = sapply(list_ind_row, function(x) x[1])
+  groups <- as_tibble(data_groups)
+  groups$ind_row <- list_ind_row
 
-  # Get grouping variables in memory
-  var_names <- select.FDF(.copy, ...)$colnames
-  names_pulled <- lapply(var_names, function(var_name) {
-    extract_var(.copy, var_name, list_ind_row)
-  })
-
-  # Let {dplyr} do the hard work
-  list_info_groups <- lapply(seq_along(list_ind_row), function(k) {
-    names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
-    grouped_df <- dplyr::group_by_at(as_tibble(names_pulled_group_k),
-                                     names(names_pulled_group_k))
-    attributes(grouped_df)[c("labels", "indices")]
-  })
-
-  # Get relative grouping indices and make them absolute
-  list_list_ind <- lapply(list_info_groups, function(x) x$indices)
-  sizes <- sapply(list_list_ind, length)
-  list_ind <- unlist(list_list_ind, recursive = FALSE)
-  rel_to_abs(list_ind_row, list_ind, sizes)
-
-  # Bind previous groups, new groups and corresponding indices
-  .copy$groups_internal <- dplyr::bind_cols(
-    groups[rep(seq_along(sizes), sizes), ],
-    do.call(dplyr::bind_rows, lapply(list_info_groups, function(x) x$labels)),
-    tibble(ind_row = list_ind)
-  )
-
-  .copy
+  .data$copy(groups_internal = dplyr::arrange_at(groups, -ncol(groups)))
 }
 
 ################################################################################

@@ -30,6 +30,7 @@ calling context.}
 An object of the same class as \code{.data}.
 }
 \description{
+Choose or rename variables from a tbl.
 \code{select()} keeps only the variables you mention; \code{rename()}
 keeps all variables.
 }

@@ -12,17 +12,10 @@ as_dplyr_groups <- function(tbl, x) {
 
   attr$class <- c("grouped_df", attr$class)
 
-  groups <- as.data.frame(x$groups)
-  indices <- lapply(groups$ind_row, function(ind) match(ind, x$ind_row) - 1L)
+  groups <- x$groups
+  groups$.rows <- lapply(groups$ind_row, function(ind) match(ind, x$ind_row))
   groups$ind_row <- NULL
-
-  attr$vars <- attr(groups, "vars") <- names(groups)
-  attr$drop <- attr(groups, "drop") <- TRUE
-
-  attr$indices <- indices
-  attr$biggest_group_size <- max(attr$group_sizes <- lengths(indices))
-
-  attr$labels <- groups
+  attr$groups <- groups
 
   attributes(tbl) <- attr
   tbl

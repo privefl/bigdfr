@@ -7,7 +7,10 @@ context("test-FDF.R")
 test_that("FDF initialization works", {
 
   # First init, then copy doesn't change previous object
-  (test <- FDF(iris <- mutate(datasets::iris, is_setosa = Species == "setosa")))
+  (test <- FDF(iris <- mutate(datasets::iris,
+                              is_setosa = Species == "setosa",
+                              date = Sys.Date() + 1:150,
+                              time = Sys.time() + 1:150)))
   expect_false(identical(test$address, methods::new("externalptr")))
   test0 <- test$copy(nstr = 19L)
   expect_true(identical(test0$extptr, methods::new("externalptr")))
@@ -32,7 +35,7 @@ test_that("FDF initialization works", {
   expect_equal(length(test), length(iris))
 
   # Check sizes and values
-  expect_equal(file.size(test$backingfile), 150 * (4 * 8 + 1 * 2 + 1 * 4))
+  expect_equal(file.size(test$backingfile), 150 * (4 * 8 + 1 * 2 + 1 * 4 + 2 * 8))
   iris$osef <- list(1)
   expect_error(FDF(iris), ERROR_TYPE, fixed = TRUE)
   expect_error(FDF(mtcars)$save(tempfile()), "must be '.rds'")
@@ -41,8 +44,8 @@ test_that("FDF initialization works", {
 
   expect_equal(readBin(test$backingfile, what = 0, n = 150 * 4),
                unlist(iris[1:4]), check.attributes = FALSE)
-  read_ushort <- readBin(test$backingfile, what = 1L, size = 2,  n = 10e3)
-  expect_identical(head(tail(read_ushort, 150 * 3), 150), as.integer(iris$Species))
+  read_ushort <- readBin(test$backingfile, what = 1L, size = 2,  n = 2550)
+  expect_identical(tail(read_ushort, 150), as.integer(iris$Species))
   expect_identical(test$nstr, 4L)
   expect_identical(test$strings, c(NA, levels(iris$Species), rep(NA, 2^16 - 4)))
 })

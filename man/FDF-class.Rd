@@ -36,7 +36,7 @@ C++ object, to be used as a \code{XPtr<FDF>} in C++ code
 \item \code{$nstr}: Number of unique strings already matched with an integer
 \item \code{$groups}: Tibble with position indices of \code{$ind_row} for each group.
 \item \code{$groups_internal}: use \code{$groups} instead
-\item \code{$meta}: Meta information for factors and character vectors.
+\item \code{$meta}: Meta information for factors, dates and character vectors.
 }
 
 And some methods:

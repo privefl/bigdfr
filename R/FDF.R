@@ -1,7 +1,9 @@
 ################################################################################
 
 AUTHORIZED_TYPES <- c(
-  "numeric" = 8L, "integer" = 4L, "logical" = 4L, "character" = 2L, "factor" = 2L)
+  "numeric" = 8L, "Date" = 8L, "POSIXt" = 8L,
+  "integer" = 4L, "logical" = 4L,
+  "character" = 2L, "factor" = 2L)
 
 ERROR_TYPE <- "Some column types are not authorized."
 
@@ -13,9 +15,7 @@ NSTR_MAX <- 2^16
 ################################################################################
 
 class2 <- function(x) {
-  class_x <- class(x)
-  if (identical(class_x, c("ordered", "factor"))) class_x <- "factor"
-  class_x
+  tail(class(x), 1)
 }
 
 #----
@@ -75,7 +75,7 @@ set_names <- function(x, names = x) {
 #'   - `$nstr`: Number of unique strings already matched with an integer
 #'   - `$groups`: Tibble with position indices of `$ind_row` for each group.
 #'   - `$groups_internal`: use `$groups` instead
-#'   - `$meta`: Meta information for factors and character vectors.
+#'   - `$meta`: Meta information for factors, dates and character vectors.
 #'
 #' And some methods:
 #'   - `$save()`: Save the FDF object in `$rds`. Returns the FDF.

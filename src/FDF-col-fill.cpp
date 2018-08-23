@@ -37,9 +37,48 @@ void fill_lgl(Environment X, size_t j, SEXP vec) {
   fill<int, LGLSXP>(X["address"], j, vec, X["ind_row"]);
 }
 
+/******************************************************************************/
+
 // [[Rcpp::export]]
-void fill_ushort(Environment X, size_t j, SEXP vec) {
-  fill<unsigned short, INTSXP>(X["address"], j, vec, X["ind_row"]);
+CharacterVector unique_chr(CharacterVector x) {
+  return sort_unique(x);
+}
+
+// [[Rcpp::export]]
+IntegerVector match_chr(CharacterVector x, CharacterVector uniq) {
+  return match(x, uniq);
+}
+
+// [[Rcpp::export]]
+void fill_chr(Environment X, size_t j, IntegerVector vec) {
+
+  XPtr<FDF> xpDF = X["address"];
+  ColAcc<unsigned short> col(xpDF, j - 1);
+
+  IntegerVector ind_row = X["ind_row"];
+  int n = ind_row.size();
+  myassert(n == vec.size(), ERROR_DIM);
+
+  for (int i = 0; i < n; i++) {
+    col[ind_row[i]] = vec[i] - 1;
+  }
+}
+
+/******************************************************************************/
+
+// [[Rcpp::export]]
+void fill_fct(Environment X, size_t j, IntegerVector vec, IntegerVector match) {
+
+  XPtr<FDF> xpDF = X["address"];
+  ColAcc<unsigned short> col(xpDF, j - 1);
+
+  IntegerVector ind_row = X["ind_row"];
+  int n = ind_row.size();
+  myassert(n == vec.size(), ERROR_DIM);
+
+  for (int i = 0; i < n; i++) {
+    col[ind_row[i]] = (vec[i] == NA_INTEGER) ? 0 : match[vec[i] - 1];
+  }
 }
 
 /******************************************************************************/

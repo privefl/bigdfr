@@ -37,8 +37,20 @@ fill_lgl <- function(X, j, vec) {
     invisible(.Call(`_bigdfr_fill_lgl`, X, j, vec))
 }
 
-fill_ushort <- function(X, j, vec) {
-    invisible(.Call(`_bigdfr_fill_ushort`, X, j, vec))
+unique_chr <- function(x) {
+    .Call(`_bigdfr_unique_chr`, x)
+}
+
+match_chr <- function(x, uniq) {
+    .Call(`_bigdfr_match_chr`, x, uniq)
+}
+
+fill_chr <- function(X, j, vec) {
+    invisible(.Call(`_bigdfr_fill_chr`, X, j, vec))
+}
+
+fill_fct <- function(X, j, vec, match) {
+    invisible(.Call(`_bigdfr_fill_fct`, X, j, vec, match))
 }
 
 getXPtrFDF <- function(path, n_all, types) {
@@ -47,10 +59,6 @@ getXPtrFDF <- function(path, n_all, types) {
 
 add_bytes <- function(fileName, nbyte) {
     invisible(.Call(`_bigdfr_add_bytes`, fileName, nbyte))
-}
-
-NA_to_0 <- function(x_) {
-    .Call(`_bigdfr_NA_to_0`, x_)
 }
 
 split_dbl <- function(xptr, j, list_ind_row) {

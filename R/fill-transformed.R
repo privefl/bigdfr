@@ -1,9 +1,9 @@
 ################################################################################
 
 transform_chr <- function(self, df_j, j2) {
-  u_chr <- unique(df_j)
+  u_chr <- unique_chr(df_j)
   L <- self$nstr
-  matches <- match(u_chr, self$strings)
+  matches <- match_chr(u_chr, self$strings)
   ind_nomatch <- which(is.na(matches))
   if (L + length(ind_nomatch) > NSTR_MAX)
     stop2("Can't have more than %s different strings.", NSTR_MAX)
@@ -12,7 +12,7 @@ transform_chr <- function(self, df_j, j2) {
   }
   self$nstr <- L
   self$meta[[j2]] <- append(self$meta[j2][[1]], list(uniq = u_chr))
-  match(df_j, self$strings) - 1L
+  match_chr(df_j, self$strings)
 }
 
 ################################################################################
@@ -29,7 +29,7 @@ transform_fct <- function(self, df_j) {
     self$strings[L <- L + 1L] <- u_fct[i]
   }
   self$nstr <- L
-  NA_to_0(matches[df_j])
+  matches
 }
 
 ################################################################################
@@ -43,8 +43,8 @@ fill_transformed <- function(self, df_j, j2) {
          numeric   = fill_dbl(self, j2, df_j),
          integer   = fill_int(self, j2, df_j),
          logical   = fill_lgl(self, j2, df_j),
-         factor    = fill_ushort(self, j2, transform_fct(self, df_j)),
-         character = fill_ushort(self, j2, transform_chr(self, df_j, j2)),
+         factor    = fill_fct(self, j2, df_j, transform_fct(self, df_j)),
+         character = fill_chr(self, j2, transform_chr(self, df_j, j2)),
          stop2(ERROR_TYPE))
 }
 

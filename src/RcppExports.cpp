@@ -121,15 +121,51 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// fill_ushort
-void fill_ushort(Environment X, size_t j, SEXP vec);
-RcppExport SEXP _bigdfr_fill_ushort(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
+// unique_chr
+CharacterVector unique_chr(CharacterVector x);
+RcppExport SEXP _bigdfr_unique_chr(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(unique_chr(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// match_chr
+IntegerVector match_chr(CharacterVector x, CharacterVector uniq);
+RcppExport SEXP _bigdfr_match_chr(SEXP xSEXP, SEXP uniqSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type uniq(uniqSEXP);
+    rcpp_result_gen = Rcpp::wrap(match_chr(x, uniq));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fill_chr
+void fill_chr(Environment X, size_t j, IntegerVector vec);
+RcppExport SEXP _bigdfr_fill_chr(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
     Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type vec(vecSEXP);
-    fill_ushort(X, j, vec);
+    Rcpp::traits::input_parameter< IntegerVector >::type vec(vecSEXP);
+    fill_chr(X, j, vec);
+    return R_NilValue;
+END_RCPP
+}
+// fill_fct
+void fill_fct(Environment X, size_t j, IntegerVector vec, IntegerVector match);
+RcppExport SEXP _bigdfr_fill_fct(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP, SEXP matchSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type X(XSEXP);
+    Rcpp::traits::input_parameter< size_t >::type j(jSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type vec(vecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type match(matchSEXP);
+    fill_fct(X, j, vec, match);
     return R_NilValue;
 END_RCPP
 }
@@ -155,17 +191,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::size_t >::type nbyte(nbyteSEXP);
     add_bytes(fileName, nbyte);
     return R_NilValue;
-END_RCPP
-}
-// NA_to_0
-IntegerVector NA_to_0(SEXP x_);
-RcppExport SEXP _bigdfr_NA_to_0(SEXP x_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x_(x_SEXP);
-    rcpp_result_gen = Rcpp::wrap(NA_to_0(x_));
-    return rcpp_result_gen;
 END_RCPP
 }
 // split_dbl
@@ -220,10 +245,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_dbl", (DL_FUNC) &_bigdfr_fill_dbl, 3},
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},
-    {"_bigdfr_fill_ushort", (DL_FUNC) &_bigdfr_fill_ushort, 3},
+    {"_bigdfr_unique_chr", (DL_FUNC) &_bigdfr_unique_chr, 1},
+    {"_bigdfr_match_chr", (DL_FUNC) &_bigdfr_match_chr, 2},
+    {"_bigdfr_fill_chr", (DL_FUNC) &_bigdfr_fill_chr, 3},
+    {"_bigdfr_fill_fct", (DL_FUNC) &_bigdfr_fill_fct, 4},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
     {"_bigdfr_add_bytes", (DL_FUNC) &_bigdfr_add_bytes, 2},
-    {"_bigdfr_NA_to_0", (DL_FUNC) &_bigdfr_NA_to_0, 1},
     {"_bigdfr_split_dbl", (DL_FUNC) &_bigdfr_split_dbl, 3},
     {"_bigdfr_split_int", (DL_FUNC) &_bigdfr_split_int, 3},
     {"_bigdfr_split_ushort", (DL_FUNC) &_bigdfr_split_ushort, 5},

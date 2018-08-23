@@ -12,6 +12,8 @@ format(file.size(csv), big.mark = ",")
 X2 <- as_tibble(X)
 object.size(X2)
 
+profvis::profvis(FDF(X2))
+
 species <- as.factor(X2$Species)
 
 # bench::mark(

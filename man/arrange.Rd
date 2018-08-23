@@ -5,7 +5,7 @@
 \alias{arrange}
 \title{Arrange rows by variables}
 \usage{
-\method{arrange}{FDF}(.data, ..., .by_group = FALSE)
+\method{arrange}{FDF}(.data, ..., .by_group = FALSE, method = "radix")
 
 arrange(.data, ...)
 }
@@ -17,6 +17,14 @@ arrange(.data, ...)
 
 \item{.by_group}{If \code{TRUE}, will sort first by grouping variable. Applies to
 grouped data frames only.}
+
+\item{method}{the method to be used: partial matches are allowed.  The
+    default (\code{"auto"}) implies \code{"radix"} for short numeric vectors,
+    integer vectors, logical vectors and factors.
+    Otherwise, it implies \code{"shell"}.
+    For details of methods \code{"shell"}, 
+    \code{"quick"}, and \code{"radix"},
+    see the help for \code{\link{sort}}.}
 }
 \value{
 An object of the same class as \code{.data}.

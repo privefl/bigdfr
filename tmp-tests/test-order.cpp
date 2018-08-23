@@ -28,6 +28,7 @@ x2 <- as.character(x)
 
 system.time(order(x))
 system.time(order(x2))
+system.time(order(x2, method = "radix"))
 system.time(order_int(x))
 system.time(order_chr(x2))
 */

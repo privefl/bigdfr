@@ -36,6 +36,9 @@ transform_fct <- function(self, df_j) {
 
 fill_transformed <- function(self, df_j, j2) {
 
+  # TODO: change this
+  if (length(df_j) == 1) df_j <- rep(df_j, self$nrow)
+
   self$meta[[j2]] <- attributes(df_j)
   switch(class2(df_j),
          Date      = ,

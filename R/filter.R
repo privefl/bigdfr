@@ -44,9 +44,7 @@ filter.FDF <- function(.data, ...) {
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
 
     list_bool <- lapply(seq_along(dots), function(i) {
-      e <- list2env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
-      quo_set_env(dots[[i]], e) %>%
-        eval_tidy() %>%
+      eval_tidy(dots[[i]], data = names_pulled_group_k) %>%
         verif_lgl(length(indices_k), i)
     })
 

@@ -22,16 +22,12 @@ arrange_by_group <- function(.data, dots, method) {
 
   indices <- lapply(seq_along(list_ind_row), function(k) {
 
-    indices_k <- list_ind_row[[k]]
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
-
-    list_vec <- lapply(seq_along(dots), function(i) {
-      e <- list2env(names_pulled_group_k, parent = quo_get_env(dots[[i]]))
-      eval_tidy(quo_set_env(dots[[i]], e))
-    })
+    list_vec <- lapply(dots, eval_tidy, data = names_pulled_group_k)
     order <- do.call(base::order, c(list_vec, list(method = method)))
-    assert_lengths(indices_k, order)
 
+    indices_k <- list_ind_row[[k]]
+    assert_lengths(indices_k, order)
     indices_k[order]
   })
 

@@ -36,8 +36,7 @@ mutate.FDF <- function(.data, ...) {
     e_new[[name_dots[i]]] <- lapply(seq_along(list_ind_row), function(k) {
       names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
       e <- list2env(names_pulled_group_k, parent = parent_env)
-      e_new_group_k <- lapply(e_new, function(x) x[[k]])
-      eval_tidy(quo_set_env(quo_i, list2env(e_new_group_k, parent = e)))
+      eval_tidy(quo_set_env(quo_i, e), data = lapply(e_new, function(x) x[[k]]))
     })
   }
 

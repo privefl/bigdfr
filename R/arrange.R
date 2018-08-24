@@ -24,7 +24,7 @@ arrange_by_group <- function(.data, dots, method) {
 
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
     list_vec <- lapply(dots, eval_tidy, data = names_pulled_group_k)
-    order <- do.call(base::order, c(list_vec, list(method = method)))
+    order <- do.call(order, c(list_vec, list(method = method)))
 
     indices_k <- list_ind_row[[k]]
     assert_lengths(indices_k, order)
@@ -65,7 +65,7 @@ arrange.FDF <- function(.data, ..., .by_group = FALSE, method = "radix") {
     e <- .data$as_env(parent = quo_get_env(q))
     eval_tidy(quo_set_env(q, e))
   })
-  order <- do.call(base::order, c(list_vec, list(method = method)))
+  order <- do.call(order, c(list_vec, list(method = method)))
   assert_lengths(.data$ind_row, order)
 
   filter_int(.data, subset = order, check = FALSE)

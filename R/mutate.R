@@ -38,8 +38,8 @@ mutate.FDF <- function(.data, ...) {
     e_new[[name_dots[i]]] <- lapply(seq_along(list_ind_row), function(k) {
       names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
       e <- list2env(names_pulled_group_k, parent = parent_env)
-      quo_modif(quo_i, n_defined, val = length(list_ind_row[[k]]), env = e) %>%
-        eval_tidy(data = lapply(e_new, function(x) x[[k]]))
+      q <- quo_modif(quo_i, n_defined, val = length(list_ind_row[[k]]), env = e)
+      eval_tidy(q, data = lapply(e_new, function(x) x[[k]]))
     })
   }
 

@@ -35,10 +35,10 @@ repl_call_n <- function(call, val) {
 
 quo_modif <- function(quo, n_defined, val, env = quo_get_env(quo)) {
 
-  expr <- rlang::quo_get_expr(quo)
+  expr <- quo_get_expr(quo)
   if (!n_defined) expr <- repl_call_n(expr, val)
 
-  rlang::as_quosure(expr, env)
+  as_quosure(expr, env)
 }
 
 ################################################################################

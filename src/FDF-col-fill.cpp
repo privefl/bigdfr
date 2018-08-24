@@ -40,16 +40,6 @@ void fill_lgl(Environment X, size_t j, SEXP vec) {
 /******************************************************************************/
 
 // [[Rcpp::export]]
-CharacterVector unique_chr(CharacterVector x) {
-  return sort_unique(x);
-}
-
-// [[Rcpp::export]]
-IntegerVector match_chr(CharacterVector x, CharacterVector uniq) {
-  return match(x, uniq);
-}
-
-// [[Rcpp::export]]
 void fill_chr(Environment X, size_t j, IntegerVector vec) {
 
   XPtr<FDF> xpDF = X["address"];

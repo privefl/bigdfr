@@ -83,7 +83,7 @@ filter_int <- function(.data, subset, check = TRUE) {
     ## TODO: optimize
     groups <- .data$groups
     groups$ind_row <- lapply(groups$ind_row, function(ind) {
-      ind_rel <- match(ind, ind_row_filtered)
+      ind_rel <- match_int(ind, ind_row_filtered)
       has_match <- !is.na(ind_rel)
       ind[has_match][order(ind_rel[has_match])]
     })

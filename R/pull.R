@@ -32,6 +32,8 @@ extract_var <- function(.data, rel_var_name,
   lapply(res, function(x) { attributes(x) <- attr; x })
 }
 
+################################################################################
+
 #' @inherit dplyr::pull title description return
 #'
 #' @param .data A [FDF][FDF-class].

@@ -38,6 +38,7 @@ summarise.FDF <- function(.data, ...) {
   groups <- .data$groups
   list_ind_row <- groups$ind_row
   groups$ind_row <- NULL
+  group_vars_after <- head(names(groups), -1)
 
   for (i in seq_along(dots)) {
 
@@ -57,7 +58,7 @@ summarise.FDF <- function(.data, ...) {
     })
   }
 
-  groups
+  dplyr::group_by_at(groups, group_vars_after)
 }
 
 ################################################################################

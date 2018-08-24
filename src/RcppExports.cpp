@@ -121,29 +121,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// unique_chr
-CharacterVector unique_chr(CharacterVector x);
-RcppExport SEXP _bigdfr_unique_chr(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(unique_chr(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// match_chr
-IntegerVector match_chr(CharacterVector x, CharacterVector uniq);
-RcppExport SEXP _bigdfr_match_chr(SEXP xSEXP, SEXP uniqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type uniq(uniqSEXP);
-    rcpp_result_gen = Rcpp::wrap(match_chr(x, uniq));
-    return rcpp_result_gen;
-END_RCPP
-}
 // fill_chr
 void fill_chr(Environment X, size_t j, IntegerVector vec);
 RcppExport SEXP _bigdfr_fill_chr(SEXP XSEXP, SEXP jSEXP, SEXP vecSEXP) {
@@ -234,6 +211,41 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// match_int
+IntegerVector match_int(IntegerVector x, IntegerVector table);
+RcppExport SEXP _bigdfr_match_int(SEXP xSEXP, SEXP tableSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type table(tableSEXP);
+    rcpp_result_gen = Rcpp::wrap(match_int(x, table));
+    return rcpp_result_gen;
+END_RCPP
+}
+// unique_chr
+CharacterVector unique_chr(CharacterVector x);
+RcppExport SEXP _bigdfr_unique_chr(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(unique_chr(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// match_chr
+IntegerVector match_chr(CharacterVector x, CharacterVector uniq);
+RcppExport SEXP _bigdfr_match_chr(SEXP xSEXP, SEXP uniqSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type uniq(uniqSEXP);
+    rcpp_result_gen = Rcpp::wrap(match_chr(x, uniq));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_extract_dbl", (DL_FUNC) &_bigdfr_extract_dbl, 3},
@@ -245,8 +257,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_fill_dbl", (DL_FUNC) &_bigdfr_fill_dbl, 3},
     {"_bigdfr_fill_int", (DL_FUNC) &_bigdfr_fill_int, 3},
     {"_bigdfr_fill_lgl", (DL_FUNC) &_bigdfr_fill_lgl, 3},
-    {"_bigdfr_unique_chr", (DL_FUNC) &_bigdfr_unique_chr, 1},
-    {"_bigdfr_match_chr", (DL_FUNC) &_bigdfr_match_chr, 2},
     {"_bigdfr_fill_chr", (DL_FUNC) &_bigdfr_fill_chr, 3},
     {"_bigdfr_fill_fct", (DL_FUNC) &_bigdfr_fill_fct, 4},
     {"_bigdfr_getXPtrFDF", (DL_FUNC) &_bigdfr_getXPtrFDF, 3},
@@ -254,6 +264,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigdfr_split_dbl", (DL_FUNC) &_bigdfr_split_dbl, 3},
     {"_bigdfr_split_int", (DL_FUNC) &_bigdfr_split_int, 3},
     {"_bigdfr_split_ushort", (DL_FUNC) &_bigdfr_split_ushort, 5},
+    {"_bigdfr_match_int", (DL_FUNC) &_bigdfr_match_int, 2},
+    {"_bigdfr_unique_chr", (DL_FUNC) &_bigdfr_unique_chr, 1},
+    {"_bigdfr_match_chr", (DL_FUNC) &_bigdfr_match_chr, 2},
     {NULL, NULL, 0}
 };
 

@@ -63,7 +63,7 @@ arrange.FDF <- function(.data, ..., .by_group = FALSE, method = "radix") {
 
   dots <- quos(...)
   if (length(dots) == 0) return(.data)
-  if (.by_group) return(arrange_by_group(.data, dots, method))
+  if (.by_group) return(arrange_by_group(.data, dots, method = method))
 
   list_vec <- lapply(dots, function(q) {
     e <- .data$as_env(parent = quo_get_env(q))

@@ -43,7 +43,7 @@ mutate.FDF <- function(.data, ...) {
 
   cols_to_add <- lapply(e_new[name_dots], unlist)
   if (.data$is_grouped) {
-    rel_ind_row <- match(.data$ind_row, unlist(list_ind_row))
+    rel_ind_row <- match_int(.data$ind_row, unlist(list_ind_row))
     cols_to_add <- lapply(cols_to_add, function(x) x[rel_ind_row])
   }
   .data$add_columns(as_tibble(cols_to_add))

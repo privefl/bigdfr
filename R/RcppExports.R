@@ -37,14 +37,6 @@ fill_lgl <- function(X, j, vec) {
     invisible(.Call(`_bigdfr_fill_lgl`, X, j, vec))
 }
 
-unique_chr <- function(x) {
-    .Call(`_bigdfr_unique_chr`, x)
-}
-
-match_chr <- function(x, uniq) {
-    .Call(`_bigdfr_match_chr`, x, uniq)
-}
-
 fill_chr <- function(X, j, vec) {
     invisible(.Call(`_bigdfr_fill_chr`, X, j, vec))
 }
@@ -71,5 +63,17 @@ split_int <- function(xptr, j, list_ind_row) {
 
 split_ushort <- function(xptr, j, list_ind_row, ints, nk) {
     .Call(`_bigdfr_split_ushort`, xptr, j, list_ind_row, ints, nk)
+}
+
+match_int <- function(x, table) {
+    .Call(`_bigdfr_match_int`, x, table)
+}
+
+unique_chr <- function(x) {
+    .Call(`_bigdfr_unique_chr`, x)
+}
+
+match_chr <- function(x, uniq) {
+    .Call(`_bigdfr_match_chr`, x, uniq)
 }
 

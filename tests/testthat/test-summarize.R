@@ -46,11 +46,11 @@ test_that("summarize() works", {
                              mean_length = mean(Sepal.Length)))
 
   expect_identical(test %>%
-                     group_by(Sepal.Width) %>%
+                     group_by(Sepal.Width, Petal.Width) %>%
                      summarize(Species = n_distinct(Species),
                                mean_length = mean(Sepal.Length)),
                    iris %>%
-                     group_by(Sepal.Width) %>%
+                     group_by(Sepal.Width, Petal.Width) %>%
                      summarize(Species = n_distinct(Species),
                                mean_length = mean(Sepal.Length)))
 

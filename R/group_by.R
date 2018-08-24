@@ -33,12 +33,12 @@ split_var <- function(.data, rel_var_name, list_ind_row) {
     character = {
       uniq <- .data$meta[[glob_ind_var]]$uniq
       split_ushort(addr, glob_ind_var, list_ind_row,
-                   match(.data$strings, uniq) - 1L, length(uniq))
+                   match_chr(.data$strings, uniq) - 1L, length(uniq))
     },
     factor    = {
       uniq <- .data$meta[[glob_ind_var]]$levels
       split_ushort(addr, glob_ind_var, list_ind_row,
-                   match(.data$strings, uniq) - 1L, length(uniq))
+                   match_chr(.data$strings, uniq) - 1L, length(uniq))
     },
     stop2(ERROR_TYPE)
   )

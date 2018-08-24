@@ -13,7 +13,7 @@ as_dplyr_groups <- function(tbl, x) {
   attr$class <- c("grouped_df", attr$class)
 
   groups <- x$groups
-  groups$.rows <- lapply(groups$ind_row, function(ind) match(ind, x$ind_row))
+  groups$.rows <- lapply(groups$ind_row, function(ind) match_int(ind, x$ind_row))
   groups$ind_row <- NULL
   attr$groups <- groups
 
@@ -48,8 +48,7 @@ as_tibble.FDF <- function(x, ...) {
     })
   )
 
-  if (x$is_grouped) tbl <- as_dplyr_groups(tbl, x)
-  tbl
+  `if`(x$is_grouped, as_dplyr_groups(tbl, x), tbl)
 }
 
 ################################################################################

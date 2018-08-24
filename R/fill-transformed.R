@@ -20,7 +20,7 @@ transform_chr <- function(self, df_j, j2) {
 transform_fct <- function(self, df_j) {
   u_fct <- levels(df_j)
   L <- self$nstr
-  matches <- match(u_fct, self$strings) - 1L
+  matches <- match_chr(u_fct, self$strings) - 1L
   ind_nomatch <- which(is.na(matches))
   if (L + length(ind_nomatch) > NSTR_MAX)
     stop2("Can't have more than %s different strings.", NSTR_MAX)

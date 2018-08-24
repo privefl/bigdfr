@@ -25,7 +25,7 @@ slapply <- function(X, FUN) {
 #' test <- FDF(datasets::iris)
 #' test %>%
 #'   group_by(Species) %>%
-#'   summarize(mean = mean(Sepal.Length))
+#'   summarize(mean = mean(Sepal.Length), n = n())
 #'
 #' # You can also get a list-column
 #' test %>%
@@ -44,6 +44,7 @@ summarise.FDF <- function(.data, ...) {
 
     quo_i <- dots[[i]]
     parent_env <- quo_get_env(quo_i)
+    n_defined <- find_n(parent_env)
 
     names_involved <- get_call_names(quo_i)
     names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(groups))
@@ -55,7 +56,8 @@ summarise.FDF <- function(.data, ...) {
     groups[[name_dots[i]]] <- slapply(seq_along(list_ind_row), function(k) {
       names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
       e <- list2env(names_pulled_group_k, parent = parent_env)
-      eval_tidy(quo_set_env(quo_i, e), data = groups)
+      quo_modif(quo_i, n_defined, val = length(list_ind_row[[k]]), env = e) %>%
+        eval_tidy(data = groups)
     })
   }
 

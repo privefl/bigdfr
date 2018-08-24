@@ -1,4 +1,4 @@
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis build status](https://travis-ci.org/privefl/bigdfr.svg?branch=master)](https://travis-ci.org/privefl/bigdfr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/privefl/bigdfr?branch=master&svg=true)](https://ci.appveyor.com/project/privefl/bigdfr)
 [![Coverage status](https://codecov.io/gh/privefl/bigdfr/branch/master/graph/badge.svg)](https://codecov.io/github/privefl/bigdfr?branch=master)
@@ -60,7 +60,6 @@ I use a binary file on disk to store variables. Operations like `mutate` grow th
 
 1. optimize when possible
 1. rethink fill/mutate?
-1. implement `n()`
 1. parallelize some `lapply` with {future}?
 1. user-defined summarize on all groups at once?
 1. implement fresh backingfile? (when subview is too small -> just use `as_tibble()`?)

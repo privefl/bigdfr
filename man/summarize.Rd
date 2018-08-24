@@ -37,7 +37,7 @@ row in the output for each group.  Tbls with no groups will result in one row.
 test <- FDF(datasets::iris)
 test \%>\%
   group_by(Species) \%>\%
-  summarize(mean = mean(Sepal.Length))
+  summarize(mean = mean(Sepal.Length), n = n())
 
 # You can also get a list-column
 test \%>\%

@@ -1,5 +1,5 @@
 Package: bigdfr
-Date: 2018-08-19
+Date: 2018-08-24
 Version: 0.2.0
 Title: Operate with Data Frames Stored on Disk 
 Description: Operate with data frames stored in a binary file on disk.

@@ -38,13 +38,17 @@ filter.FDF <- function(.data, ...) {
     extract_var(.data, var_name, list_ind_row)
   })
 
+  parent_env <- lapply(dots, quo_get_env)
+  n_defined <- lapply(parent_env, find_n)
+
   indices <- lapply(seq_along(list_ind_row), function(k) {
 
-    indices_k <- list_ind_row[[k]]
+    l_k <- length(indices_k <- list_ind_row[[k]])
     names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
 
     list_bool <- lapply(seq_along(dots), function(i) {
-      eval_tidy(dots[[i]], data = names_pulled_group_k) %>%
+      quo_modif(dots[[i]], n_defined[[i]], val = l_k, env = parent_env[[i]]) %>%
+        eval_tidy(data = names_pulled_group_k) %>%
         verif_lgl(length(indices_k), i)
     })
 

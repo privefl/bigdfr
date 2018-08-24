@@ -26,6 +26,8 @@ mutate.FDF <- function(.data, ...) {
 
     quo_i <- dots[[i]]
     parent_env <- quo_get_env(quo_i)
+    n_defined <- find_n(parent_env)
+
     names_involved <- get_call_names(quo_i)
     names_to_get <- setdiff(intersect(.data$colnames, names_involved), names(e_new))
 
@@ -36,7 +38,8 @@ mutate.FDF <- function(.data, ...) {
     e_new[[name_dots[i]]] <- lapply(seq_along(list_ind_row), function(k) {
       names_pulled_group_k <- lapply(names_pulled, function(x) x[[k]])
       e <- list2env(names_pulled_group_k, parent = parent_env)
-      eval_tidy(quo_set_env(quo_i, e), data = lapply(e_new, function(x) x[[k]]))
+      quo_modif(quo_i, n_defined, val = length(list_ind_row[[k]]), env = e) %>%
+        eval_tidy(data = lapply(e_new, function(x) x[[k]]))
     })
   }
 

@@ -14,3 +14,31 @@ get_call_names <- function(call) {
 }
 
 ################################################################################
+
+find_n <- function(env) {
+  found <- methods::findFunction("n", where = env)
+  (length(found) > 0) && is.null(attr(found[[1]], "name"))
+}
+
+repl_call_n <- function(call, val) {
+
+  if (is.call(call)) {
+    if (identical(call, call("n"))) {
+      val
+    } else {
+      as.call(lapply(call, repl_call_n, val = val))
+    }
+  } else {
+    call
+  }
+}
+
+quo_modif <- function(quo, n_defined, val, env = quo_get_env(quo)) {
+
+  expr <- rlang::quo_get_expr(quo)
+  if (!n_defined) expr <- repl_call_n(expr, val)
+
+  rlang::as_quosure(expr, env)
+}
+
+################################################################################

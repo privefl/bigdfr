@@ -170,7 +170,7 @@ FDF_RC <- methods::setRefClass(
     add_columns = function(df) {
 
       types_before <- .self$types
-      if (file.size(.self$backingfile) != .self$nrow_all * sum(types_before))
+      if (file.size(.self$backingfile) != .self$nrow_all * 1 * sum(types_before))
         stop2("Inconsistency between types and file size.")
 
       types_to_add <- types_after_verif(df)

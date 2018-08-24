@@ -95,11 +95,3 @@ microbenchmark::microbenchmark(
 #   DPLYR  559.1658  575.5327  593.7990  595.8903  607.2206  629.4433    10
 # BIGDFR2 1190.8752 1216.6773 1267.3589 1275.4496 1313.2873 1360.4640    10
 #  DPLYR2 1047.4149 1083.8713 1109.7999 1098.0080 1114.7918 1233.8783    10
-
-# TODO: move mutate in its own file
-# system.time(X3 <- mutate(X, bool = Species == "setosa"))
-# # utilisateur     système      écoulé
-# #       0.242       0.076       0.318
-# system.time(X4 <- mutate(X2, bool = Species == "setosa"))
-# # utilisateur     système      écoulé
-# #       0.065       0.000       0.066

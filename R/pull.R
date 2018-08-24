@@ -29,7 +29,8 @@ extract_var <- function(.data, rel_var_name,
 
   attr <- .data$meta[glob_ind_var][[1]]
   if (class == "character") attr$uniq <- NULL
-  lapply(res, function(x) { attributes(x) <- attr; x })
+  for (i in seq_along(res)) attributes(res[[i]]) <- attr
+  res
 }
 
 ################################################################################
